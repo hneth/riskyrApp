@@ -1,0 +1,11 @@
+Title: riskyRapp
+Version: 0.0.1
+Type: Shiny
+DisplayMode: Showcase
+Author: Hansjörg Neth, Felix Gaissbauer
+AuthorUrl: http://spds.uni-konstanz.de
+Maintainer: Hansjörg Neth <h.neth@uni.kn>
+Description: An R Shiny app complementing the riskyR package: 
+    A toolbox for transparent communication and teaching of risk literacy.
+Tags: risk, risk literacy, prevalence, sensitivity, specificity, false alarms, predictive value, PPV, NPV, SDT 
+License: No license yet.
