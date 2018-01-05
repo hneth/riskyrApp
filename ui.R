@@ -1,5 +1,5 @@
 ## ui.R
-## riskyRapp | R Shiny | spds, uni.kn | 2018 01 05 
+## riskyRapp | R Shiny | spds, uni.kn | 2018 01 05
 ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ # 
 
 # rm(list=ls()) # clean all.
@@ -17,6 +17,8 @@ library("tidyr")
 library("dplyr")
 library("ggplot2")
 library("vcd")
+library("colourpicker")
+
 
 ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ # 
 ## Initial environment:
@@ -74,6 +76,48 @@ logifySlider('log_slider2', sci = true)
 
 }
 
+## colors
+
+
+seeblau <- rgb(0, 169, 224, max = 255) # seeblau.4 (non-transparent)
+
+## from https://bootswatch.com/sandstone/ 
+
+col.sand.light = rgb(248, 245, 240, max = 255)
+col.sand.mid   = rgb(142, 140, 132, max = 255)
+col.sand.dark  = rgb(62, 63, 58, max = 255)
+
+
+col.grey.1 <- rgb(181, 179, 174, max = 255)
+col.grey.2 <- rgb(123, 121, 113, max = 255)
+col.grey.3 <- "grey25"
+col.grey.4 <- "grey10"
+
+col.green.1 <- rgb(184, 217, 137, max = 255)
+col.green.2 <- rgb(128, 177, 57, max = 255)
+
+col.red.1 <- rgb(230, 142, 140, max = 255)
+col.red.2 <- rgb(210, 52, 48, max = 255)
+
+col.blue.1 <- rgb(115, 200, 234, max = 255)
+col.blue.2 <- rgb(121, 149, 177, max = 255)
+col.blue.3 <- rgb(29, 149, 198, max = 255)
+col.blue.4 <- rgb(40, 74, 108, max = 255)
+
+col.orange.1 <- rgb(247, 169, 127, max = 255)
+col.orange.2 <- rgb(242, 100, 24, max = 255)
+
+
+
+## Define named colors for app display:
+col.ppv <- col.orange.2 # "orange3" # "firebrick" "red3"
+col.npv <- col.blue.3 # seeblau "steelblue3" # "green4" "gray50" "brown4" "chartreuse4"  
+sdt.colors <- setNames(c(col.green.2, col.red.2, col.green.1, col.red.1), 
+                       c("hi", "mi", "cr", "fa"))
+
+
+
+
 ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ # 
 ## Define user interface logic:
 
@@ -105,16 +149,12 @@ shinyUI(
                         sidebarPanel(
                           
                           # Input: Select all input values:
-                          textInput("name",
-                                    label = "Condition name:",
-                                    value = "Condition X"),
-                          
-                          br(), # add horizontal space
 
-                          tags$b("Population size:"),
-                          tags$br("(Use slider or enter number)"),
+                          h3("Please select inputs:"),
+                          helpText("(Use slider or enter number)"),
+                          br(),
                           sliderInput("N",
-                                      label = NULL,
+                                      label = "Population size:",
                                       value = 100,
                                       min = 0,
                                       max = 10^6,
@@ -127,10 +167,8 @@ shinyUI(
                                        max = 10^6,
                                        step = 10),
                           br(),
-                          tags$b("Prevalence:"),
-                          tags$br("(Use slider or enter number)"),
                           sliderInput("prev", 
-                                      label = NULL, sep = "",
+                                      label = "Prevalence:", sep = "",
                                       value = 0.15, 
                                       min = 0,
                                       max = 1,
@@ -142,10 +180,8 @@ shinyUI(
                                        max = 1,
                                        step = 10^-6),
                           br(),
-                          tags$b("Sensitivity:"),
-                          tags$br("(Use slider or enter number)"),
                           sliderInput("sens", 
-                                      label = NULL, sep = "",
+                                      label = "Sensitivity", sep = "",
                                       value = 0.85,
                                       min = 0,
                                       max = 1,
@@ -157,10 +193,8 @@ shinyUI(
                                        max = 1,
                                        step = 10^-6),
                           br(),
-                          tags$b("Specificity:"),
-                          tags$br("(Use slider or enter number)"),
                           sliderInput("spec", 
-                                      label = NULL, sep = "",
+                                      label = "Specificity", sep = "",
                                       value = 0.75,
                                       min = 0,
                                       max = 1, 
@@ -225,16 +259,24 @@ shinyUI(
                                       
                                       tabPanel("Stats",
                                                br(),
-                                               "This page will explain, define, and compute the current value some common metrics. ",
-                                               br(), br(), 
-                                               "Here is a first example: ",
-                                               br(), br(), 
-                                               uiOutput("PPV")
-                                               ),
+                                               withMathJax(includeMarkdown("www/statstab_riskyr.md")),
+                                               br(),
+                                               tableOutput("confusiontable1"),
+                                               br(),
+                                               withMathJax(includeMarkdown("www/statstab_riskyr_PPV1.md")),
+                                               uiOutput("PPV1"),
+                                               br(),
+                                               withMathJax(includeMarkdown("www/statstab_riskyr_PPV2.md")),
+                                               br(), 
+                                               uiOutput("PPV2")),
                                       
                                       tabPanel("Cases", 
                                                br(),
                                                "Individual cases:", 
+                                               br(), br(),
+                                               bsButton("sort", label = "Sort/Shuffle", value = FALSE, 
+                                                        icon = icon("random", lib = "glyphicon"),
+                                                        style = "default", type = "toggle"),
                                                br(), br(),
                                                conditionalPanel(condition = "input.dataselection != 1",
                                                                 "Source:",
@@ -262,7 +304,7 @@ shinyUI(
                                                br(), 
                                                paste0("Aggregated cases:"), 
                                                br(), br(),  
-                                               tableOutput("confusiontable"),
+                                               tableOutput("confusiontable2"),
                                                br(),
                                                paste0("The following mosaic plot shows the cell frequencies as area sizes:"), 
                                                br(),  br(), 
@@ -356,6 +398,129 @@ shinyUI(
                       icon = icon("home", lib = "glyphicon"),
                       includeMarkdown("about.md")
              ),
+             
+             #####
+             navbarMenu("4: Customize",
+                        icon = icon("wrench", lib = "glyphicon"), # or icon for "adjust
+                        
+                        # spacer
+                        "----",
+                        
+                        # Customize labels:
+                        tabPanel("Customize labels",
+                                 icon = icon("pencil", lib = "glyphicon"),
+                                 sidebarLayout(
+
+                                   # Sidebar panel for inputs:
+                                   sidebarPanel(
+                                     # Inputs for label customization:
+                                     h3("Use your own labels!"),
+                                     helpText("(Just enter values below)"),
+                                     br(),
+                                     textInput("target.population.lbl",
+                                               label = "Description of population:",
+                                               value = "Population description"),
+                                     textInput("scenario.txt",
+                                               label = "Description of scenario:",
+                                               value = "Describe the scenario in a paragraph here."),
+                                     br(),
+                                     textInput("condition.lbl",
+                                               label = "Condition name:",
+                                               value = "Current condition"),
+                                     textInput("cond.true.lbl",
+                                               label = "Condition true",
+                                               value = "Condition true"),
+                                     textInput("cond.false.lbl",
+                                               label = "Condition false",
+                                               value = "Condition false"),
+                                     br(),
+                                     textInput("decision.lbl",
+                                               label = "Decision",
+                                               value = "Diagnostic decision"),
+                                     textInput("dec.true.lbl",
+                                               label = "Decision positive",
+                                               value = "Decision positive"),
+                                     textInput("dec.false.lbl",
+                                               label = "Decision negative",
+                                               value = "Decision negative"),
+                                     br(),
+                                     textInput("sdt.hi.lbl",
+                                               label = "Hit",
+                                               value = "hit"),
+                                     textInput("sdt.mi.lbl",
+                                               label = "Miss",
+                                               value = "miss"),
+                                     textInput("sdt.fa.lbl",
+                                               label = "False alarm",
+                                               value = "false alarm"),
+                                     textInput("sdt.cr.lbl",
+                                               label = "Correct rejection",
+                                               value = "correct rejection"),
+                                     br(),
+                                     bsButton("applycustomlabel", label = "Customize!",
+                                              icon = icon("wrench", lib = "glyphicon"),
+                                              style = "default", type = "action"),
+                                     bsButton("resetcustomlabel", label = "Reset default",
+                                              icon = icon("refresh", lib = "glyphicon"),
+                                              style = "default", type = "action")
+                                   ),
+
+                                   #####
+                                   ## Main panel for displaying different aspects about risk:
+                                   mainPanel("Would be cool to have a sample here, e.g. a 
+                                             scenario generated from the inputs.")
+                                 )
+                        ),
+                        
+                        # spacer
+                        "----",
+                        # Customize colors:
+                        tabPanel("Customize colors",
+                                 icon = icon("adjust", lib = "glyphicon"),
+                                 sidebarPanel(
+                                   # Inputs for color customization:
+                                   h3("Choose your own colors!"),
+                                   helpText("(Just select colors below)"),
+                                   br(),
+                                   colourInput("color.hi", label = "Choose the color for hits",
+                                               value = sdt.colors["hi"], showColour = "background",
+                                               palette = "square", allowedCols = NULL),
+                                   colourInput("color.mi", label = "Choose the color for miss",
+                                               value = sdt.colors["mi"], showColour = "background",
+                                               palette = "square", allowedCols = NULL),
+                                   colourInput("color.fa", label = "Choose the color for false alarm",
+                                               value = sdt.colors["fa"], showColour = "background",
+                                               palette = "square", allowedCols = NULL),
+                                   colourInput("color.cr", label = "Choose the color for correct rejection",
+                                               value = sdt.colors["cr"], showColour = "background",
+                                               palette = "square", allowedCols = NULL),
+                                   br(),
+                                   colourInput("color.ppv", label = "Color for the positive predictive value (PPV)",
+                                               value = col.ppv , showColour = "background",
+                                               palette = "square", allowedCols = NULL),
+                                   colourInput("color.npv", label = "Color for the negative predictive value (NPV)",
+                                               value = col.npv, showColour = "background",
+                                               palette = "square", allowedCols = NULL),
+                                   br(),
+                                   bsButton("applycustomcolor", label = "Customize!",
+                                            icon = icon("wrench", lib = "glyphicon"),
+                                            style = "default", type = "action"),
+                                   bsButton("resetcustomcolor", label = "Reset default",
+                                            icon = icon("refresh", lib = "glyphicon"),
+                                            style = "default", type = "action")
+                                 ),
+                                 
+                                 #####
+                                 ## Main panel for displaying different aspects about risk:
+                                 mainPanel("Would be cool to have a sample here.",
+                                           "Mosaicplot (should be prettified) is a good start,",
+                                           "maybe we should add another plot for PPV/NPV",
+                                           plotOutput("samplemosaicplot"))
+                        ),
+                        
+                        # spacer
+                        "----"
+                        ),
              
              #####
              navbarMenu("Dropdown-Navigation",

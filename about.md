@@ -71,7 +71,7 @@ Agenda
 
 - Split current project into R package vs. Shiny app
 
-##### `riskyR` pck:
+##### 1. The `riskyR` pck:
 
 - pck: Restruture code accoding to [R packages](http://r-pkgs.had.co.nz/)
 - pck: Revise data structure into 
@@ -80,7 +80,7 @@ Agenda
     3. `pop` (df of 3 vectors)
 - pck: Add statistical function definitions as Markdown docs
 
-#### `riskyRapp` app:
+#### 2. The `riskyRapp` app:
 
 - app: Develop according to Dean Attali's [recommendations](https://deanattali.com/2015/04/21/r-package-shiny-app/)
 - app: Initial panel with 2 types of _inputs_:
