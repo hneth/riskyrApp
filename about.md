@@ -144,4 +144,4 @@ Representations:
 Contact
 -------
 
-Contact us at [http://spds.uni.kn](http://spds.uni-konstanz.de).
+In case of comments or questions, please contact us at [http://spds.uni.kn](http://spds.uni-konstanz.de). 
