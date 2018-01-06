@@ -126,8 +126,7 @@ datasets = read.csv2("./www/datasets_riskyr.csv", stringsAsFactors = FALSE)
   col.npv <- col.blue.3 # seeblau "steelblue3" # "green4" "gray50" "brown4" "chartreuse4"  
   sdt.colors <- setNames(c(col.green.2, col.red.2, col.green.1, col.red.1), 
                          c("hi", "mi", "cr", "fa"))
-  
-  
+
   ## Collect all customizable values in reactive list
   cus <- reactiveValues(
     target.population.lbl = "population description",
@@ -149,7 +148,7 @@ datasets = read.csv2("./www/datasets_riskyr.csv", stringsAsFactors = FALSE)
     color.hi = col.green.2,
     color.mi = col.red.2,
     color.fa = col.green.1,
-    color.mi = col.red.1,
+    color.cr = col.red.1,
     color.ppv = col.orange.2,
     color.npv = col.blue.3
   )
