@@ -1,5 +1,5 @@
 ## ui.R
-## riskyRapp | R Shiny | spds, uni.kn | 2018 01 05
+## riskyr | R Shiny | spds, uni.kn | 2018 01 08
 ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ # 
 
 # rm(list=ls()) # clean all.
@@ -34,7 +34,8 @@ e1 <- list("name" = "Demo",  # name (e.g., HIV, mammography, ...)
 env <- e1 # from current environment
 
 ## Import ready-made and worked out example data:
-datasets <- read.csv2("./www/datasets_riskyr.csv", stringsAsFactors = FALSE)
+datasets <- read.csv2("./www/examples_riskyR.csv", stringsAsFactors = FALSE)
+            # WAS: read.csv2("./www/datasets_riskyr.csv", stringsAsFactors = FALSE)
             # WAS: read.csv("./www/riskyR_datasets.csv", stringsAsFactors = FALSE)
 
 ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ # 
@@ -144,7 +145,7 @@ shinyUI(
                       
                       #####
                       sidebarLayout(
-                        
+                        #####
                         # Sidebar panel for inputs:
                         sidebarPanel(
                           
@@ -243,7 +244,8 @@ shinyUI(
                           
                           ## Tabset with raw data table, icon array, nf tree, confusion table, and PV graphs: 
                           tabsetPanel(type = "tabs",
-                                      
+                                      # Intro
+                                      #####
                                       tabPanel("Intro",
                                                br(),
                                                "This is just a quick page for displaying rendered text based on inputs. ",
@@ -256,20 +258,31 @@ shinyUI(
                                                textOutput("sens"),
                                                textOutput("spec")
                                                ),
-                                      
+                                      # Stats
+                                      #####
                                       tabPanel("Stats",
                                                br(),
                                                withMathJax(includeMarkdown("www/statstab_riskyr.md")),
                                                br(),
                                                tableOutput("confusiontable1"),
                                                br(),
+                                               withMathJax(includeMarkdown("www/statstab_riskyr_ACC.md")),
+                                               uiOutput("ACC"),
+                                               br(), br(),
                                                withMathJax(includeMarkdown("www/statstab_riskyr_PPV1.md")),
                                                uiOutput("PPV1"),
-                                               br(),
                                                withMathJax(includeMarkdown("www/statstab_riskyr_PPV2.md")),
-                                               br(), 
-                                               uiOutput("PPV2")),
-                                      
+                                               uiOutput("PPV2"),
+                                               br(), br(),
+                                               withMathJax(includeMarkdown("www/statstab_riskyr_NPV1.md")),
+                                               uiOutput("NPV1"),
+                                               withMathJax(includeMarkdown("www/statstab_riskyr_NPV2.md")),
+                                               uiOutput("NPV2"),
+                                               br(), br(),
+                                               withMathJax(includeMarkdown("www/statstab_riskyr_FORFDR.md"))
+                                               ),
+                                      # Cases
+                                      #####
                                       tabPanel("Cases", 
                                                br(),
                                                "Individual cases:", 
@@ -280,18 +293,19 @@ shinyUI(
                                                br(), br(),
                                                conditionalPanel(condition = "input.dataselection != 1",
                                                                 "Source:",
-                                                                verbatimTextOutput("sourceOutput")
-                                               ),
+                                                                verbatimTextOutput("sourceOutput")),
                                                DT::dataTableOutput("rawdatatable"),
                                                br()
                                                ),
-                                      
+                                      # Icons
+                                      #####
                                       tabPanel("Icons", 
                                                br(), 
                                                paste0("Icon array:"), 
                                                br(), br()
                                                ),
-
+                                      # Tree
+                                      #####
                                       tabPanel("Tree", 
                                                br(), 
                                                paste0("Tree of natural frequencies:"), 
@@ -299,7 +313,8 @@ shinyUI(
                                                plotOutput("nftree"), 
                                                br()
                                                ),
-                                      
+                                      # Table
+                                      #####
                                       tabPanel("Table", 
                                                br(), 
                                                paste0("Aggregated cases:"), 
@@ -311,7 +326,8 @@ shinyUI(
                                                plotOutput("mosaicplot"),
                                                br()
                                                ),
-
+                                      # PV curves
+                                      #####
                                       tabPanel("PV curves", 
                                                br(),
                                                paste0("Predictive values (PPV/NPV) by prevalance:"), br(), br(),
@@ -320,36 +336,36 @@ shinyUI(
                                                # paste0("PPV = ", data()$PPV, ", NPV = ", data()$NPV), 
                                                # print(data()$PPV),
                                                # ERROR: object of type 'closure' is not subsettable ???
-                                               checkboxInput("boxPVprev", label = "Show current prevalence in plot", value = TRUE), 
-                                               checkboxInput("boxPVpoints1", label = "Show current PPV/NPV in plot", value = TRUE),
-                                               # br(),
-                                               checkboxInput("boxPVlog", label = "Show prevalence on logarithmic scale", value = FALSE), 
-                                               br() 
+                                               wellPanel(
+                                                 fluidRow(
+                                                   column(4, checkboxInput("boxPVprev", label = "Show current prevalence in plot", value = TRUE)),
+                                                   column(4, checkboxInput("boxPVpoints1", label = "Show current PPV/NPV in plot", value = TRUE)),
+                                                   column(4, checkboxInput("boxPVlog", label = "Show prevalence on logarithmic scale", value = FALSE))
+                                                   )
+                                                 )
                                                ),
-                                      
+                                      # PV cubes
+                                      #####
                                       tabPanel("PV cubes", 
                                                br(),
                                                paste0("Predictive values (PPV/NPV) by sensitivity and specificity:"), br(), br(),
                                                plotOutput("PVplanes"), 
                                                br(),
                                                # paste0("PPV = ", data$PPV, ", NPV = ", data$NPV), 
-                                               # ERROR: object of type 'closure' is not subsettable ???  
-                                               # br(),
-                                               checkboxInput("boxPVpoints2", label = "Show current PPV/NPV in plots", value = TRUE), 
-                                               # br(), 
-                                               "Change perspective by rotating plots:", 
+                                               # ERROR: object of type 'closure' is not subsettable ???
                                                br(),
-                                               sliderInput("theta", 
-                                                           "Horizontal viewing angle:",
-                                                           value = -45,
-                                                           min   = -90,
-                                                           max   = +90), 
-                                               # br(), 
-                                               sliderInput("phi", 
-                                                           "Vertical viewing angle:",
-                                                           value = 0,
-                                                           min =   0,
-                                                           max =  90), 
+                                               wellPanel(
+                                                 # br(),
+                                                 checkboxInput("boxPVpoints2", label = "Show current PPV/NPV in plots", value = TRUE), 
+                                                 br(),
+                                                 fluidRow(
+                                                   column(6, sliderInput("theta", "Horizontal viewing angle:", 
+                                                                         value = -45, min = -90, max = +90)
+                                                          ),
+                                                   column(6, sliderInput("phi", "Vertical viewing angle:",
+                                                                      value = 0, min = 0, max =  90))
+                                                   )
+                                               ),
                                                # br(), 
                                                # "Perspective effects:",
                                                # br(),
@@ -407,6 +423,7 @@ shinyUI(
                         "----",
                         
                         # Customize labels:
+                        #####
                         tabPanel("Customize labels",
                                  icon = icon("pencil", lib = "glyphicon"),
                                  sidebarLayout(
@@ -475,8 +492,10 @@ shinyUI(
                         # spacer
                         "----",
                         # Customize colors:
+                        #####
                         tabPanel("Customize colors",
                                  icon = icon("adjust", lib = "glyphicon"),
+                                 #####
                                  sidebarPanel(
                                    # Inputs for color customization:
                                    h3("Choose your own colors!"),
@@ -512,10 +531,11 @@ shinyUI(
                                  
                                  #####
                                  ## Main panel for displaying different aspects about risk:
-                                 mainPanel("Would be cool to have a sample here.",
-                                           "Mosaicplot (should be prettified) is a good start,",
-                                           "maybe we should add another plot for PPV/NPV",
-                                           plotOutput("samplemosaicplot"))
+                                 mainPanel(h3("Here are simplified preview plots of your colors:"),
+                                           "Click the 'Customize' button to update your color selection.",
+                                           plotOutput("sampleplot"),
+                                           plotOutput("sampleplotcurves")
+                                           )
                         ),
                         
                         # spacer

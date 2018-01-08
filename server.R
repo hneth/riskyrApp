@@ -1,5 +1,5 @@
 ## server.R
-## riskyRapp | R Shiny | spds, uni.kn | 2018 01 05
+## riskyR | R Shiny | spds, uni.kn | 2018 01 08
 ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ # 
 ## Clean up:
 
@@ -13,8 +13,10 @@
 # setwd("~/Desktop/stuff/Dropbox/GitHub/riskyr/_app/") # set to current directory
 
 ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ # 
-## Dependencies:
 
+
+## Dependencies:
+#####
 library("shiny")
 library("shinyBS")
 library("markdown")
@@ -27,39 +29,36 @@ library("ggplot2")
 library("vcd")
 library("colourpicker")
 
+
 ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ # 
 ## Import ready-made and worked out example data 
 ## (in both ui.R and server.R):
 
-datasets = read.csv2("./www/datasets_riskyr.csv", stringsAsFactors = FALSE)
+datasets <- read.csv2("./www/examples_riskyR.csv", stringsAsFactors = FALSE)
+          # read.csv2("./www/datasets_riskyr.csv", stringsAsFactors = FALSE)
           # read.csv("./www/riskyR_datasets.csv", stringsAsFactors = FALSE)
 
 ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 ## Customizations
 
-## A. Text labels:
+## Sensible set of defaults
+
+# take defaults from example datasets stored in www folder
+default.parameters <- setNames(datasets[1, 2:5], names(datasets)[2:5])
+default.terminology <- setNames(datasets[1, 7:18], names(datasets)[7:18])
+# define default colors
+default.colors <- c(color.hi = rgb(128, 177, 57, max = 255), # col.green.2
+                    color.mi = rgb(210, 52, 48, max = 255), # col.red.2
+                    color.fa = rgb(184, 217, 137, max = 255), # col.green.1
+                    color.cr = rgb(230, 142, 140, max = 255), # col.red.1
+                    color.ppv = rgb(242, 100, 24, max = 255), # col.orange.2
+                    color.npv = rgb(29, 149, 198, max = 255) # col.blue.3
+                    )
+  
+  
 
 {
-  ## Define default text labels with generic terminology:
-  terminology <- list(
-    target.population.lbl = "population description",
-    scenario.txt = "Describe the scenario in a paragraph here",
-    # (a) Condition
-    condition.lbl = "Current condition",
-    cond.true.lbl = "Condition true",   # "has condition", "is affected"
-    cond.false.lbl = "Condition false", # "does not have condition", "is unaffected"
-    # (b) Decisions:
-    decision.lbl = "Diagnostic decision",
-    dec.true.lbl = "Decision positive",  # "has condition", "is affected"
-    dec.false.lbl = "Decision negative", # "does not have condition", "is unaffected"
-    # (c) sdt cases (combinations):
-    sdt.hi.lbl = "hit",   # "has condition and is detected as such",     p(dec true  | cond true)
-    sdt.mi.lbl = "miss",  # "has condition and is NOT detected as such", p(dec false | cond true)
-    sdt.fa.lbl = "false alarm", # ...
-    sdt.cr.lbl = "correct rejection"
-  )
-    
-  
+
   
   
   ## (and make user-customizable later):
@@ -122,36 +121,16 @@ datasets = read.csv2("./www/datasets_riskyr.csv", stringsAsFactors = FALSE)
   }
   
   ## Define six default colors for app display:
+  
+  # THESE COLORS ARE STILL USED BY SEVERAL REPRESENATIONS!!!
+  # CHANGE FUNCTION TO TAKE REACTIVE VALUES FROM cus list
   col.ppv <- col.orange.2 # "orange3" # "firebrick" "red3"
-  col.npv <- col.blue.3 # seeblau "steelblue3" # "green4" "gray50" "brown4" "chartreuse4"  
-  sdt.colors <- setNames(c(col.green.2, col.red.2, col.green.1, col.red.1), 
+  col.npv <- col.blue.3 # seeblau "steelblue3" # "green4" "gray50" "brown4" "chartreuse4"
+  sdt.colors <- setNames(c(col.green.2, col.red.2, col.green.1, col.red.1),
                          c("hi", "mi", "cr", "fa"))
 
-  ## Collect all customizable values in reactive list
-  cus <- reactiveValues(
-    target.population.lbl = "population description",
-    scenario.txt = "Describe the scenario in a paragraph here.",
-    # (a) Condition
-    condition.lbl = "Current condition",
-    cond.true.lbl = "Condition true",   # "has condition", "is affected"
-    cond.false.lbl = "Condition false", # "does not have condition", "is unaffected"
-    # (b) Decisions:
-    decision.lbl = "Diagnostic decision",
-    dec.true.lbl = "Decision positive",  # "has condition", "is affected"
-    dec.false.lbl = "Decision negative", # "does not have condition", "is unaffected"
-    # (c) sdt cases (combinations):
-    sdt.hi.lbl = "hit",   # "has condition and is detected as such",     p(dec true  | cond true)
-    sdt.mi.lbl = "miss",  # "has condition and is NOT detected as such", p(dec false | cond true)
-    sdt.fa.lbl = "false alarm", # ...
-    sdt.cr.lbl = "correct rejection", # ... 
-    # COlors
-    color.hi = col.green.2,
-    color.mi = col.red.2,
-    color.fa = col.green.1,
-    color.cr = col.red.1,
-    color.ppv = col.orange.2,
-    color.npv = col.blue.3
-  )
+
+
   
   ## ggplot themes:
   {
@@ -574,6 +553,35 @@ plot.PV.planes <- function(env, show.PVpoints = TRUE,
 ## Define server logic:
 
 shinyServer(function(input, output, session){
+  
+  ## Collect all customizable values in reactive list
+  # TO DO: Change on UI side as well
+  cus <- reactiveValues(
+    # initalize with defaults defined above
+    # headlines
+    target.population.lbl = default.terminology[names(default.terminology) == "target.population.lbl"],
+    scenario.txt = default.terminology[names(default.terminology) == "scenario.txt"],
+    # (a) Condition
+    condition.lbl = default.terminology[names(default.terminology) == "condition.lbl"],
+    cond.true.lbl = default.terminology[names(default.terminology) == "cond.true.lbl"],
+    cond.false.lbl = default.terminology[names(default.terminology) == "cond.false.lbl"],
+    # (b) Decisions:
+    decision.lbl = default.terminology[names(default.terminology) == "decision.lbl"],
+    dec.true.lbl = default.terminology[names(default.terminology) == "dec.true.lbl"],
+    dec.false.lbl = default.terminology[names(default.terminology) == "dec.false.lbl"],
+    # (c) sdt cases (combinations):
+    sdt.hi.lbl = default.terminology[names(default.terminology) == "sdt.hi.lbl"],
+    sdt.mi.lbl = default.terminology[names(default.terminology) == "sdt.mi.lbl"],
+    sdt.fa.lbl = default.terminology[names(default.terminology) == "sdt.fa.lbl"],
+    sdt.cr.lbl = default.terminology[names(default.terminology) == "sdt.cr.lbl"],    
+    # colors
+    color.hi = default.colors["color.hi"],
+    color.mi = default.colors["color.mi"],
+    color.fa = default.colors["color.fa"],
+    color.cr = default.colors["color.cr"],
+    color.ppv = default.colors["color.ppv"],
+    color.npv = default.colors["color.npv"]
+  )
 
   ## Define a common data structure:
   ## Generate 3 data structures as lists of reactive elements:
@@ -581,7 +589,7 @@ shinyServer(function(input, output, session){
   data <- reactiveValues(data = NULL) # 2. list of derived parameters (list of only scalars/atomic vectors)
   # population <- reactiveValues(population = NULL) # 3. current population (as df of 3 vectors)
   
-  
+  ##### 
   ## Couple numeric and slider inputs:
   observeEvent(input$numN,
                {updateSliderInput(session, "N", value = input$numN)})
@@ -603,6 +611,7 @@ shinyServer(function(input, output, session){
   observeEvent(input$spec,
                {updateNumericInput(session, "numspec", value = input$spec)})
   
+  #####
   ## Observe inputs and generate data used in outputs:
   observeEvent({
     input$name   # name of current environment 
@@ -650,8 +659,9 @@ shinyServer(function(input, output, session){
     ## (4) Coerce 3 vectors into ordered factors:
     data$truth <- factor(data$truth, 
                          levels = c(TRUE, FALSE),
-                         labels = c(cond.true.lbl, cond.false.lbl), # explicit labels
+                         labels = c(cus$cond.true.lbl, cus$cond.false.lbl), # explicit labels
                          ordered = TRUE)
+    
     
     data$decision <- factor(data$decision, 
                             levels = c(TRUE, FALSE),
@@ -688,16 +698,9 @@ shinyServer(function(input, output, session){
       output$sourceOutput <- renderText(datasets[input$dataselection, "source"]) }
   }, ignoreInit = TRUE)
   
-  ## PVplot panel: Checkbox for linear vs. logarithmic scale: 
-  # observeEvent(input$checkboxPVlog, {
-  #   PV.log <- FALSE # initialize
-  #  if (!input$checkboxPVlog) {PV.log <- FALSE} # ERROR:
-  #  if (input$checkboxPVlog)  {PV.log <- TRUE}  # Does NOT seem to work!
-  #  }
-  #  )
-  
+
+  #####
   ## Outputs:
-  
   ## (1) Intro tab:
   ## get all current inputs within text statements as outputs
   output$N <- renderText({ paste0("1. Population size: We are considering a population of ", input$N, " individuals. ") })
@@ -707,42 +710,46 @@ shinyServer(function(input, output, session){
   
   
   ## (2) Stats tab:
+  output$ACC <- renderUI({
+    withMathJax(paste0("$$ ACC = \\frac{", data$n.hi, " + ", data$n.mi, "}{", env$N, "} = ", round((data$n.hi + data$n.mi)/env$N, 4), "$$"))
+  })
+  
   output$PPV1 <- renderUI({
-    withMathJax(paste0(
-      "$$ PPV = \\frac{", data$n.hi, "}{", data$dec.pos, "} = 
-      \\frac{", data$n.hi, "}{", data$n.hi, " + ", data$n.fa, "} = 
-      ", round(data$PPV, 4), "$$"
-    ))}
-    )
+    withMathJax(paste0("$$ PPV = \\frac{", data$n.hi, "}{", data$dec.pos, "} = \\frac{", data$n.hi, "}{", data$n.hi, " + ", data$n.fa, "}= ", 
+                       round(data$PPV, 4), "$$"))
+  })
 
   output$PPV2 <- renderUI({
-    withMathJax(paste0(
-      "$$PPV = \\frac{", input$sens, " \\times ", input$prev,"}
-      {", input$sens, " \\times ", input$prev," + 
-      (1 - ", input$spec,") \\times (1 - ", input$prev,")} = ", round(data$PPV, 4), "$$"
-    ))}
-    )
+    withMathJax(paste0("$$PPV = \\frac{", input$sens, " \\times ", input$prev,"}{", input$sens, " \\times ", 
+                       input$prev," + (1 - ", input$spec,") \\times (1 - ", input$prev,")} = ", round(data$PPV, 4), "$$"))
+  })
+  
+  output$NPV1 <- renderUI({
+    withMathJax(paste0("$$ NPV = \\frac{", data$n.cr, "}{", data$dec.neg, "} = \\frac{", data$n.cr, "}{", data$n.cr, " + ", data$n.mi, "}= ", 
+                       round(data$NPV, 4), "$$"))
+  })
+  
+  output$NPV2 <- renderUI({
+    withMathJax(paste0("$$NPV = \\frac{", input$spec, " \\times (1 - ", input$prev,")}{(1 - ", input$sens, ") \\times ", 
+                       input$prev," + ", input$spec," \\times (1 - ", input$prev,")} = ", round(data$NPV, 4), "$$"))
+  })
   
   
   ## (a) Raw data table: 
   output$rawdatatable <- DT::renderDataTable(DT::datatable({
-    if(input$sort == FALSE) {
-      display <- data$population[sample(rownames(data$population)), ]}
-    else
-      display <- data$population[sort(as.numeric(rownames(data$population))), ]
-    display 
-  }) %>%
-    formatStyle("sdt", target = "row",
-                backgroundColor = styleEqual(levels = c("hit", "miss", "false alarm", "correct rejection"),
-                                             values = sdt.colors[c("hi", "mi", "fa", "cr")]
-                                             ))
+    if(input$sort == FALSE) {display <- data$population[sample(rownames(data$population)), ]}
+    else display <- data$population[sort(as.numeric(rownames(data$population))), ]
+    display
+    }) %>%
+    formatStyle("sdt", target = "row", backgroundColor = styleEqual(levels = c("hit", "miss", "false alarm", "correct rejection"),
+                                                                    values = c(cus$color.hi, cus$color.mi, cus$color.fa, cus$color.cr)))
   )
   
   ## (b) Icon array:
   ## ... 
   
   ## (c) 2x2 confusion table (ordered by rows/decisions):
-  # To be precise, we need to confusion tables (at table and stats tab)
+  # To be precise, we need two confusion tables (at table and stats tab)
   # We create a reactive table and then render it twice (shiny doesn't allow identical output elements)
   
   confusiontable <- reactive({matrix(data = c(data$n.hi, data$n.fa, data$dec.pos, 
@@ -755,8 +762,8 @@ shinyServer(function(input, output, session){
                                                      c(cond.true.lbl,  # "Condition true:", 
                                                        cond.false.lbl, # "Condition false:", 
                                                        "Decision sums:")
-                                     ))
-    
+                                                     )
+                                     )
   })
   
   output$confusiontable1 <- renderTable(confusiontable(), bordered = TRUE, hover = TRUE,  
@@ -767,13 +774,14 @@ shinyServer(function(input, output, session){
   
   
   ## (d) Mosaic plot:
-  output$mosaicplot <- renderPlot( { 
+  output$mosaicplot <- renderPlot({ 
     mosaic(Truth ~ Decision, data = data$population,
            shade=TRUE, colorize = TRUE, 
-           gp = gpar(fill = matrix(c(cus$color.hi, cus$color.mi, cus$color.fa, cus$color.cr),    # data = sdt.colors[c("hi", "mi", "fa", "cr")], 
-                                    nrow = 2, ncol = 2, byrow = FALSE)),
+           gp = gpar(fill = matrix(data = c(cus$color.hi, cus$color.mi, cus$color.fa, cus$color.cr),
+                                   nrow = 2, ncol = 2, byrow = FALSE)),
            main_gp = gpar(fontsize = 12, fontface = "bold"),
-           main = paste0(env$name, "\n(N = ", env$N, ")"))})
+           main = paste0(env$name, "\n(N = ", env$N, ")"))
+  })
   
   ## (e) Tree with natural frequencies:
   output$nftree <- renderPlot(plot.nftree(env, # use current environment parameters     
@@ -805,90 +813,60 @@ shinyServer(function(input, output, session){
   
   
   #####
-  ## Customize
-  
-  # ## Collect all customizable values in reactive list
-  # cus <- reactiveValues(
-  #   target.population.lbl = "population description",
-  #   scenario.txt = "Describe the scenario in a paragraph here.",
-  #   # (a) Condition
-  #   condition.lbl = "Current condition",
-  #   cond.true.lbl = "Condition true",   # "has condition", "is affected"
-  #   cond.false.lbl = "Condition false", # "does not have condition", "is unaffected"
-  #   # (b) Decisions:
-  #   decision.lbl = "Diagnostic decision",
-  #   dec.true.lbl = "Decision positive",  # "has condition", "is affected"
-  #   dec.false.lbl = "Decision negative", # "does not have condition", "is unaffected"
-  #   # (c) sdt cases (combinations):
-  #   sdt.hi.lbl = "hit",   # "has condition and is detected as such",     p(dec true  | cond true)
-  #   sdt.mi.lbl = "miss",  # "has condition and is NOT detected as such", p(dec false | cond true)
-  #   sdt.fa.lbl = "false alarm", # ...
-  #   sdt.cr.lbl = "correct rejection", # ... 
-  #   # COlors
-  #   color.hi = sdt.colors["hi"],
-  #   color.mi = sdt.colors["mi"],
-  #   color.fa = sdt.colors["fa"],
-  #   color.mi = sdt.colors["cr"],
-  #   color.ppv = col.ppv,
-  #   color.npv = col.npv
-  #   )
-    
-
-  
+  ## Customization tab
   ## Customize labels
   
   # Apply label selection
   observeEvent(input$applycustomlabel, {
-    cus$target.population.lbl <- isolate({ input$target.population.lbl}) 
-    cus$scenario.txt <- isolate({ input$scenario.txt})
+    cus$target.population.lbl <- input$target.population.lbl
+    cus$scenario.txt <- input$scenario.txt
     # (a) Condition
-    cus$condition.lbl <- isolate({ input$condition.lbl}) 
-    cus$cond.true.lbl <- isolate({ input$cond.true.lbl}) 
-    cus$cond.false.lbl <- isolate({ input$cond.false.lbl}) 
+    cus$condition.lbl <- input$condition.lbl 
+    cus$cond.true.lbl <- input$cond.true.lbl 
+    cus$cond.false.lbl <- input$cond.false.lbl 
     # (b) Decisions:
-    cus$decision.lbl <- isolate({ input$decision.lbl}) 
-    cus$dec.true.lbl <- isolate({ input$dec.true.lbl}) 
-    cus$dec.false.lbl <- isolate({ input$dec.false.lbl}) 
+    cus$decision.lbl <- input$decision.lbl 
+    cus$dec.true.lbl <- input$dec.true.lbl 
+    cus$dec.false.lbl <- input$dec.false.lbl 
     # (c) sdt cases (combinations):
-    cus$sdt.hi.lbl <- isolate({ input$sdt.hi.lbl}) 
-    cus$sdt.mi.lbl <- isolate({ input$sdt.mi.lbl}) 
-    cus$sdt.fa.lbl <- isolate({ input$sdt.fa.lbl}) 
-    cus$sdt.cr.lbl <- isolate({ input$sdt.cr.lbl}) 
-
+    cus$sdt.hi.lbl <- input$sdt.hi.lbl 
+    cus$sdt.mi.lbl <- input$sdt.mi.lbl 
+    cus$sdt.fa.lbl <- input$sdt.fa.lbl 
+    cus$sdt.cr.lbl <- input$sdt.cr.lbl 
   })
   
   # Reset labels to default
   observeEvent(input$resetcustomlabel, {
-    cus$target.population.lbl <- terminology[names(terminology) == "target.population.lbl"]
-    cus$scenario.txt <- terminology[names(terminology) == "scenario.txt"]
+    cus$target.population.lbl <- default.terminology[names(default.terminology) == "target.population.lbl"]
+    cus$scenario.txt <- default.terminology[names(default.terminology) == "scenario.txt"]
     # (a) Condition
-    cus$condition.lbl <- terminology[names(terminology) == "condition.lbl"]
-    cus$cond.true.lbl <- terminology[names(terminology) == "cond.true.lbl"]
-    cus$cond.false.lbl <- terminology[names(terminology) == "cond.false.lbl"]
+    cus$condition.lbl <- default.terminology[names(default.terminology) == "condition.lbl"]
+    cus$cond.true.lbl <- default.terminology[names(default.terminology) == "cond.true.lbl"]
+    cus$cond.false.lbl <- default.terminology[names(default.terminology) == "cond.false.lbl"]
     # (b) Decisions:
-    cus$decision.lbl <- terminology[names(terminology) == "decision.lbl"]
-    cus$dec.true.lbl <- terminology[names(terminology) == "dec.true.lbl"]
-    cus$dec.false.lbl <- terminology[names(terminology) == "dec.false.lbl"]
+    cus$decision.lbl <- default.terminology[names(default.terminology) == "decision.lbl"]
+    cus$dec.true.lbl <- default.terminology[names(default.terminology) == "dec.true.lbl"]
+    cus$dec.false.lbl <- default.terminology[names(default.terminology) == "dec.false.lbl"]
     # (c) sdt cases (combinations):
-    cus$sdt.hi.lbl <- terminology[names(terminology) == "sdt.hi.lbl"]
-    cus$sdt.mi.lbl <- terminology[names(terminology) == "sdt.mi.lbl"]
-    cus$sdt.fa.lbl <- terminology[names(terminology) == "sdt.fa.lbl"]
-    cus$sdt.cr.lbl <- terminology[names(terminology) == "sdt.cr.lbl"]
-    updateTextInput(session, "target.population.lbl", value = terminology[["target.population.lbl"]])
-    updateTextInput(session, "scenario.txt", value = terminology[["scenario.txt"]])
+    cus$sdt.hi.lbl <- default.terminology[names(default.terminology) == "sdt.hi.lbl"]
+    cus$sdt.mi.lbl <- default.terminology[names(default.terminology) == "sdt.mi.lbl"]
+    cus$sdt.fa.lbl <- default.terminology[names(default.terminology) == "sdt.fa.lbl"]
+    cus$sdt.cr.lbl <- default.terminology[names(default.terminology) == "sdt.cr.lbl"]
+    updateTextInput(session, "target.population.lbl", value = default.terminology[["target.population.lbl"]])
+    updateTextInput(session, "scenario.txt", value = default.terminology[["scenario.txt"]])
     # (a) Condition
-    updateTextInput(session, "condition.lbl", value = terminology[["condition.lbl"]])
-    updateTextInput(session, "cond.true.lbl", value = terminology[["cond.true.lbl"]])
-    updateTextInput(session, "cond.false.lbl", value = terminology[["cond.false.lbl"]])
+    updateTextInput(session, "condition.lbl", value = default.terminology[["condition.lbl"]])
+    updateTextInput(session, "cond.true.lbl", value = default.terminology[["cond.true.lbl"]])
+    updateTextInput(session, "cond.false.lbl", value = default.terminology[["cond.false.lbl"]])
     # (b) Decisions:
-    updateTextInput(session, "decision.lbl", value = terminology[["decision.lbl"]])
-    updateTextInput(session, "dec.true.lbl", value = terminology[["dec.true.lbl"]])
-    updateTextInput(session, "dec.false.lbl", value = terminology[["dec.false.lbl"]])
+    updateTextInput(session, "decision.lbl", value = default.terminology[["decision.lbl"]])
+    updateTextInput(session, "dec.true.lbl", value = default.terminology[["dec.true.lbl"]])
+    updateTextInput(session, "dec.false.lbl", value = default.terminology[["dec.false.lbl"]])
     # (c) sdt cases (combinations):
-    updateTextInput(session, "sdt.hi.lbl", value = terminology[["sdt.hi.lbl"]])
-    updateTextInput(session, "sdt.mi.lbl", value = terminology[["sdt.mi.lbl"]])
-    updateTextInput(session, "sdt.fa.lbl", value = terminology[["sdt.fa.lbl"]])
-    updateTextInput(session, "sdt.cr.lbl", value = terminology[["sdt.cr.lbl"]])
+    updateTextInput(session, "sdt.hi.lbl", value = default.terminology[["sdt.hi.lbl"]])
+    updateTextInput(session, "sdt.mi.lbl", value = default.terminology[["sdt.mi.lbl"]])
+    updateTextInput(session, "sdt.fa.lbl", value = default.terminology[["sdt.fa.lbl"]])
+    updateTextInput(session, "sdt.cr.lbl", value = default.terminology[["sdt.cr.lbl"]])
     
   })
   
@@ -897,38 +875,58 @@ shinyServer(function(input, output, session){
 
   # Apply color selection
   observeEvent(input$applycustomcolor, {
-    cus$color.hi <- isolate({input$color.hi})
-    cus$color.mi <- isolate({input$color.mi})
-    cus$color.fa <- isolate({input$color.fa})
-    cus$color.cr <- isolate({input$color.cr})
-    cus$color.ppv <- isolate({input$color.ppv})
-    cus$color.npv <- isolate({input$color.npv})
+    cus$color.hi <- input$color.hi
+    cus$color.mi <- input$color.mi
+    cus$color.fa <- input$color.fa
+    cus$color.cr <- input$color.cr
+    cus$color.ppv <- input$color.ppv
+    cus$color.npv <- input$color.npv
+  })
+
+  # Simplified display of sdt states
+  output$sampleplot <- renderPlot({
+    par(pty="s")
+    plot(c(0,2), c(0,2), type="n", xaxt='n', yaxt='n', ann=FALSE)
+    rect(xleft = c(0, 1, 0, 1), ybottom = c(0, 0, 1, 1), 
+         xright = c(1, 2, 1, 2), ytop = c(1, 1, 2, 2),
+         col = c(cus$color.mi, cus$color.cr, cus$color.hi, cus$color.fa))
+    text(x = c(0.5, 1.5, 0.5, 1.5), y = c(1.5, 1.5, 0.5, 0.5), col = "black",
+         labels = c("hit", "false alarm", "miss", "correct rejection"), cex = 1.1)
   })
   
-  output$samplemosaicplot <- renderPlot( { 
-    mosaic(matrix(data = c(13, 21, 2, 64), nrow = 2, ncol = 2, byrow = TRUE),
-           shade=TRUE, colorize = TRUE, 
-           gp = gpar(fill = matrix(data = c(cus$color.hi, cus$color.mi, cus$color.fa, cus$color.cr),
-                                   nrow = 2, ncol = 2, byrow = FALSE),
-           main_gp = gpar(fontsize = 12, fontface = "bold"),
-           main = "This is what the colors will look like"))
-    })
+  # Simplified plot with PPV and NPV curves
+  output$sampleplotcurves <- renderPlot({
+    par(pty="s")
+    plot(c(0,1), c(0,1), type= "n", xaxt='n', yaxt='n', ann=FALSE)
+    # plot  simplified PPV curve
+    curve((x * 0.85)/((x * 0.85) +  (1-x)*0.25), from = 0, to = 1, n = 1000,
+          lwd = 3, col = cus$color.ppv, add = TRUE)
+    # plot simplified NPV curve
+    curve(((1-x)*0.75)/(((1-x)*0.75) + (x * 0.15)), from = 0, to = 1, n = 1000, 
+          add = TRUE, lwd = 3, col = cus$color.npv)
+    # legend
+    legend("bottom", lwd = c(3, 3), bty = "n", legend = c("PPV", "NPV"),
+           col = c(cus$color.ppv, cus$color.npv))
+  })
+
   
   # Reset colors to default
   observeEvent(input$resetcustomcolor, {
-               cus$color.hi <- sdt.colors["hi"]
-               cus$color.mi <- sdt.colors["mi"]
-               cus$color.fa <- sdt.colors["fa"]
-               cus$color.cr <- sdt.colors["cr"]
-               cus$color.ppv <- col.ppv
-               cus$color.npv <- col.npv
-               updateColourInput(session, "color.hi", value = as.character(sdt.colors["hi"]))
-               updateColourInput(session, "color.mi", value = as.character(sdt.colors["mi"]))
-               updateColourInput(session, "color.fa", value = as.character(sdt.colors["fa"]))
-               updateColourInput(session, "color.cr", value = as.character(sdt.colors["cr"]))
-               updateColourInput(session, "color.ppv", value = col.ppv)
-               updateColourInput(session, "color.npv", value = col.npv)
-               })
+    # reset colors in background
+    cus$color.hi <- default.colors["color.hi"]
+    cus$color.mi <- default.colors["color.mi"]
+    cus$color.fa <- default.colors["color.fa"]
+    cus$color.cr <- default.colors["color.cr"]
+    cus$color.ppv <- default.colors["color.ppv"]
+    cus$color.npv <- default.colors["color.npv"]
+    # reset colors on colorpickers
+    updateColourInput(session, "color.hi", value = as.character(default.colors["color.hi"]))
+    updateColourInput(session, "color.mi", value = as.character(default.colors["color.mi"]))
+    updateColourInput(session, "color.fa", value = as.character(default.colors["color.fa"]))
+    updateColourInput(session, "color.cr", value = as.character(default.colors["color.cr"]))
+    updateColourInput(session, "color.ppv", value = as.character(default.colors["color.ppv"]))
+    updateColourInput(session, "color.npv", value = as.character(default.colors["color.npv"]))
+  })
   
   
 }

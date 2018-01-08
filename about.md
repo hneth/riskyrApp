@@ -1,7 +1,7 @@
 About riskyR
 ================
 SPDS, uni.kn
-2018 01 05
+2018 01 08
 
 About `riskyR`
 ==============
@@ -141,7 +141,35 @@ Representations:
     -   <https://deanattali.com/2015/04/21/r-package-shiny-app/>
 -   provide explanatory help vignettes
 
+
+
+About
+=====
+
+We are still developing this software and have yet to choose a license for it. Please contact us in case you want to use or share any of it.
+
 Contact
 -------
 
 In case of comments or questions, please contact us at [http://spds.uni.kn](http://spds.uni-konstanz.de). 
+
+
+Reference
+---------
+
+In APA format:
+
+- Neth, H., Gaissbauer, F., Gradwohl, N., & Gaissmaier, W. (2018). 
+`riskyR`: A toolbox for transparent communication and teaching of risk literacy 
+[Computer software]. Retrieved from https://github.com/hneth/riskyR (R package version 0.0.1)
+
+As BibTeX reference: 
+
+    @manual{NethEtAl18_R,
+      title = {{riskyR}: A Toolbox for Transparent Communication and Teaching of Risk Literacy},
+      author = {Neth, Hansj\"{o}rg and Gaissbauer, Felix and Gradwohl, Nico and Gaissmaier, Wolfgang}, 
+      year = 2018,
+      note = {R package version 0.0.1},
+      url = {https://github.com/hneth/riskyR}
+    }
+
