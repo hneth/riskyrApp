@@ -166,7 +166,7 @@ In APA format:
 As BibTeX reference: 
 
     @manual{NethEtAl18_R,
-      title = {{riskyR}: A Toolbox for Transparent Communication and Teaching of Risk Literacy},
+      title = {{riskyR}: A toolbox for transparent communication and teaching of risk literacy},
       author = {Neth, Hansj\"{o}rg and Gaissbauer, Felix and Gradwohl, Nico and Gaissmaier, Wolfgang}, 
       year = 2018,
       note = {R package version 0.0.1},
