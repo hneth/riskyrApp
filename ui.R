@@ -128,7 +128,7 @@ shinyUI(
   # tags$head(tags$script(HTML(JS.logify))),
   # tags$head(tags$script(HTML(JS.onload))),
   
-  navbarPage(title = "riskyR",
+  navbarPage(title = "riskyrApp",
              theme = "bootstrap.sandstone.css",
              ## or another bootsstrap theme https://bootswatch.com/3/, e.g., 
              # theme = "bootstrap.yeti.css",
