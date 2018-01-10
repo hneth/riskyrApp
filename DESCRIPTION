@@ -2,7 +2,7 @@ Title: riskyrApp
 Version: 0.0.0.900
 Type: Shiny
 DisplayMode: Showcase
-Author: Hansjörg Neth, Felix Gaissbauer
+Author: SPDS uni.kn
 AuthorUrl: http://spds.uni-konstanz.de
 Maintainer: Hansjörg Neth <h.neth@uni.kn>
 Description: An interactive R Shiny application complementing the riskyr package: 

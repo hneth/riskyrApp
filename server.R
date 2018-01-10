@@ -1,5 +1,8 @@
 ## server.R
-## riskyR | R Shiny | spds, uni.kn | 2018 01 08
+## riskyR | R Shiny | spds, uni.kn | 2018 01 07
+
+#####
+
 ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ # 
 ## Clean up:
 
@@ -37,6 +40,16 @@ library("colourpicker")
 datasets <- read.csv2("./www/examples_riskyR.csv", stringsAsFactors = FALSE)
           # read.csv2("./www/datasets_riskyr.csv", stringsAsFactors = FALSE)
           # read.csv("./www/riskyR_datasets.csv", stringsAsFactors = FALSE)
+
+
+## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ # 
+## Import functions (to be replaced by package later)
+
+# I'm lazy and just import any file from the functions folder
+for(f in list.files(path = "./functions/")) {
+  source(file = paste0("./functions/", f))
+}
+
 
 ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 ## Customizations
@@ -170,9 +183,10 @@ default.colors <- c(color.hi = rgb(128, 177, 57, max = 255), # col.green.2
 {
   
   ## Percentage rounded to 1 decimal digit: 
-  pc <- function(num) { 
-    return(round(num * 100, 1)) 
-  }
+  # DEPRECATED, replaced by as_pc
+  # pc <- function(num) { 
+  #   return(round(num * 100, 1)) 
+  # }
   
 }
 #####
@@ -290,128 +304,129 @@ get.NPV <- function(prev, sens, spec) {
 }
 
 ## (3) Plot PPV and NPV as a function of prev.range:
-plot.PV.curves <- function(env, show.PVprev = TRUE, show.PVpoints = TRUE, log.scale = FALSE) {
-  
-  ## Current environment parameters:
-  name <- env$name
-  N <- env$N
-  prev <- env$prev
-  sens <- env$sens
-  spec <- env$spec
-  source <- env$source
-  
-  ## Current PPV and NPV values and labels:
-  ## (a) from current data:
-  # cur.PPV <- data$PPV # get.PPV(prev, sens, spec)
-  # cur.NPV <- data$NPV # get.NPV(prev, sens, spec) 
-  # cur.PPV.label <- data$PPV.label # paste0("PPV = ", pc(cur.PPV), "%") # paste0("(", pc(prev), "%; ", pc(cur.PPV), "%)")
-  # cur.NPV.label <- data$NPV.label # paste0("NPV = ", pc(cur.NPV), "%") # paste0("(", pc(prev), "%; ", pc(cur.NPV), "%)")
-  ## (b) Compute from scratch:
-  cur.PPV <- get.PPV(prev, sens, spec)
-  cur.NPV <- get.NPV(prev, sens, spec) 
-  cur.PPV.label <- paste0("PPV = ", pc(cur.PPV), "%") # paste0("(", pc(prev), "%; ", pc(cur.PPV), "%)")
-  cur.NPV.label <- paste0("NPV = ", pc(cur.NPV), "%") # paste0("(", pc(prev), "%; ", pc(cur.NPV), "%)")
-  
-  ## Hack to prevent -Inf on log scale: 
-  if (log.scale) {
-    if (prev == 0) { prev <- 0 + epsilon } # slightly more than 0
-    if (prev == 1) { prev <- 1 - epsilon } # slightly less than 1
-  }
-  
-  ## Compute current PPV and NPV values for prev.range:
-  PPV <- get.PPV(prev.range, sens, spec)
-  NPV <- get.NPV(prev.range, sens, spec)
-  
-  ## As data frame df:
-  df.PVs <- data.frame(prev.range, PPV, NPV)
-  
-  ## Reshape df.PVs into long format:
-  df.PVs.long <- df.PVs %>% gather(metric, value, c(PPV, NPV))
-  # names(df.PVs.long) <- c("prevalence", "metric", "value")
-  df.PVs.long$metric <- factor(df.PVs.long$metric, # ensure factor and level order:  
-                               levels = c("PPV", "NPV") #,
-                               # labels = c("PPV = p(condition true | decision positive)", 
-                               #            "NPV = p(condition false | decision negative)")
-  )
-  
-  ## Additional plot options:
-  prev.label <- paste0("prev = ", pc(prev), "%")
-  col.prev <- col.grey.2
-  cur.par.label <- paste0("(", prev.label, ", sens = ", pc(sens), "%, spec = ", pc(spec), "%)") # label
-  y.min <- 0
-  y.max <- 1
-  x.just <- -.20
-  y.just <- +.50
-  
-  if (!log.scale) { ## plot on linear scale: 
-    p.PVs <- ggplot(data = df.PVs.long, aes(x = prev.range, y = value, group = metric)) +
-      geom_line(aes(color = metric), size = 1.2) +
-      # geom_point(aes(color = metric, shape = metric), size = 2) + 
-      ## Scales:
-      scale_y_continuous(breaks = seq(y.min, y.max, by = .10), limits = c(y.min, y.max)) + 
-      ## (a) linear x scale:
-      scale_x_continuous(breaks = seq(0, 1, by = .10)) + 
-      labs(title = paste0("PPV and NPV by prevalence:\n", 
-                          cur.PPV.label, ", ", cur.NPV.label, " ", cur.par.label, 
-                          "\n[", name, ", ", source, "]"), 
-           x = "Prevalence (linear scale)", y = "Probability") + 
-      ## (b) log x scale:
-      # scale_x_log10(breaks = prev.scale) + 
-      # labs(title = paste0(name, ":\nPPV and NPV by prevalence ", sens.spec, "\n(", source, ")"),
-      #                    x = "Prevalence (logarithmic scale)", y = "Probability") + 
-      ## Colors: 
-      scale_color_manual(values = c(col.ppv, col.npv)) +
-      # scale_fill_manual(values = c(col.ppv, col.npv), name = "Metric:") +
-      my.theme.legend
-  }
-  
-  if (log.scale) { ## plot on log scale: 
-    p.PVs <- ggplot(data = df.PVs.long, aes(x = prev.range, y = value, group = metric)) +
-      geom_line(aes(color = metric), size = 1.2) +
-      # geom_point(aes(color = metric, shape = metric), size = 2) +
-      ## Scales:
-      ## (a) linear x scale:
-      # scale_x_continuous(breaks = seq(0, 1, by = .10)) + 
-      # labs(title = paste0(name, ":\nPPV and NPV by prevalence ", sens.spec, "\n(", source, ")"),
-      #      x = "Prevalence (linear scale)", y = "Probability") + 
-      ## (b) log x scale:
-      scale_x_log10(breaks = prev.scale) + 
-      labs(title = paste0("PPV and NPV by prevalence:\n", 
-                          cur.PPV.label, ", ", cur.NPV.label, " ", cur.par.label, 
-                          "\n[", name, ", ", source, "]"), 
-           x = "Prevalence (logarithmic scale)", y = "Probability") + 
-      ## Colors: 
-      scale_color_manual(values = c(col.ppv, col.npv)) +
-      # scale_fill_manual(values = c(col.ppv, col.npv), name = "Metric:") +
-      my.theme.legend
-  }
-  
-  if (show.PVprev) {
-    p.PVs <- p.PVs +
-      ## Mark and label prev:
-      geom_line(aes(x = prev), color = col.prev, linetype = 3, size = .6) + # vertical line at prev
-      geom_point(aes(x = prev, y = 0), color = col.grey.3, fill = col.prev, shape = 21, size = 3) + # mark (prev, 0)
-      geom_text(aes(x = prev, y = 0, label = prev.label), 
-                color = col.prev, hjust = x.just, vjust = y.just, size = 4) # + # label prev  
-  }
-  
-  if (show.PVpoints) {
-    p.PVs <- p.PVs +
-      ## Mark and label current PPV/NPV:
-      geom_point(aes(x = prev, y = cur.PPV), 
-                 color = col.grey.3, fill = col.ppv, shape = 21, size = 3) + # mark (prev, PPV)
-      geom_text(aes(x = prev, y = cur.PPV, label = cur.PPV.label), 
-                color = col.ppv, hjust = x.just, vjust = y.just, size = 4) + # label PPV
-      geom_point(aes(x = prev, y = cur.NPV), 
-                 color = col.grey.3, fill = col.npv, shape = 21, size = 3) + # mark (prev, NPV)
-      geom_text(aes(x = prev, y = cur.NPV, label = cur.NPV.label), 
-                color = col.npv, hjust = x.just, vjust = y.just, size = 4) # + # label NPV
-  }
-  
-  ## Return plot:
-  return(p.PVs)
-  
-}
+# DEPRECATED, now done by plot_PV
+# #plot.PV.curves <- function(env, show.PVprev = TRUE, show.PVpoints = TRUE, log.scale = FALSE) {
+#   
+#   ## Current environment parameters:
+#   name <- env$name
+#   N <- env$N
+#   prev <- env$prev
+#   sens <- env$sens
+#   spec <- env$spec
+#   source <- env$source
+#   
+#   ## Current PPV and NPV values and labels:
+#   ## (a) from current data:
+#   # cur.PPV <- data$PPV # get.PPV(prev, sens, spec)
+#   # cur.NPV <- data$NPV # get.NPV(prev, sens, spec) 
+#   # cur.PPV.label <- data$PPV.label # paste0("PPV = ", as_pc(cur.PPV), "%") # paste0("(", as_pc(prev), "%; ", as_pc(cur.PPV), "%)")
+#   # cur.NPV.label <- data$NPV.label # paste0("NPV = ", as_pc(cur.NPV), "%") # paste0("(", as_pc(prev), "%; ", as_pc(cur.NPV), "%)")
+#   ## (b) Compute from scratch:
+#   cur.PPV <- get.PPV(prev, sens, spec)
+#   cur.NPV <- get.NPV(prev, sens, spec) 
+#   cur.PPV.label <- paste0("PPV = ", as_pc(cur.PPV), "%") # paste0("(", as_pc(prev), "%; ", as_pc(cur.PPV), "%)")
+#   cur.NPV.label <- paste0("NPV = ", as_pc(cur.NPV), "%") # paste0("(", as_pc(prev), "%; ", as_pc(cur.NPV), "%)")
+#   
+#   ## Hack to prevent -Inf on log scale: 
+#   if (log.scale) {
+#     if (prev == 0) { prev <- 0 + epsilon } # slightly more than 0
+#     if (prev == 1) { prev <- 1 - epsilon } # slightly less than 1
+#   }
+#   
+#   ## Compute current PPV and NPV values for prev.range:
+#   PPV <- get.PPV(prev.range, sens, spec)
+#   NPV <- get.NPV(prev.range, sens, spec)
+#   
+#   ## As data frame df:
+#   df.PVs <- data.frame(prev.range, PPV, NPV)
+#   
+#   ## Reshape df.PVs into long format:
+#   df.PVs.long <- df.PVs %>% gather(metric, value, c(PPV, NPV))
+#   # names(df.PVs.long) <- c("prevalence", "metric", "value")
+#   df.PVs.long$metric <- factor(df.PVs.long$metric, # ensure factor and level order:  
+#                                levels = c("PPV", "NPV") #,
+#                                # labels = c("PPV = p(condition true | decision positive)", 
+#                                #            "NPV = p(condition false | decision negative)")
+#   )
+#   
+#   ## Additional plot options:
+#   prev.label <- paste0("prev = ", as_pc(prev), "%")
+#   col.prev <- col.grey.2
+#   cur.par.label <- paste0("(", prev.label, ", sens = ", as_pc(sens), "%, spec = ", as_pc(spec), "%)") # label
+#   y.min <- 0
+#   y.max <- 1
+#   x.just <- -.20
+#   y.just <- +.50
+#   
+#   if (!log.scale) { ## plot on linear scale: 
+#     p.PVs <- ggplot(data = df.PVs.long, aes(x = prev.range, y = value, group = metric)) +
+#       geom_line(aes(color = metric), size = 1.2) +
+#       # geom_point(aes(color = metric, shape = metric), size = 2) + 
+#       ## Scales:
+#       scale_y_continuous(breaks = seq(y.min, y.max, by = .10), limits = c(y.min, y.max)) + 
+#       ## (a) linear x scale:
+#       scale_x_continuous(breaks = seq(0, 1, by = .10)) + 
+#       labs(title = paste0("PPV and NPV by prevalence:\n", 
+#                           cur.PPV.label, ", ", cur.NPV.label, " ", cur.par.label, 
+#                           "\n[", name, ", ", source, "]"), 
+#            x = "Prevalence (linear scale)", y = "Probability") + 
+#       ## (b) log x scale:
+#       # scale_x_log10(breaks = prev.scale) + 
+#       # labs(title = paste0(name, ":\nPPV and NPV by prevalence ", sens.spec, "\n(", source, ")"),
+#       #                    x = "Prevalence (logarithmic scale)", y = "Probability") + 
+#       ## Colors: 
+#       scale_color_manual(values = c(col.ppv, col.npv)) +
+#       # scale_fill_manual(values = c(col.ppv, col.npv), name = "Metric:") +
+#       my.theme.legend
+#   }
+#   
+#   if (log.scale) { ## plot on log scale: 
+#     p.PVs <- ggplot(data = df.PVs.long, aes(x = prev.range, y = value, group = metric)) +
+#       geom_line(aes(color = metric), size = 1.2) +
+#       # geom_point(aes(color = metric, shape = metric), size = 2) +
+#       ## Scales:
+#       ## (a) linear x scale:
+#       # scale_x_continuous(breaks = seq(0, 1, by = .10)) + 
+#       # labs(title = paste0(name, ":\nPPV and NPV by prevalence ", sens.spec, "\n(", source, ")"),
+#       #      x = "Prevalence (linear scale)", y = "Probability") + 
+#       ## (b) log x scale:
+#       scale_x_log10(breaks = prev.scale) + 
+#       labs(title = paste0("PPV and NPV by prevalence:\n", 
+#                           cur.PPV.label, ", ", cur.NPV.label, " ", cur.par.label, 
+#                           "\n[", name, ", ", source, "]"), 
+#            x = "Prevalence (logarithmic scale)", y = "Probability") + 
+#       ## Colors: 
+#       scale_color_manual(values = c(col.ppv, col.npv)) +
+#       # scale_fill_manual(values = c(col.ppv, col.npv), name = "Metric:") +
+#       my.theme.legend
+#   }
+#   
+#   if (show.PVprev) {
+#     p.PVs <- p.PVs +
+#       ## Mark and label prev:
+#       geom_line(aes(x = prev), color = col.prev, linetype = 3, size = .6) + # vertical line at prev
+#       geom_point(aes(x = prev, y = 0), color = col.grey.3, fill = col.prev, shape = 21, size = 3) + # mark (prev, 0)
+#       geom_text(aes(x = prev, y = 0, label = prev.label), 
+#                 color = col.prev, hjust = x.just, vjust = y.just, size = 4) # + # label prev  
+#   }
+#   
+#   if (show.PVpoints) {
+#     p.PVs <- p.PVs +
+#       ## Mark and label current PPV/NPV:
+#       geom_point(aes(x = prev, y = cur.PPV), 
+#                  color = col.grey.3, fill = col.ppv, shape = 21, size = 3) + # mark (prev, PPV)
+#       geom_text(aes(x = prev, y = cur.PPV, label = cur.PPV.label), 
+#                 color = col.ppv, hjust = x.just, vjust = y.just, size = 4) + # label PPV
+#       geom_point(aes(x = prev, y = cur.NPV), 
+#                  color = col.grey.3, fill = col.npv, shape = 21, size = 3) + # mark (prev, NPV)
+#       geom_text(aes(x = prev, y = cur.NPV, label = cur.NPV.label), 
+#                 color = col.npv, hjust = x.just, vjust = y.just, size = 4) # + # label NPV
+#   }
+#   
+#   ## Return plot:
+#   return(p.PVs)
+#   
+# }
 
 ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ # 
 ## 3D graph:
@@ -437,7 +452,7 @@ pv.matrix <- function(prev, sens, spec, metric) {
                                  ncol = n.cols)) 
   names(matrix) <- sens 
   
-  ## Loop through all rows and columns of pc.matrix: 
+  ## Loop through all rows and columns of as_pc.matrix: 
   for (row in 1:n.rows) {
     for (col in 1:n.cols) {
       
@@ -474,13 +489,13 @@ plot.PV.planes <- function(env, show.PVpoints = TRUE,
   ## (a) from current data:
   # cur.PPV <- data$PPV # get.PPV(prev, sens, spec)
   # cur.NPV <- data$NPV # get.NPV(prev, sens, spec) 
-  # cur.PPV.label <- data$PPV.label # paste0("PPV = ", pc(cur.PPV), "%") # paste0("(", pc(prev), "%; ", pc(cur.PPV), "%)")
-  # cur.NPV.label <- data$NPV.label # paste0("NPV = ", pc(cur.NPV), "%") # paste0("(", pc(prev), "%; ", pc(cur.NPV), "%)")
+  # cur.PPV.label <- data$PPV.label # paste0("PPV = ", as_pc(cur.PPV), "%") # paste0("(", as_pc(prev), "%; ", as_pc(cur.PPV), "%)")
+  # cur.NPV.label <- data$NPV.label # paste0("NPV = ", as_pc(cur.NPV), "%") # paste0("(", as_pc(prev), "%; ", as_pc(cur.NPV), "%)")
   ## (b) Compute from scratch:
   cur.PPV <- get.PPV(prev, sens, spec) # data()$PPV
   cur.NPV <- get.NPV(prev, sens, spec) # data()$NPV 
-  cur.PPV.label <- paste0("PPV = ", pc(cur.PPV), "%") # paste0("(", pc(prev), "%; ", pc(cur.PPV), "%)")
-  cur.NPV.label <- paste0("NPV = ", pc(cur.NPV), "%") # paste0("(", pc(prev), "%; ", pc(cur.NPV), "%)")
+  cur.PPV.label <- paste0("PPV = ", as_pc(cur.PPV), "%") # paste0("(", as_pc(prev), "%; ", as_pc(cur.PPV), "%)")
+  cur.NPV.label <- paste0("NPV = ", as_pc(cur.NPV), "%") # paste0("(", as_pc(prev), "%; ", as_pc(cur.NPV), "%)")
   
   ## Ranges on x- and y-axes:
   sens.range <- seq(0.0, 1.0, by = .05) # range of sensitivity values 
@@ -497,10 +512,10 @@ plot.PV.planes <- function(env, show.PVpoints = TRUE,
   z.npv <- as.matrix(NPV.mat)
   z.lim <- c(0, 1) # range of z-axis
   # cur.par.label <- paste0("(", 
-  #                         "prev = ", pc(prev), "%, ", 
-  #                         "sens = ", pc(sens), "%, ", 
-  #                         "spec = ", pc(spec), "%)")
-  cur.par.label <- paste0("(prev = ", pc(prev), "%)")
+  #                         "prev = ", as_pc(prev), "%, ", 
+  #                         "sens = ", as_pc(sens), "%, ", 
+  #                         "spec = ", as_pc(spec), "%)")
+  cur.par.label <- paste0("(prev = ", as_pc(prev), "%)")
   
   # Plot 2 plots (adjacent to each other):
   {
@@ -683,8 +698,8 @@ shinyServer(function(input, output, session){
     ## (6) Compute and store current PPV and NPV values (to use in graphs and labels):
     data$PPV <- get.PPV(env$prev, env$sens, env$spec)
     data$NPV <- get.NPV(env$prev, env$sens, env$spec)
-    # data$PPV.label <- paste0("PPV = ", pc(cur.PPV), "%") # paste0("(", pc(prev), "%; ", pc(cur.PPV), "%)")
-    # data$NPV.label <- paste0("NPV = ", pc(cur.NPV), "%") # paste0("(", pc(prev), "%; ", pc(cur.NPV), "%)")
+    # data$PPV.label <- paste0("PPV = ", as_pc(cur.PPV), "%") # paste0("(", as_pc(prev), "%; ", as_pc(cur.PPV), "%)")
+    # data$NPV.label <- paste0("NPV = ", as_pc(cur.NPV), "%") # paste0("(", as_pc(prev), "%; ", as_pc(cur.NPV), "%)")
     
   })
   
@@ -790,24 +805,49 @@ shinyServer(function(input, output, session){
                               )
   
   ## (f) 2D plot of PPV and NPV as a function of prev.range:
-  output$PVs <- renderPlot(plot.PV.curves(env, # use current environment parameters
-                                          show.PVprev = input$boxPVprev, # mark current prevalence in plot                
-                                          show.PVpoints = input$boxPVpoints1, # mark cur.PPV/cur.NPV in plot
-                                          log.scale = input$boxPVlog # plot x on log scale 
-                                          )
-                           )
+  output$PVs <- renderPlot(plot_PV(prev = env$prev, sens = env$sens, spec = env$spec,
+                                   show.PVprev = input$boxPVprev, # mark current prevalence in plot                
+                                   show.PVpoints = input$boxPVpoints1, # mark cur.PPV/cur.NPV in plot
+                                   log.scale = input$boxPVlog,
+                                   scen.lbl = cus$scenario.txt,
+                                   col.ppv = cus$color.ppv,
+                                   col.npv = cus$color.npv)
+    )
+  
 
   ## (g) 3D plots of PPV and NPV planes as functions of sens and spec:
-  output$PVplanes <- renderPlot(plot.PV.planes(env, # use current environment parameters
-                                               show.PVpoints = input$boxPVpoints2, # mark cur.PPV/cur.NPV in plot
-                                               cur.theta = input$theta, # horizontal rotation
-                                               cur.phi = input$phi,     # vertical rotation
-                                               cur.d = my.d,            # input$d,
-                                               cur.expand = my.expand,  # input$expand,
-                                               cur.ltheta = my.ltheta,  # input$ltheta,
-                                               cur.shade = my.shade     # input$shade
-                                               )
-                                )
+  # DEPRECATED
+  # output$PVplanes <- renderPlot(plot.PV.planes(env, # use current environment parameters
+  #                                              show.PVpoints = input$boxPVpoints2, # mark cur.PPV/cur.NPV in plot
+  #                                              cur.theta = input$theta, # horizontal rotation
+  #                                              cur.phi = input$phi,     # vertical rotation
+  #                                              cur.d = my.d,            # input$d,
+  #                                              cur.expand = my.expand,  # input$expand,
+  #                                              cur.ltheta = my.ltheta,  # input$ltheta,
+  #                                              cur.shade = my.shade     # input$shade
+  #                                              )
+  #                               )
+  
+  output$PV3dPPV <- renderPlot(plot_PV3d(prev = env$prev, sens = env$sens, spec = env$spec,
+                                         is.ppv = TRUE,
+                                         show.PVpoints = input$boxPVpoints2,
+                                         cur.theta = input$theta,
+                                         cur.phi = input$phi,
+                                         title.lbl = cus$scenario.txt,
+                                         col.pv = cus$color.ppv
+                                         )
+                               )
+  
+  output$PV3dNPV <- renderPlot(plot_PV3d(prev = env$prev, sens = env$sens, spec = env$spec,
+                                         is.ppv = FALSE,
+                                         show.PVpoints = input$boxPVpoints2,
+                                         cur.theta = input$theta,
+                                         cur.phi = input$phi,
+                                         title.lbl = cus$scenario.txt,
+                                         col.pv = cus$color.npv
+  )
+  )
+  
   
   
   

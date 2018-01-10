@@ -1,5 +1,5 @@
 ## ui.R
-## riskyr | R Shiny | spds, uni.kn | 2018 01 08
+## riskyrApp | R Shiny | spds, uni.kn | 2018 01 10
 ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ # 
 
 # rm(list=ls()) # clean all.
@@ -18,6 +18,7 @@ library("dplyr")
 library("ggplot2")
 library("vcd")
 library("colourpicker")
+
 
 
 ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ # 
@@ -154,32 +155,45 @@ shinyUI(
                           h3("Please select inputs:"),
                           helpText("(Use slider or enter number)"),
                           br(),
+                          fluidRow(h5(tags$b("Population")),
+                            column(7,
                           sliderInput("N",
-                                      label = "Population size:",
+                                      # label = "Population size:",
+                                      label = NULL,
                                       value = 100,
                                       min = 0,
                                       max = 10^6,
-                                      step = 10
+                                      step = 10)
                                       ), # use log-scale from 1 to 10^9
+                          column(5,
                           numericInput("numN", 
                                        label = NULL, 
                                        value = 100,
                                        min = 0,
                                        max = 10^6,
-                                       step = 10),
+                                       step = 10)
+                          )
+                          ),
                           br(),
+                          fluidRow(h5(tags$b("Prevalence")),
+                            column(7, 
                           sliderInput("prev", 
-                                      label = "Prevalence:", sep = "",
+                                      # label = "Prevalence:", 
+                                      label = NULL,
+                                      sep = "",
                                       value = 0.15, 
                                       min = 0,
                                       max = 1,
-                                      step = 10^-6),
+                                      step = 10^-6)
+                                      ),
+                          column(5, 
                           numericInput("numprev", 
                                        label = NULL, 
                                        value = 0.15,
                                        min = 0,
                                        max = 1,
-                                       step = 10^-6),
+                                       step = 10^-6)
+                          )),
                           br(),
                           sliderInput("sens", 
                                       label = "Sensitivity", sep = "",
@@ -349,7 +363,12 @@ shinyUI(
                                       tabPanel("PV cubes", 
                                                br(),
                                                paste0("Predictive values (PPV/NPV) by sensitivity and specificity:"), br(), br(),
-                                               plotOutput("PVplanes"), 
+                                               fluidRow(
+                                                 column(6, # plotOutput("PVplanes"), DEPRECATED 
+                                                        plotOutput("PV3dPPV")),
+                                                 column(6, 
+                                                        plotOutput("PV3dNPV"))
+                                                 ),
                                                br(),
                                                # paste0("PPV = ", data$PPV, ", NPV = ", data$NPV), 
                                                # ERROR: object of type 'closure' is not subsettable ???
