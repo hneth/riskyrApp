@@ -200,7 +200,7 @@ In APA format:
 
 As BibTeX reference: 
 
-    @manual{NethEtAl18_R,
+    @manual{riskyr2018,
       title = {{riskyr}: A toolbox for transparent communication and teaching of risk literacy},
       author = {Neth, Hansj\"{o}rg and Gaisbauer, Felix and Gradwohl, Nico and Gaissmaier, Wolfgang}, 
       year = 2018,
