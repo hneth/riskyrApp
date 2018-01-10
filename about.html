@@ -121,16 +121,23 @@ $(document).ready(function () {
 </div>
 
 
-<div id="about-riskyr" class="section level1">
-<h1>About riskyR</h1>
-<p>SPDS, uni.kn 2018 01 08</p>
+<div id="riskyrapp" class="section level1">
+<h1>riskyrApp</h1>
+<p>SPDS, uni.kn 2018 01 06</p>
 </div>
-<div id="about-riskyr-1" class="section level1">
-<h1>About <code>riskyR</code></h1>
-<p>A toolbox for transparent communication and teaching of risk literacy.</p>
+<div id="about-riskyrapp" class="section level1">
+<h1>About <code>riskyrApp</code></h1>
+<p>An R Shiny application that complements the <code>riskyr</code> toolbox for transparent communication and teaching of risk literacy.</p>
 <div id="goal" class="section level2">
 <h2>Goal</h2>
-<p>The <code>riskyR</code> package renders risk literacy more transparent by providing a set of risk literacy tools and corresponding representations.</p>
+<p>Develop and assemble a set of basic risk literacy tools in R:</p>
+<ul>
+<li><p>The <code>riskyr</code> package renders risk literacy more transparent by providing a set of risk literacy tools and corresponding representations.</p></li>
+<li><p>The corresponding R Shiny app <code>riskyrApp</code> allows using the <code>riskyr</code> toolbox in an interactive fashion without any coding.</p></li>
+</ul>
+</div>
+<div id="rationale" class="section level2">
+<h2>Rationale</h2>
 <p>We begin with some basic variables:</p>
 <ul>
 <li>a population size <code>N</code></li>
@@ -140,16 +147,47 @@ $(document).ready(function () {
 </ul>
 <p>and provide a variety of <em>perspectives</em> on (and representations of) the <em>consequences</em> of and <em>interplay</em> between these variables:</p>
 <ol style="list-style-type: decimal">
-<li>a <em>data table</em> of individual cases</li>
-<li>an <em>icon array</em> (with a population vs. sample view, sorted or randomized)</li>
-<li>a <em>tree of natural frequencies</em></li>
-<li>a <em>2x2 confusion/contingency table</em> (corresponding to the leaves of the frequency tree)</li>
-<li>a <em>mosaic plot</em> that illustrates the proportions of the confusion table</li>
-<li>two <em>curves of predictive values</em> (PPV and NPV) as a function of <code>prev</code></li>
-<li>two <em>planes of predictive values</em> (PPV and NPV) as a function of <code>sens</code> and <code>spec</code> for a given <code>prev</code> <!-- 8. fact boxes (with additional details on benefits and harms of tests or treatments)  --></li>
+<li>a <em>data table</em> of individual cases<br />
+</li>
+<li>an <em>icon array</em> (with a population vs. sample view, sorted or randomized)<br />
+</li>
+<li>a <em>tree of natural frequencies</em><br />
+</li>
+<li>a <em>2x2 confusion/contingency table</em> (corresponding to the leaves of the frequency tree)<br />
+</li>
+<li>a <em>mosaic plot</em> that illustrates the proportions of the confusion table<br />
+</li>
+<li>a curve of <em>predictive values</em> (PPV and NPV) as a function of <code>prev</code><br />
+</li>
+<li>a plane of <em>predictive values</em> (PPV and NPV) as a function of <code>sens</code> and <code>spec</code> for a given <code>prev</code><br />
+<!-- 8. fact boxes (with additional details on benefits and harms of tests or treatments)  --></li>
 </ol>
-<p>All visualizations can be explored interactively and use a common color scheme.</p>
-<p>A set of environments illustrates example cases with known data from the literature.</p>
+<p>All visualizations can be explored interactively via the corresponding <code>riskyrApp</code> and customized extensively.</p>
+<p>A <em>library of scenarios</em> illustrates example cases with known data from the literature.</p>
+</div>
+<div id="about" class="section level2">
+<h2>About</h2>
+<p>We are still developing this software and have yet to choose a license for it. Please <a href="http://spds.uni-konstanz.de">contact us</a> in case you want to use or share it.</p>
+<div id="contact" class="section level3">
+<h3>Contact</h3>
+<p>In case of comments or questions, please contact us at <a href="http://spds.uni-konstanz.de">http://spds.uni.kn</a>.</p>
+</div>
+<div id="reference" class="section level3">
+<h3>Reference</h3>
+<p>In APA format:</p>
+<ul>
+<li>Neth, H., Gaisbauer, F., Gradwohl, N., &amp; Gaissmaier, W. (2018).<br />
+<code>riskyr</code>: A toolbox for transparent communication and teaching of risk literacy [Computer software]. Retrieved from <a href="https://github.com/hneth/riskyr" class="uri">https://github.com/hneth/riskyr</a> (R package version 0.0.0.900)</li>
+</ul>
+<p>As BibTeX reference:</p>
+<pre><code>@manual{NethEtAl18_R,
+  title = {{riskyr}: A toolbox for transparent communication and teaching of risk literacy},
+  author = {Neth, Hansj\&quot;{o}rg and Gaisbauer, Felix and Gradwohl, Nico and Gaissmaier, Wolfgang}, 
+  year = 2018,
+  note = {R package version 0.0.0.900},
+  url = {https://github.com/hneth/riskyr}
+}</code></pre>
+</div>
 </div>
 <div id="notes" class="section level2">
 <h2>Notes</h2>
@@ -285,14 +323,14 @@ $(document).ready(function () {
 </div>
 </div>
 </div>
-<div id="about" class="section level1">
+<div id="about-1" class="section level1">
 <h1>About</h1>
 <p>We are still developing this software and have yet to choose a license for it. Please contact us in case you want to use or share any of it.</p>
-<div id="contact" class="section level2">
+<div id="contact-1" class="section level2">
 <h2>Contact</h2>
 <p>In case of comments or questions, please contact us at <a href="http://spds.uni-konstanz.de">http://spds.uni.kn</a>.</p>
 </div>
-<div id="reference" class="section level2">
+<div id="reference-1" class="section level2">
 <h2>Reference</h2>
 <p>In APA format:</p>
 <ul>
@@ -300,11 +338,11 @@ $(document).ready(function () {
 </ul>
 <p>As BibTeX reference:</p>
 <pre><code>@manual{NethEtAl18_R,
-  title = {{riskyR}: A toolbox for transparent communication and teaching of risk literacy},
+  title = {{riskyr}: A toolbox for transparent communication and teaching of risk literacy},
   author = {Neth, Hansj\&quot;{o}rg and Gaisbauer, Felix and Gradwohl, Nico and Gaissmaier, Wolfgang}, 
   year = 2018,
   note = {R package version 0.0.1},
-  url = {https://github.com/hneth/riskyR}
+  url = {https://github.com/hneth/riskyr}
 }</code></pre>
 </div>
 </div>
