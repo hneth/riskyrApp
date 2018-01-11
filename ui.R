@@ -1,5 +1,5 @@
 ## ui.R
-## riskyrApp | R Shiny | spds, uni.kn | 2018 01 10
+## riskyrApp | R Shiny | spds, uni.kn | 2018 01 11
 ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ # 
 
 # rm(list=ls()) # clean all.
@@ -153,74 +153,83 @@ shinyUI(
                           # Input: Select all input values:
 
                           h3("Please select inputs:"),
-                          helpText("(Use slider or enter number)"),
+                          "(Use slider or enter number)",
                           br(),
                           fluidRow(h5(tags$b("Population")),
                             column(7,
-                          sliderInput("N",
-                                      # label = "Population size:",
-                                      label = NULL,
-                                      value = 100,
-                                      min = 0,
-                                      max = 10^6,
-                                      step = 10)
-                                      ), # use log-scale from 1 to 10^9
-                          column(5,
-                          numericInput("numN", 
-                                       label = NULL, 
-                                       value = 100,
-                                       min = 0,
-                                       max = 10^6,
-                                       step = 10)
-                          )
+                              sliderInput("N",
+                                          # label = "Population size:",
+                                          label = NULL,
+                                          value = 100,
+                                          min = 0,
+                                          max = 10^6,
+                                          step = 10)
+                                          ), # use log-scale from 1 to 10^9
+                            column(5,
+                              numericInput("numN", 
+                                           label = NULL, 
+                                           value = 100,
+                                           min = 0,
+                                           max = 10^6,
+                                           step = 10)
+                              )
                           ),
                           br(),
                           fluidRow(h5(tags$b("Prevalence")),
                             column(7, 
-                          sliderInput("prev", 
-                                      # label = "Prevalence:", 
-                                      label = NULL,
-                                      sep = "",
-                                      value = 0.15, 
-                                      min = 0,
-                                      max = 1,
-                                      step = 10^-6)
-                                      ),
-                          column(5, 
-                          numericInput("numprev", 
-                                       label = NULL, 
-                                       value = 0.15,
-                                       min = 0,
-                                       max = 1,
-                                       step = 10^-6)
+                              sliderInput("prev", 
+                                          # label = "Prevalence:", 
+                                          label = NULL,
+                                          sep = "",
+                                          value = 0.15, 
+                                          min = 0,
+                                          max = 1,
+                                          step = 10^-6)
+                                          ),
+                            column(5, 
+                              numericInput("numprev", 
+                                           label = NULL, 
+                                           value = 0.15,
+                                           min = 0,
+                                           max = 1,
+                                           step = 10^-6)
                           )),
                           br(),
-                          sliderInput("sens", 
-                                      label = "Sensitivity", sep = "",
-                                      value = 0.85,
-                                      min = 0,
-                                      max = 1,
-                                      step = 10^-6),
-                          numericInput("numsens", 
-                                       label = NULL, 
-                                       value = 0.85,
-                                       min = 0,
-                                       max = 1,
-                                       step = 10^-6),
+                          fluidRow(h5(tags$b("Sensitivity")),
+                                   column(7, 
+                                          sliderInput("sens", 
+                                                         label = NULL, sep = "",
+                                                         value = 0.85,
+                                                         min = 0,
+                                                         max = 1,
+                                                         step = 10^-6) 
+                                          ),
+                                   column(5, 
+                                          numericInput("numsens", 
+                                                       label = NULL, 
+                                                       value = 0.85,
+                                                       min = 0,
+                                                       max = 1,
+                                                       step = 10^-6))
+                                   ),
                           br(),
-                          sliderInput("spec", 
-                                      label = "Specificity", sep = "",
-                                      value = 0.75,
-                                      min = 0,
-                                      max = 1, 
-                                      step = 10^-6),
-                          numericInput("numspec", 
-                                       label = NULL, 
-                                       value = 0.75,
-                                       min = 0,
-                                       max = 1,
-                                       step = 10^-6),
-                          
+                          fluidRow(h5(tags$b("Specificity")),
+                                   column(7, 
+                                          sliderInput("spec", 
+                                                         label = NULL, sep = "",
+                                                         value = 0.75,
+                                                         min = 0,
+                                                         max = 1, 
+                                                         step = 10^-6) 
+                                   ),
+                                   column(5, 
+                                          numericInput("numspec", 
+                                                       label = NULL, 
+                                                       value = 0.75,
+                                                       min = 0,
+                                                       max = 1,
+                                                       step = 10^-6))
+                                   ),
                           br(), 
                           
                           ## Provide existing data sets as drop-down list:
@@ -259,27 +268,31 @@ shinyUI(
                           ## Tabset with raw data table, icon array, nf tree, confusion table, and PV graphs: 
                           tabsetPanel(type = "tabs",
                                       # Intro
-                                      #####
-                                      tabPanel("Intro",
-                                               br(),
-                                               "This is just a quick page for displaying rendered text based on inputs. ",
-                                               "Spacing doesn't work yet, but that's only formatting... ",
-                                               br(), br(), 
-                                               "The current set of parameters are as follows:", 
-                                               br(), br(), 
-                                               textOutput("N"),
-                                               textOutput("prev"),
-                                               textOutput("sens"),
-                                               textOutput("spec")
-                                               ),
+                                      # COMMENTED OUT FOR THE TIME BEING...
+                                      # ####
+                                      # tabPanel("Intro",
+                                      #          br(),
+                                      #          "This is just a quick page for displaying rendered text based on inputs. ",
+                                      #          "Spacing doesn't work yet, but that's only formatting... ",
+                                      #          br(), br(),
+                                      #          "The current set of parameters are as follows:",
+                                      #          br(), br(),
+                                      #          textOutput("N"),
+                                      #          br(), br(),
+                                      #          textOutput("prev"),
+                                      #          br(), br(),
+                                      #          textOutput("sens"),
+                                      #          br(), br(),
+                                      #          textOutput("spec")
+                                      #          ),
                                       # Stats
                                       #####
                                       tabPanel("Stats",
-                                               br(),
+                                               br(),  
                                                withMathJax(includeMarkdown("www/statstab_riskyr.md")),
-                                               br(),
+                                               br(),  
                                                tableOutput("confusiontable1"),
-                                               br(),
+                                               br(), br(), 
                                                withMathJax(includeMarkdown("www/statstab_riskyr_ACC.md")),
                                                uiOutput("ACC"),
                                                br(), br(),
@@ -314,8 +327,8 @@ shinyUI(
                                       # Icons
                                       #####
                                       tabPanel("Icons", 
-                                               br(), 
-                                               paste0("Icon array:"), 
+                                               br(),
+                                               paste0("Icon array: Coming soon..."), 
                                                br(), br()
                                                ),
                                       # Tree
@@ -323,8 +336,8 @@ shinyUI(
                                       tabPanel("Tree", 
                                                br(), 
                                                paste0("Tree of natural frequencies:"), 
-                                               br(), br(),  
-                                               plotOutput("nftree"), 
+                                               br(),
+                                               plotOutput("nftree", width = "700px", height = "550px"), 
                                                br()
                                                ),
                                       # Table
@@ -336,7 +349,7 @@ shinyUI(
                                                tableOutput("confusiontable2"),
                                                br(),
                                                paste0("The following mosaic plot shows the cell frequencies as area sizes:"), 
-                                               br(),  br(), 
+                                               br(),
                                                plotOutput("mosaicplot"),
                                                br()
                                                ),
@@ -458,7 +471,7 @@ shinyUI(
                                                value = "Population description"),
                                      textInput("scenario.txt",
                                                label = "Description of scenario:",
-                                               value = "Describe the scenario in a paragraph here."),
+                                               value = "Generic Example"),
                                      br(),
                                      textInput("condition.lbl",
                                                label = "Condition name:",
