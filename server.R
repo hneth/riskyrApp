@@ -1,5 +1,5 @@
 ## server.R
-## riskyR | R Shiny | spds, uni.kn | 2018 01 07
+## riskyR | R Shiny | spds, uni.kn | 2018 01 11
 
 #####
 
@@ -179,7 +179,7 @@ default.colors <- c(color.hi = rgb(128, 177, 57, max = 255), # col.green.2
 }
 
 ## C. Generic utility functions:
-
+##### 
 {
   
   ## Percentage rounded to 1 decimal digit: 
@@ -193,64 +193,67 @@ default.colors <- c(color.hi = rgb(128, 177, 57, max = 255), # col.green.2
 ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ # 
 ## Functions for plots and tables:
 
-## Function to draw tree of natural frequencies:
-plot.nftree <- function(env, data) {
-  
-  ## Current environment parameters:
-  name <- env$name
-  N <- env$N
-  prev <- env$prev
-  sens <- env$sens
-  spec <- env$spec
-  source <- env$source
-  
-  ## Tree with natural frequencies:
-  ## Define names (with current labels):
-  names <- c(paste0("N = ", N), # Note: Using global variables (NOT population as argument)
-             paste0(cond.true.lbl, ":\n", data$n.true), 
-             paste0(cond.false.lbl, ":\n", data$n.false), 
-             paste0(sdt.hi.lbl, "s:\n", data$n.hi), 
-             paste0(sdt.mi.lbl, "es:\n", data$n.mi),
-             paste0(sdt.fa.lbl, "s:\n", data$n.fa), 
-             paste0(sdt.cr.lbl, "s:\n", data$n.cr))
-  
-  ## Make matrix:
-  M <- matrix(nrow = 7, ncol = 8, byrow = TRUE, data = 0)
-  
-  M[2, 1] <- "prevalence" # paste0("prevalence = ", as.character(prev)) 
-  M[3, 1] <- "(N - true)"
-  M[4, 2] <- "sensitivity"
-  M[5, 2] <- "(true - hi)"
-  M[6, 3] <- "(false - cr)"
-  M[7, 3] <- "specificity (1 - FA)"
-  
-  ## Plot matrix M:
-  pm <- plotmat(M,
-                pos = c(1, 2, 4), 
-                curve = 0.0,
-                name = names,
-                box.lwd = 1.5, # radx = 0.1, # rady = 0.05, 
-                box.size = .10, 
-                box.prop = 0.5,
-                box.type = "square", # "circle",
-                box.col = c(rep(col.sand.light, 3), sdt.colors[c("hi", "mi", "fa", "cr")]), # "lightyellow"
-                shadow.col = col.sand.dark, # "steelblue4", "grey25"
-                shadow.size = 0, # .005 
-                lwd = 1.2,
-                cex.txt = .90,
-                main = paste0(name, ":\nTree of natural frequencies\n", "(", source, ")")
-                )
-  
-  ## Return plot:
-  return(pm)
-  
-}
+
+#####
+# DEPRECATED, now done by plot_nftree
+# ## Function to draw tree of natural frequencies:
+# plot.nftree <- function(env, data) {
+#   
+#   ## Current environment parameters:
+#   name <- env$name
+#   N <- env$N
+#   prev <- env$prev
+#   sens <- env$sens
+#   spec <- env$spec
+#   source <- env$source
+#   
+#   ## Tree with natural frequencies:
+#   ## Define names (with current labels):
+#   names <- c(paste0("N = ", N), # Note: Using global variables (NOT population as argument)
+#              paste0(cond.true.lbl, ":\n", data$n.true), 
+#              paste0(cond.false.lbl, ":\n", data$n.false), 
+#              paste0(sdt.hi.lbl, "s:\n", data$n.hi), 
+#              paste0(sdt.mi.lbl, "es:\n", data$n.mi),
+#              paste0(sdt.fa.lbl, "s:\n", data$n.fa), 
+#              paste0(sdt.cr.lbl, "s:\n", data$n.cr))
+#   
+#   ## Make matrix:
+#   M <- matrix(nrow = 7, ncol = 8, byrow = TRUE, data = 0)
+#   
+#   M[2, 1] <- "prevalence" # paste0("prevalence = ", as.character(prev)) 
+#   M[3, 1] <- "(N - true)"
+#   M[4, 2] <- "sensitivity"
+#   M[5, 2] <- "(true - hi)"
+#   M[6, 3] <- "(false - cr)"
+#   M[7, 3] <- "specificity (1 - FA)"
+#   
+#   ## Plot matrix M:
+#   pm <- plotmat(M,
+#                 pos = c(1, 2, 4), 
+#                 curve = 0.0,
+#                 name = names,
+#                 box.lwd = 1.5, # radx = 0.1, # rady = 0.05, 
+#                 box.size = .10, 
+#                 box.prop = 0.5,
+#                 box.type = "square", # "circle",
+#                 box.col = c(rep(col.sand.light, 3), sdt.colors[c("hi", "mi", "fa", "cr")]), # "lightyellow"
+#                 shadow.col = col.sand.dark, # "steelblue4", "grey25"
+#                 shadow.size = 0, # .005 
+#                 lwd = 1.2,
+#                 cex.txt = .90,
+#                 main = paste0(name, ":\nTree of natural frequencies\n", "(", source, ")")
+#                 )
+#   
+#   ## Return plot:
+#   return(pm)
+#   
+# }
 
 ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ # 
 ## Functions for PPV/NPV:
 ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ # 
-## 2D graph:
 
+#####
 ## (1) Compute PPV and NPV as a function of prev, sens, and spec:
 ##     using Bayes' formula:
 get.PPV <- function(prev, sens, spec) {
@@ -271,8 +274,12 @@ get.NPV <- function(prev, sens, spec) {
   return(NPV)
 }
 
-## (2) Specify a range of prevalences
-##     (with finer steps at both extremes):
+#####
+## 2D graph:
+# 
+
+# ## (2) Specify a range of prevalences
+# ##     (with finer steps at both extremes):
 {
   step.0 <- .10
   prev.0 <- seq(0, 10 * step.0, by = step.0)
@@ -286,23 +293,24 @@ get.NPV <- function(prev, sens, spec) {
   prev.4 <- seq(.90, .90 + 10 * step.4, by = step.4)
   step.5 <- .001
   prev.5 <- seq(.990, .990 + 10 * step.5, by = step.5)
-  
+
   prev.range <- sort(unique(c(prev.0, prev.1, prev.2, prev.3, prev.4, prev.5)))
   # prev.range <- prev.range[prev.range > 0] # remove prev = 0
   # prev.range <- prev.range[prev.range < 1] # remove prev = 1
   ## Hack to prevent -Inf on log scale:
   epsilon <- 1/1000000 # some very small constant
   prev.range[prev.range == 0] <- 0 + epsilon # slightly more than 0
-  prev.range[prev.range == 1] <- 1 - epsilon # slightly less than 1 
+  prev.range[prev.range == 1] <- 1 - epsilon # slightly less than 1
   # prev.range
   # log10(get.PPV(prev.range, .5, .5)) # => -Inf for prev = 0
-  # log10(get.NPV(prev.range, .5, .5)) # => -Inf for prev = 1 
-  
+  # log10(get.NPV(prev.range, .5, .5)) # => -Inf for prev = 1
+
   prev.scale <- sort(unique(c(step.0, 5*step.0, step.1, 5*step.1, step.2, 5*step.2, 9*step.0)))
   # log10(prev.scale)
   # prev.scale
 }
 
+##### 
 ## (3) Plot PPV and NPV as a function of prev.range:
 # DEPRECATED, now done by plot_PV
 # #plot.PV.curves <- function(env, show.PVprev = TRUE, show.PVpoints = TRUE, log.scale = FALSE) {
@@ -428,139 +436,140 @@ get.NPV <- function(prev, sens, spec) {
 #   
 # }
 
+#####
 ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ # 
 ## 3D graph:
-
-## (1) Define parameters:
-{ # Basic graph parameters:
-  my.theta  <- -45 # horizontal viewing angle (higher values: more rotation)
-  my.phi    <-   0 # vertical viewing angle (higher values: higher viewpoint)
-  my.expand <- 1.1 # values < 1 shrink expansion in z-direction
-  my.d      <- 1.5 # values > 1 reduce perspective effect 
-  my.ltheta <- 200 # surface is illuminated from the direction specified by azimuth ltheta
-  my.shade  <- .25 # values towards 1 yield shading similar to a point light source model and values towards 0 produce no shading.
-}
-
-## (2) Compute PPV and NPV for an entire matrix of values:
-pv.matrix <- function(prev, sens, spec, metric) {
-  
-  # initializing DF (as matrix to store and return results):
-  n.rows <- length(sens)
-  n.cols <- length(spec)
-  matrix <- as.data.frame(matrix(NA, 
-                                 nrow = n.rows, 
-                                 ncol = n.cols)) 
-  names(matrix) <- sens 
-  
-  ## Loop through all rows and columns of as_pc.matrix: 
-  for (row in 1:n.rows) {
-    for (col in 1:n.cols) {
-      
-      # Compute the needed model DV for the current cell value:
-      cell.val <- NA 
-      
-      if (metric == "PPV") {cell.val <- get.PPV(prev, sens[row], spec[col])} # compute PPV
-      if (metric == "NPV") {cell.val <- get.NPV(prev, sens[row], spec[col])} # compute NPV
-      
-      # Store results:
-      matrix[row, col] <- cell.val 
-      
-    }
-  }
-  
-  ## Return matrix:
-  return(matrix)
-  
-}
-
-## (3) Plot both PPV and NPV in adjacent plots:
-plot.PV.planes <- function(env, show.PVpoints = TRUE, 
-                           cur.theta, cur.phi, cur.d, cur.expand, cur.ltheta, cur.shade) {
-  
-  ## Current environment parameters:
-  name <- env$name
-  N    <- env$N
-  prev <- env$prev
-  sens <- env$sens
-  spec <- env$spec
-  source <- env$source
-  
-  ## Current PPV and NPV values and labels:
-  ## (a) from current data:
-  # cur.PPV <- data$PPV # get.PPV(prev, sens, spec)
-  # cur.NPV <- data$NPV # get.NPV(prev, sens, spec) 
-  # cur.PPV.label <- data$PPV.label # paste0("PPV = ", as_pc(cur.PPV), "%") # paste0("(", as_pc(prev), "%; ", as_pc(cur.PPV), "%)")
-  # cur.NPV.label <- data$NPV.label # paste0("NPV = ", as_pc(cur.NPV), "%") # paste0("(", as_pc(prev), "%; ", as_pc(cur.NPV), "%)")
-  ## (b) Compute from scratch:
-  cur.PPV <- get.PPV(prev, sens, spec) # data()$PPV
-  cur.NPV <- get.NPV(prev, sens, spec) # data()$NPV 
-  cur.PPV.label <- paste0("PPV = ", as_pc(cur.PPV), "%") # paste0("(", as_pc(prev), "%; ", as_pc(cur.PPV), "%)")
-  cur.NPV.label <- paste0("NPV = ", as_pc(cur.NPV), "%") # paste0("(", as_pc(prev), "%; ", as_pc(cur.NPV), "%)")
-  
-  ## Ranges on x- and y-axes:
-  sens.range <- seq(0.0, 1.0, by = .05) # range of sensitivity values 
-  spec.range <- seq(0.0, 1.0, by = .05) # range of specificity values 
-  
-  ## Compute PPV and NPV matrices:
-  PPV.mat <- pv.matrix(prev, sens.range, spec.range, metric = "PPV")
-  NPV.mat <- pv.matrix(prev, sens.range, spec.range, metric = "NPV")
-  
-  ## Graph parameters:
-  x <- sens.range
-  y <- spec.range
-  z.ppv <- as.matrix(PPV.mat)
-  z.npv <- as.matrix(NPV.mat)
-  z.lim <- c(0, 1) # range of z-axis
-  # cur.par.label <- paste0("(", 
-  #                         "prev = ", as_pc(prev), "%, ", 
-  #                         "sens = ", as_pc(sens), "%, ", 
-  #                         "spec = ", as_pc(spec), "%)")
-  cur.par.label <- paste0("(prev = ", as_pc(prev), "%)")
-  
-  # Plot 2 plots (adjacent to each other):
-  {
-    
-    ## Define special graphic settings:
-    par(mfrow = c(1, 2)) # Combine 2 plots in 1 row x 2 columns:
-    par(bg = "white")
-    
-    ## 3D plot for PPV:
-    p.ppv <- persp(x, y, z.ppv, 
-                   theta = cur.theta, phi = cur.phi,  d = cur.d, expand = cur.expand, 
-                   col = col.ppv, border = NA, # col.ppv, col.orange.1, 
-                   ltheta = cur.ltheta, shade = cur.shade, 
-                   ticktype = "detailed", nticks = 6, 
-                   xlab = "sens", ylab = "spec", zlab = "PPV", zlim = z.lim, 
-                   main = paste0(cur.PPV.label, "\n", cur.par.label)
-    )
-    
-    if (show.PVpoints) { # add cur.PPV to plot:
-      pmat <- p.ppv
-      add.PPV <- trans3d(sens, spec, cur.PPV, pmat)
-      points(add.PPV, pch = 21, col = "grey88", bg = col.ppv, lwd = 1.0, cex = 1.3)
-    }
-    
-    ## 3D plot for NPV:    
-    p.npv <- persp(x, y, z.npv, 
-                   theta = cur.theta, phi = cur.phi,  d = cur.d, expand = cur.expand, 
-                   col = col.npv, border = NA, # col.npv, col.blue.1, 
-                   ltheta = cur.ltheta, shade = cur.shade, 
-                   ticktype = "detailed", nticks = 6, 
-                   xlab = "sens", ylab = "spec", zlab = "NPV", zlim = z.lim, 
-                   main = paste0(cur.NPV.label, "\n", cur.par.label)
-    )
-    
-    if (show.PVpoints) { # add cur.NPV to plot:
-      pmat <- p.npv
-      add.NPV <- trans3d(sens, spec, cur.NPV, pmat)
-      points(add.NPV, pch = 21, col = "grey88", bg = col.npv, lwd = 1.0, cex = 1.3)
-    }
-    
-    ## Remove special graphic settings:
-    par(mfrow = c(1, 1)) 
-  }
-  
-}
+# DEPRECATED, now done by plot_PV3d
+# ## (1) Define parameters:
+# { # Basic graph parameters:
+#   my.theta  <- -45 # horizontal viewing angle (higher values: more rotation)
+#   my.phi    <-   0 # vertical viewing angle (higher values: higher viewpoint)
+#   my.expand <- 1.1 # values < 1 shrink expansion in z-direction
+#   my.d      <- 1.5 # values > 1 reduce perspective effect 
+#   my.ltheta <- 200 # surface is illuminated from the direction specified by azimuth ltheta
+#   my.shade  <- .25 # values towards 1 yield shading similar to a point light source model and values towards 0 produce no shading.
+# }
+# 
+# ## (2) Compute PPV and NPV for an entire matrix of values:
+# pv.matrix <- function(prev, sens, spec, metric) {
+#   
+#   # initializing DF (as matrix to store and return results):
+#   n.rows <- length(sens)
+#   n.cols <- length(spec)
+#   matrix <- as.data.frame(matrix(NA, 
+#                                  nrow = n.rows, 
+#                                  ncol = n.cols)) 
+#   names(matrix) <- sens 
+#   
+#   ## Loop through all rows and columns of as_pc.matrix: 
+#   for (row in 1:n.rows) {
+#     for (col in 1:n.cols) {
+#       
+#       # Compute the needed model DV for the current cell value:
+#       cell.val <- NA 
+#       
+#       if (metric == "PPV") {cell.val <- get.PPV(prev, sens[row], spec[col])} # compute PPV
+#       if (metric == "NPV") {cell.val <- get.NPV(prev, sens[row], spec[col])} # compute NPV
+#       
+#       # Store results:
+#       matrix[row, col] <- cell.val 
+#       
+#     }
+#   }
+#   
+#   ## Return matrix:
+#   return(matrix)
+#   
+# }
+# 
+# ## (3) Plot both PPV and NPV in adjacent plots:
+# plot.PV.planes <- function(env, show.PVpoints = TRUE, 
+#                            cur.theta, cur.phi, cur.d, cur.expand, cur.ltheta, cur.shade) {
+#   
+#   ## Current environment parameters:
+#   name <- env$name
+#   N    <- env$N
+#   prev <- env$prev
+#   sens <- env$sens
+#   spec <- env$spec
+#   source <- env$source
+#   
+#   ## Current PPV and NPV values and labels:
+#   ## (a) from current data:
+#   # cur.PPV <- data$PPV # get.PPV(prev, sens, spec)
+#   # cur.NPV <- data$NPV # get.NPV(prev, sens, spec) 
+#   # cur.PPV.label <- data$PPV.label # paste0("PPV = ", as_pc(cur.PPV), "%") # paste0("(", as_pc(prev), "%; ", as_pc(cur.PPV), "%)")
+#   # cur.NPV.label <- data$NPV.label # paste0("NPV = ", as_pc(cur.NPV), "%") # paste0("(", as_pc(prev), "%; ", as_pc(cur.NPV), "%)")
+#   ## (b) Compute from scratch:
+#   cur.PPV <- get.PPV(prev, sens, spec) # data()$PPV
+#   cur.NPV <- get.NPV(prev, sens, spec) # data()$NPV 
+#   cur.PPV.label <- paste0("PPV = ", as_pc(cur.PPV), "%") # paste0("(", as_pc(prev), "%; ", as_pc(cur.PPV), "%)")
+#   cur.NPV.label <- paste0("NPV = ", as_pc(cur.NPV), "%") # paste0("(", as_pc(prev), "%; ", as_pc(cur.NPV), "%)")
+#   
+#   ## Ranges on x- and y-axes:
+#   sens.range <- seq(0.0, 1.0, by = .05) # range of sensitivity values 
+#   spec.range <- seq(0.0, 1.0, by = .05) # range of specificity values 
+#   
+#   ## Compute PPV and NPV matrices:
+#   PPV.mat <- pv.matrix(prev, sens.range, spec.range, metric = "PPV")
+#   NPV.mat <- pv.matrix(prev, sens.range, spec.range, metric = "NPV")
+#   
+#   ## Graph parameters:
+#   x <- sens.range
+#   y <- spec.range
+#   z.ppv <- as.matrix(PPV.mat)
+#   z.npv <- as.matrix(NPV.mat)
+#   z.lim <- c(0, 1) # range of z-axis
+#   # cur.par.label <- paste0("(", 
+#   #                         "prev = ", as_pc(prev), "%, ", 
+#   #                         "sens = ", as_pc(sens), "%, ", 
+#   #                         "spec = ", as_pc(spec), "%)")
+#   cur.par.label <- paste0("(prev = ", as_pc(prev), "%)")
+#   
+#   # Plot 2 plots (adjacent to each other):
+#   {
+#     
+#     ## Define special graphic settings:
+#     par(mfrow = c(1, 2)) # Combine 2 plots in 1 row x 2 columns:
+#     par(bg = "white")
+#     
+#     ## 3D plot for PPV:
+#     p.ppv <- persp(x, y, z.ppv, 
+#                    theta = cur.theta, phi = cur.phi,  d = cur.d, expand = cur.expand, 
+#                    col = col.ppv, border = NA, # col.ppv, col.orange.1, 
+#                    ltheta = cur.ltheta, shade = cur.shade, 
+#                    ticktype = "detailed", nticks = 6, 
+#                    xlab = "sens", ylab = "spec", zlab = "PPV", zlim = z.lim, 
+#                    main = paste0(cur.PPV.label, "\n", cur.par.label)
+#     )
+#     
+#     if (show.PVpoints) { # add cur.PPV to plot:
+#       pmat <- p.ppv
+#       add.PPV <- trans3d(sens, spec, cur.PPV, pmat)
+#       points(add.PPV, pch = 21, col = "grey88", bg = col.ppv, lwd = 1.0, cex = 1.3)
+#     }
+#     
+#     ## 3D plot for NPV:    
+#     p.npv <- persp(x, y, z.npv, 
+#                    theta = cur.theta, phi = cur.phi,  d = cur.d, expand = cur.expand, 
+#                    col = col.npv, border = NA, # col.npv, col.blue.1, 
+#                    ltheta = cur.ltheta, shade = cur.shade, 
+#                    ticktype = "detailed", nticks = 6, 
+#                    xlab = "sens", ylab = "spec", zlab = "NPV", zlim = z.lim, 
+#                    main = paste0(cur.NPV.label, "\n", cur.par.label)
+#     )
+#     
+#     if (show.PVpoints) { # add cur.NPV to plot:
+#       pmat <- p.npv
+#       add.NPV <- trans3d(sens, spec, cur.NPV, pmat)
+#       points(add.NPV, pch = 21, col = "grey88", bg = col.npv, lwd = 1.0, cex = 1.3)
+#     }
+#     
+#     ## Remove special graphic settings:
+#     par(mfrow = c(1, 1)) 
+#   }
+#   
+# }
 
 #####
 
@@ -799,10 +808,37 @@ shinyServer(function(input, output, session){
   })
   
   ## (e) Tree with natural frequencies:
-  output$nftree <- renderPlot(plot.nftree(env, # use current environment parameters     
-                                          data # use current data (hi, mi, fa, cr)
+  # output$nftree <- renderPlot(plot.nftree(env, # use current environment parameters     
+  #                                         data # use current data (hi, mi, fa, cr)
+  #                                         )
+  #                             )
+  
+  output$nftree <- renderPlot(plot_nftree(prev = env$prev, sens = env$sens, spec = env$spec, fart = (1-env$spec),
+                                          N = env$N, n.true = data$n.true, n.false = data$n.false,
+                                          n.hi = data$n.hi, n.mi = data$n.mi, n.fa = data$n.fa, n.cr = data$n.cr,
+                                          title.lbl = cus$scenario.txt,    # custom labels
+                                          popu.lbl = cus$target.population.lbl,
+                                          cond.lbl = cus$condition.lbl,     # condition
+                                          cond.true.lbl = cus$cond.true.lbl,
+                                          cond.false.lbl = cus$cond.false.lbl,
+                                          dec.lbl = cus$decision.lbl,       # decision
+                                          dec.true.lbl = cus$dec.true.lbl,
+                                          dec.false.lbl = cus$dec.false.lbl,
+                                          sdt.hi.lbl = cus$sdt.hi.lbl, # SDT combinations
+                                          sdt.mi.lbl = cus$sdt.mi.lbl,
+                                          sdt.fa.lbl = cus$sdt.fa.lbl,
+                                          sdt.cr.lbl = cus$sdt.cr.lbl,
+                                          col.txt = "black", #grey(.01, alpha = .99), # black
+                                          col.border = grey(.01, alpha = .99), #col.grey.4,
+                                          col.N = col.sand.light, # col.sand.light,
+                                          col.true = col.sand.light, col.false = col.sand.light, # both col.N, previously
+                                          col.hi = cus$color.hi, col.mi = cus$color.mi, col.fa = cus$color.fa, col.cr = cus$color.cr
                                           )
-                              )
+  )
+                                          
+                                                     
+                                                   
+                                                      
   
   ## (f) 2D plot of PPV and NPV as a function of prev.range:
   output$PVs <- renderPlot(plot_PV(prev = env$prev, sens = env$sens, spec = env$spec,

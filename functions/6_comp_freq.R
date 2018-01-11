@@ -78,7 +78,7 @@ comp_freq <- function(N = num$N, prev = num$prev, sens = num$sens, spec = num$sp
 }
 
 ## Apply:
-cur.freq <- comp_freq()
+freq <- comp_freq()
 # cur.freq
 
 ## -----------------------------------------------

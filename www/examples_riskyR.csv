@@ -1,5 +1,5 @@
 dataset;N;prev;sens;spec;source;scenario.txt;target.population.lbl;condition.lbl;cond.true.lbl;cond.false.lbl;decision.lbl;dec.true.lbl;dec.false.lbl;sdt.hi.lbl;sdt.mi.lbl;sdt.fa.lbl;sdt.cr.lbl
----;1000;.10;.90; .85;no source;This is a generic example.;Population;Condition;Condition true;Condition false;Diagnostic decision;Decision positive;Decision negative;hit;miss;false alarm;correct rejection
+---;1000;.10;.90; .85;no source;Generic example;Population;Condition;Condition true;Condition false;Diagnostic decision;Decision positive;Decision negative;hit;miss;false alarm;correct rejection
 Mammography 1;1000;.01;.9;.91;Gigerenzer (2013),  p. 213-221;;Frauen 40+;Breast cancer;Has breast cancer;Does not have breast cancer;Mammography;Cancer diagnosed;Cancer not diagnosed;korrekt erkannt;übersehen;Fehldiagnose;keine Diagnose (korrekt)
 Nuchal translucency scan/NFT 1;1000;.01;.9;.95;Gigerenzer (2013),  p. 222-226;placeholder;placeholder;Down syndrome/trisomy 21;placeholder;placeholder;placeholder;placeholder;placeholder;placeholder;placeholder;placeholder;placeholder
 HIV 1;100000;.0001;1;.99995;Gigerenzer (2013),  p. 53;placeholder;placeholder;HIV positive;placeholder;placeholder;placeholder;placeholder;placeholder;placeholder;placeholder;placeholder;placeholder
