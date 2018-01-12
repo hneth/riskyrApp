@@ -1,5 +1,5 @@
 ## ui.R
-## riskyrApp | R Shiny | spds, uni.kn | 2018 01 11
+## riskyrApp | R Shiny | spds, uni.kn | 2018 01 12
 ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ # 
 
 # rm(list=ls()) # clean all.
@@ -337,7 +337,8 @@ shinyUI(
                                                br(), 
                                                paste0("Tree of natural frequencies:"), 
                                                br(),
-                                               plotOutput("nftree", width = "700px", height = "550px"), 
+                                               plotOutput("nftree", width = "100%", height = "550px"),
+                                               # works: width = "700px", height = "550px" # 
                                                br()
                                                ),
                                       # Table

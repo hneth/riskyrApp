@@ -1,5 +1,5 @@
 ## server.R
-## riskyR | R Shiny | spds, uni.kn | 2018 01 11
+## riskyR | R Shiny | spds, uni.kn | 2018 01 12
 
 #####
 
@@ -845,7 +845,7 @@ shinyServer(function(input, output, session){
                                    show.PVprev = input$boxPVprev, # mark current prevalence in plot                
                                    show.PVpoints = input$boxPVpoints1, # mark cur.PPV/cur.NPV in plot
                                    log.scale = input$boxPVlog,
-                                   scen.lbl = cus$scenario.txt,
+                                   title.lbl = cus$scenario.txt,
                                    col.ppv = cus$color.ppv,
                                    col.npv = cus$color.npv)
     )

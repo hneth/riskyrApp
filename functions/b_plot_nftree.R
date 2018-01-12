@@ -1,5 +1,5 @@
 ## plot_nftree.R | riskyR
-## 2018 01 10
+## 2018 01 11
 ## -----------------------------------------------
 ## Plot a tree diagram of natural frequencies
 
@@ -41,7 +41,7 @@ plot_nftree <- function(prev = num$prev, sens = num$sens, spec = num$spec, fart 
                         ){
 
 
-    ## Labels:                                          # NOT used yet:
+    ## Text/labels in 7 boxes:                          # NOT used yet:
     names <- c(paste0("Population", ":\n", "N = ", N),  # popu.lbl
                paste0(cond.true.lbl, ":\n",  n.true),
                paste0(cond.false.lbl, ":\n", n.false),
@@ -54,24 +54,25 @@ plot_nftree <- function(prev = num$prev, sens = num$sens, spec = num$spec, fart 
     ## Make matrix M:
     M <- matrix(nrow = 7, ncol = 8, byrow = TRUE, data = 0)
 
+    ## ToDo: Use more informative arrow/edge labels:
     prev.lbl <- paste0("prev = ", as_pc(prev), "%")
 
-    M[2, 1] <- "prevalence"     # ERROR: WHY does prev.lbl not work???
+    M[2, 1] <- "prevalence" # ERROR: WHY does prev.lbl not work with spaces???
     M[3, 1] <- "(N - n.true)"
     M[4, 2] <- "sensitivity"
     M[5, 2] <- "(n.true - n.hi)"
     M[6, 3] <- "(n.false - n.cr)"
     M[7, 3] <- "specificity"
 
-    ## Plot matrix M:
-    pp <- plotmat(M, # square coefficient matrix, specifying the links (rows = to, cols = from)
+    ## Plot matrix M (from diagram package):
+    pp <- diagram::plotmat(M, # square coefficient matrix, specifying the links (rows = to, cols = from)
                   pos = c(1, 2, 4),
                   curve = 0.0, # no curve (> 0 curve left, < 0 curve right)
                   name = names,
-                  relsize	= .95, # a scaling factor for the size of the graph
-                  lwd = 2.0,
+                  relsize	= .98, # a scaling factor for the size of the graph
+                  lwd = 1.5,
                   ## Boxes:
-                  box.size = .10, # length of box
+                  box.size = .11, # length of box
                   box.prop = 2/3, # proportionality (length/width) ratio of box
                   box.type = "rect", # "ellipse", "diamond", "circle", "hexa", "multi", "none"
                   box.col = c(col.N, col.true, col.false, col.hi, col.mi, col.fa, col.cr), # WAS: "lightyellow"
@@ -80,14 +81,14 @@ plot_nftree <- function(prev = num$prev, sens = num$sens, spec = num$spec, fart 
                   lcol = col.border, # default color for box and arrow lines
                   ## Text in Boxes:
                   txt.col = col.txt,
-                  box.cex = 1.1, # relative size of text in boxes
+                  box.cex = .95, # relative size of text in boxes
                   txt.font = 1, # 1 = plain, 2 = bold, ...
                   ## Arrows:
                   cex.txt = .90, # relative size of arrow text
                   arr.pos = .50, # relative position of arrowhead on arrow segment/curve
                   arr.type = "triangle", # one of "curved", "triangle", "circle", "ellipse", "T", "simple"
-                  arr.length = .40,
-                  arr.width = .30,
+                  arr.length = .30,
+                  arr.width = .20,
                   arr.col = col.border,
                   shadow.size = cex.shadow, # .005
                   shadow.col = col.shadow #,
@@ -95,17 +96,22 @@ plot_nftree <- function(prev = num$prev, sens = num$sens, spec = num$spec, fart 
                   )
 
     ## Title:
-    p.title.lbl = paste0(title.lbl, ":\n", "Tree of natural frequencies") # , "(N = ", N, ")")
-    title(p.title.lbl, adj = 0.5, line = -1.5, font.main = 1) # (left, raised, normal font)
+    cur.title.lbl = paste0(title.lbl, ":\n", "Tree of natural frequencies") # , "(N = ", N, ")")
+    title(cur.title.lbl, adj = 0.5, line = -1.0, font.main = 1) # (left, lowered, normal font)
 
-    # return(pp)
+    ## Margin text:
+    cur.par.lbl <-  paste0("(", "prev = ", as_pc(prev), "%, ", "sens = ", as_pc(sens), "%, ", "spec = ", as_pc(spec), "%)")
+    mtext(cur.par.lbl, side = 1, line = 1, adj = 1, col = grey(.33, .99), cex = .90)
+
+    # return(pp) # returns elements of diagram object
 
 }
 
 ## Check:
-plot_nftree()
+# plot_nftree()
 # plot_nftree(col.txt = "black", col.border = col.sand.dark,  cex.shadow = .011)
 # plot_nftree(col.N = "lightyellow", col.shadow = "steelblue3", cex.shadow = .015)
+
 
 ## -----------------------------------------------
 ## (+) ToDo:
