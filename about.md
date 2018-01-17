@@ -18,6 +18,7 @@ Develop and assemble a set of basic risk literacy tools in R:
 
 - The corresponding R Shiny app `riskyrApp` allows using the `riskyr` toolbox in an interactive fashion without any coding.
 
+
 Rationale
 ---------
 
@@ -57,7 +58,7 @@ In APA format:
 
 - Neth, H., Gaisbauer, F., Gradwohl, N., & Gaissmaier, W. (2018).  
 `riskyr`: A toolbox for transparent communication and teaching of risk literacy [Computer software]. 
-Retrieved from https://github.com/hneth/riskyr (R package version 0.0.0.900)
+Retrieved from https://github.com/hneth/riskyr (R package version 0.0.0.904)
 
 As BibTeX reference: 
 
@@ -65,7 +66,7 @@ As BibTeX reference:
       title = {{riskyr}: A toolbox for transparent communication and teaching of risk literacy},
       author = {Neth, Hansj\"{o}rg and Gaisbauer, Felix and Gradwohl, Nico and Gaissmaier, Wolfgang}, 
       year = 2018,
-      note = {R package version 0.0.0.900},
+      note = {R package version 0.0.0.904},
       url = {https://github.com/hneth/riskyr}
     }
 
@@ -196,7 +197,7 @@ In APA format:
 
 - Neth, H., Gaisbauer, F., Gradwohl, N., & Gaissmaier, W. (2018). 
 `riskyR`: A toolbox for transparent communication and teaching of risk literacy 
-[Computer software]. Retrieved from https://github.com/hneth/riskyR (R package version 0.0.1)
+[Computer software]. Retrieved from https://github.com/hneth/riskyR (R package version 0.0.0.904)
 
 As BibTeX reference: 
 
@@ -204,7 +205,7 @@ As BibTeX reference:
       title = {{riskyr}: A toolbox for transparent communication and teaching of risk literacy},
       author = {Neth, Hansj\"{o}rg and Gaisbauer, Felix and Gradwohl, Nico and Gaissmaier, Wolfgang}, 
       year = 2018,
-      note = {R package version 0.0.1},
+      note = {R package version 0.0.0.904},
       url = {https://github.com/hneth/riskyr}
     }
 

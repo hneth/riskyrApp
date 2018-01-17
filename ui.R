@@ -1,5 +1,5 @@
 ## ui.R
-## riskyrApp | R Shiny | spds, uni.kn | 2018 01 12
+## riskyrApp | R Shiny | spds, uni.kn | 2018 01 17
 ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ # 
 
 # rm(list=ls()) # clean all.
@@ -7,18 +7,23 @@
 ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ # 
 ## Dependencies:
 
+# get packages for app
 library("shiny")
 library("shinyBS")
 library("markdown")
 library("DT")
-library("diagram")
-library("shape")
-library("tidyr")
-library("dplyr")
-library("ggplot2")
-library("vcd")
 library("colourpicker")
+# library("diagram")
+# library("shape")
+# library("tidyr")
+# library("dplyr")
+# library("ggplot2")
+library("vcd")
 
+
+# get riskyr
+# install.packages("../riskyr_0.0.0.901.tar.gz", repos = NULL, type="source")
+library("riskyr")
 
 
 ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ # 
@@ -36,8 +41,7 @@ env <- e1 # from current environment
 
 ## Import ready-made and worked out example data:
 datasets <- read.csv2("./www/examples_riskyR.csv", stringsAsFactors = FALSE)
-            # WAS: read.csv2("./www/datasets_riskyr.csv", stringsAsFactors = FALSE)
-            # WAS: read.csv("./www/riskyR_datasets.csv", stringsAsFactors = FALSE)
+
 
 ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ # 
 ## JavaScript:
@@ -128,7 +132,7 @@ shinyUI(
   # tags$head(tags$script(HTML(JS.logify))),
   # tags$head(tags$script(HTML(JS.onload))),
   
-  navbarPage(title = "riskyrApp",
+  navbarPage(title = "riskyr",
              theme = "bootstrap.sandstone.css",
              ## or another bootsstrap theme https://bootswatch.com/3/, e.g., 
              # theme = "bootstrap.yeti.css",
@@ -149,7 +153,8 @@ shinyUI(
                         #####
                         # Sidebar panel for inputs:
                         sidebarPanel(
-                          
+                          # tags$head(tags$style(".shiny-plot-output{height:50vh !important;}")),
+
                           # Input: Select all input values:
 
                           h3("Please select inputs:"),
@@ -288,11 +293,10 @@ shinyUI(
                                       # Stats
                                       #####
                                       tabPanel("Stats",
-                                               br(),  
                                                withMathJax(includeMarkdown("www/statstab_riskyr.md")),
-                                               br(),  
+                                               br(),
                                                tableOutput("confusiontable1"),
-                                               br(), br(), 
+                                               br(),
                                                withMathJax(includeMarkdown("www/statstab_riskyr_ACC.md")),
                                                uiOutput("ACC"),
                                                br(), br(),
@@ -327,7 +331,7 @@ shinyUI(
                                       # Icons
                                       #####
                                       tabPanel("Icons", 
-                                               br(),
+                                               br(), 
                                                paste0("Icon array: Coming soon..."), 
                                                br(), br()
                                                ),
@@ -336,10 +340,17 @@ shinyUI(
                                       tabPanel("Tree", 
                                                br(), 
                                                paste0("Tree of natural frequencies:"), 
+                                               br(), br(),  
+                                               plotOutput("nftree", width = "550", height = "550"), 
                                                br(),
-                                               plotOutput("nftree", width = "100%", height = "550px"),
-                                               # works: width = "700px", height = "550px" # 
-                                               br()
+                                               wellPanel(
+                                                 fluidRow(
+                                                   column(8, offset = 1,
+                                                          radioButtons("treetype","Type of Boxes", c("Default Boxes" = "no", "Mosaic Boxes" = "sq", 
+                                                                                                    "Horizontally Boxed" = "hr", "Vertically Boxed" = "vr"), inline=TRUE)
+                                                          )
+                                                 )
+                                                )
                                                ),
                                       # Table
                                       #####
@@ -350,8 +361,8 @@ shinyUI(
                                                tableOutput("confusiontable2"),
                                                br(),
                                                paste0("The following mosaic plot shows the cell frequencies as area sizes:"), 
-                                               br(),
-                                               plotOutput("mosaicplot"),
+                                               br(),  br(), 
+                                               plotOutput("mosaicplot", height = "400px", width = "400px"),
                                                br()
                                                ),
                                       # PV curves
