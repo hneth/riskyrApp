@@ -44,13 +44,13 @@ datasets <- read.csv2("./www/examples_riskyR.csv", stringsAsFactors = FALSE)
 # take defaults from example datasets stored in www folder
 default.parameters <- setNames(datasets[1, 2:5], names(datasets)[2:5])
 default.terminology <- setNames(datasets[1, 7:18], names(datasets)[7:18])
-# define default colors
-default.colors <- c(color.hi = rgb(128, 177, 57, max = 255), # col.green.2
-                    color.mi = rgb(210, 52, 48, max = 255), # col.red.2
-                    color.fa = rgb(184, 217, 137, max = 255), # col.green.1
-                    color.cr = rgb(230, 142, 140, max = 255), # col.red.1
-                    color.ppv = rgb(242, 100, 24, max = 255), # col.orange.2
-                    color.npv = rgb(29, 149, 198, max = 255) # col.blue.3
+# define default colors: 
+default.colors <- c(color.hi  = rgb(128, 177,  57, max = 255),  # col.green.2
+                    color.mi  = rgb(210,  52,  48, max = 255),  # col.red.2
+                    color.fa  = rgb(230, 142, 140, max = 255),  # col.red.1 
+                    color.cr  = rgb(184, 217, 137, max = 255),  # col.green.1 
+                    color.ppv = rgb(242, 100,  24, max = 255),  # col.orange.2
+                    color.npv = rgb( 29, 149, 198, max = 255)   # col.blue.3
                     )
 
 
@@ -428,7 +428,7 @@ shinyServer(function(input, output, session){
   ## (0) Overview:
   output$network <- renderPlot({
     riskyr::plot_fnet(prev = env$prev, sens = env$sens, spec = env$spec, N = env$N,
-                      # user inputs
+                      # user inputs: 
                       area = input$nettype, 
                       by = input$netby,
                       title.lbl = cus$scenario.txt,

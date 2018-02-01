@@ -340,7 +340,7 @@ shinyUI(
                                                           radioButtons("netby", "Build Network by", c("Condition first" = "cddc",
                                                                                                       "Decision first" = "dccd"), inline = TRUE)),
                                                    column(6, 
-                                                          radioButtons("nettype","Type of Boxes", c("Default boxes" = "no", "Squares" = "sq", 
+                                                          radioButtons("nettype", "Type of Boxes", c("Default boxes" = "no", "Squares" = "sq", 
                                                                                                      "Horizontal rectangles" = "hr", "Vertical rectangles" = "vr"), inline = TRUE)
                                                    )
                                                    ))
