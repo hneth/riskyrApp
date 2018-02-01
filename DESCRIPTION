@@ -1,7 +1,7 @@
 Title: riskyrApp
-Version: 0.0.0.901
+Version: 0.0.0.911
 Type: Shiny
-DisplayMode: Showcase
+DisplayMode: Normal
 Author: SPDS uni.kn
 AuthorUrl: http://spds.uni-konstanz.de
 Maintainer: Hansjörg Neth <h.neth@uni.kn>

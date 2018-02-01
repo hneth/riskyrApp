@@ -1,7 +1,8 @@
-
 ### `riskyrApp`
+SPDS, uni.kn  
+2018 01 31  
 
-`riskyrApp` is an interactive application that complements the `riskyR` package. 
+`riskyrApp` is an interactive application that complements the `riskyr` package. 
 
 
 #### Goal
@@ -13,7 +14,7 @@ The application is written in [R Shiny](https://shiny.rstudio.com/) and allows u
 
 #### Information
 
-Visit https://github.com/hneth/riskyr for additional information on `riskyr`. 
+Visit [`riskyr` on GitHub](https://github.com/hneth/riskyr) for additional information on `riskyr`. 
 
 
 #### Contact

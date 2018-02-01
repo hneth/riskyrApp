@@ -1,240 +1,279 @@
 ## ui.R
-## riskyrApp | R Shiny | spds, uni.kn | 2018 01 17
-## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ # 
+## riskyrApp | R Shiny | spds, uni.kn | 2018 02 01
 
-# rm(list=ls()) # clean all.
 
-## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ # 
+#####
+# Preparing the ground
+
 ## Dependencies:
-
-# get packages for app
 library("shiny")
 library("shinyBS")
 library("markdown")
 library("DT")
 library("colourpicker")
-# library("diagram")
-# library("shape")
-# library("tidyr")
-# library("dplyr")
-# library("ggplot2")
 library("vcd")
 
-
-# get riskyr
-# install.packages("../riskyr_0.0.0.901.tar.gz", repos = NULL, type="source")
+## Install the currently included version of riskyr:
+# install.packages("./riskyr_0.0.0.911.tar.gz", repos = NULL, type = "source")
+# detach("package:riskyr", unload = TRUE)
 library("riskyr")
 
-
-## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ # 
-## Initial environment:
-
-e1 <- list("name" = "Demo",  # name (e.g., HIV, mammography, ...)
-           "N" = 100,        # N in population
-           "prev" = .15,     # prevalence in population = p(true positive)
-           "sens" = .85,     # sensitivity = p(positive decision | true positive)
-           "spec" = .75,     # specificity = p(negative decision | true negative)
-           "source" = "source information" # information source (e.g., citation)
-)
-
-env <- e1 # from current environment
 
 ## Import ready-made and worked out example data:
 datasets <- read.csv2("./www/examples_riskyR.csv", stringsAsFactors = FALSE)
 
+default.colors <- c(color.hi = rgb(128, 177, 57, max = 255), # col.green.2
+                    color.mi = rgb(210, 52, 48, max = 255), # col.red.2
+                    color.fa = rgb(184, 217, 137, max = 255), # col.green.1
+                    color.cr = rgb(230, 142, 140, max = 255), # col.red.1
+                    color.ppv = rgb(242, 100, 24, max = 255), # col.orange.2
+                    color.npv = rgb(29, 149, 198, max = 255) # col.blue.3
+)
 
-## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ # 
-## JavaScript:
-
-{
-  ## Source: https://stackoverflow.com/questions/30502870/shiny-slider-on-logarithmic-scale
-  
-  ## logifySlider javascript function: 
-  JS.logify <-
-    "
-// function to logify a sliderInput
-function logifySlider (sliderId, sci = false) {
-if (sci) {
-// scientific style
-$('#'+sliderId).data('ionRangeSlider').update({
-'prettify': function (num) { return ('10<sup>'+num+'</sup>'); }
-})
-} else {
-// regular number style
-$('#'+sliderId).data('ionRangeSlider').update({
-'prettify': function (num) { return (Math.pow(10, num)); }
-})
-}
-}"
-
-## call logifySlider for each relevant sliderInput: 
-JS.onload <-
-  "
-// execute upon document loading: 
-$(document).ready(function() {
-// wait a few ms to allow other scripts to execute
-setTimeout(function() {
-// include call for each slider
-logifySlider('log_slider', sci = false)
-logifySlider('log_slider2', sci = true)
-}, 5)})
-"
-
-}
-
-## colors
-
-
-seeblau <- rgb(0, 169, 224, max = 255) # seeblau.4 (non-transparent)
-
-## from https://bootswatch.com/sandstone/ 
-
-col.sand.light = rgb(248, 245, 240, max = 255)
-col.sand.mid   = rgb(142, 140, 132, max = 255)
-col.sand.dark  = rgb(62, 63, 58, max = 255)
-
-
-col.grey.1 <- rgb(181, 179, 174, max = 255)
-col.grey.2 <- rgb(123, 121, 113, max = 255)
-col.grey.3 <- "grey25"
-col.grey.4 <- "grey10"
-
-col.green.1 <- rgb(184, 217, 137, max = 255)
-col.green.2 <- rgb(128, 177, 57, max = 255)
-
-col.red.1 <- rgb(230, 142, 140, max = 255)
-col.red.2 <- rgb(210, 52, 48, max = 255)
-
-col.blue.1 <- rgb(115, 200, 234, max = 255)
-col.blue.2 <- rgb(121, 149, 177, max = 255)
-col.blue.3 <- rgb(29, 149, 198, max = 255)
-col.blue.4 <- rgb(40, 74, 108, max = 255)
-
-col.orange.1 <- rgb(247, 169, 127, max = 255)
-col.orange.2 <- rgb(242, 100, 24, max = 255)
-
-
-
-## Define named colors for app display:
-col.ppv <- col.orange.2 # "orange3" # "firebrick" "red3"
-col.npv <- col.blue.3 # seeblau "steelblue3" # "green4" "gray50" "brown4" "chartreuse4"  
-sdt.colors <- setNames(c(col.green.2, col.red.2, col.green.1, col.red.1), 
-                       c("hi", "mi", "cr", "fa"))
-
-
-
-
-## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ # 
+#####
 ## Define user interface logic:
 
 shinyUI(
   
-  # tags$head(tags$script(HTML(JS.logify))),
-  # tags$head(tags$script(HTML(JS.onload))),
-  
-  navbarPage(title = "riskyr",
+  navbarPage(title = "riskyrApp",
              theme = "bootstrap.sandstone.css",
-             ## or another bootsstrap theme https://bootswatch.com/3/, e.g., 
-             # theme = "bootstrap.yeti.css",
-             # theme = "bootstrap.simplex.css",
-             # theme = "bootstrap.lumen.css", 
-             # theme = "bootstrap.paper.css",
-             # theme = "bootstrap.cosmo.css",
-             # theme = "bootstrap.spacelab.css",
-             # theme = "bootstrap.flatly.css",
-             # theme = "bootstrap.slate.css",
+             id = "tabs",
+             selected = "represent", # should be changed to about in the end
              
-             #####               
-             tabPanel("1: Representations",
-                      icon = icon("tree-deciduous", lib = "glyphicon"),
+             
+             #####
+             tabPanel("1: About", 
+                      icon = icon("home", lib = "glyphicon"),
+                      includeMarkdown("about.md")
+             ),
+             
+             #####
+             tabPanel("2: Statistics",
+                      icon = icon("equalizer", lib = "glyphicon"), value = "stats",
                       
                       #####
                       sidebarLayout(
                         #####
                         # Sidebar panel for inputs:
                         sidebarPanel(
-                          # tags$head(tags$style(".shiny-plot-output{height:50vh !important;}")),
-
-                          # Input: Select all input values:
-
-                          h3("Please select inputs:"),
-                          "(Use slider or enter number)",
-                          br(),
-                          fluidRow(h5(tags$b("Population")),
-                            column(7,
-                              sliderInput("N",
-                                          # label = "Population size:",
-                                          label = NULL,
-                                          value = 100,
-                                          min = 0,
-                                          max = 10^6,
-                                          step = 10)
-                                          ), # use log-scale from 1 to 10^9
-                            column(5,
-                              numericInput("numN", 
-                                           label = NULL, 
-                                           value = 100,
-                                           min = 0,
-                                           max = 10^6,
-                                           step = 10)
-                              )
+                          radioButtons("checkpop2", label = "Population", 
+                                       choiceNames = list("Slider", "Field"),
+                                       choiceValues = c(0, 1), inline = TRUE
+                          ),
+                          conditionalPanel(condition = "input.checkpop2 == 0",
+                                           sliderInput("N2", label = NULL, value = 100,
+                                                       min = 0, max = 10^6, step = 10
+                                           )
+                          ),
+                          conditionalPanel(condition = "input.checkpop2 == 1",
+                                           numericInput("numN2", label = NULL, value = 100,
+                                                        min = 0, max = 10^6, step = 10
+                                           )
                           ),
                           br(),
-                          fluidRow(h5(tags$b("Prevalence")),
-                            column(7, 
-                              sliderInput("prev", 
-                                          # label = "Prevalence:", 
-                                          label = NULL,
-                                          sep = "",
-                                          value = 0.15, 
-                                          min = 0,
-                                          max = 1,
-                                          step = 10^-6)
-                                          ),
-                            column(5, 
-                              numericInput("numprev", 
-                                           label = NULL, 
-                                           value = 0.15,
-                                           min = 0,
-                                           max = 1,
-                                           step = 10^-6)
-                          )),
+                          radioButtons("checkprev2", label = "Prevalence", 
+                                       choiceNames = list("Slider", "Field"),
+                                       choiceValues = c(0, 1), inline = TRUE
+                          ),
+                          conditionalPanel(condition = "input.checkprev2 == 0",
+                                           sliderInput("prev2",  label = NULL, sep = "",
+                                                       value = 0.15, min = 0, max = 1, step = 10^-6
+                                           )
+                          ),
+                          conditionalPanel(condition = "input.checkprev2 == 1", 
+                                           numericInput("numprev2", label = NULL, value = 0.15,
+                                                        min = 0, max = 1, step = 10^-6
+                                           )
+                          ),
                           br(),
-                          fluidRow(h5(tags$b("Sensitivity")),
-                                   column(7, 
-                                          sliderInput("sens", 
-                                                         label = NULL, sep = "",
-                                                         value = 0.85,
-                                                         min = 0,
-                                                         max = 1,
-                                                         step = 10^-6) 
-                                          ),
-                                   column(5, 
-                                          numericInput("numsens", 
-                                                       label = NULL, 
-                                                       value = 0.85,
-                                                       min = 0,
-                                                       max = 1,
-                                                       step = 10^-6))
-                                   ),
+                          radioButtons("checksens2", label = "Sensitivity", 
+                                       choiceNames = list("Slider", "Field"),
+                                       choiceValues = c(0, 1), inline = TRUE
+                          ),
+                          conditionalPanel(condition = "input.checksens2 == 0",
+                                           sliderInput("sens2", label = NULL, sep = "", value = 0.85,
+                                                       min = 0, max = 1, step = 10^-6
+                                           )
+                          ),
+                          conditionalPanel(condition = "input.checksens2 == 1", 
+                                           numericInput("numsens2", label = NULL, value = 0.85,
+                                                        min = 0, max = 1, step = 10^-6
+                                           )
+                          ),
+                          radioButtons("checkspec2", label = "Specificity", 
+                                       choiceNames = list("Slider", "Field"),
+                                       choiceValues = c(0, 1), inline = TRUE
+                          ),
+                          conditionalPanel(condition = "input.checkspec2 == 0",
+                                           sliderInput("spec2", label = NULL, sep = "", value = 0.75,
+                                                       min = 0, max = 1, step = 10^-6
+                                           )
+                          ),
+                          conditionalPanel(condition = "input.checkspec2 == 1", 
+                                           numericInput("numspec2", label = NULL, value = 0.75,
+                                                        min = 0, max = 1, step = 10^-6
+                                           )
+                          ),
+                          br(), 
+                          
+                          # Provide existing data sets as drop-down list:
+                          selectInput("dataselection2", label = "Or view an example:",
+                                      choices = setNames(as.list(1:nrow(datasets)), # create choices from datasets
+                                                         datasets$dataset),
+                                      selected = 1),
+                          
+                          # bsButton("inputhelp", label = "Help", 
+                          #          icon = icon("question-sign", lib = "glyphicon"),
+                          #          style = "default", type = "action"),
+                          
+                          # Tooltips on inputs:
+                          bsTooltip(id = "N2", title = "Number of individuals making up the population",
+                                    placement = "right", trigger = "hover", options = list(container = "body")),
+
+                          bsTooltip(id = "prev2", title = "Probability of being affected: p(true)",
+                                    placement = "right", trigger = "hover", options = list(container = "body")),
+
+                          bsTooltip(id = "sens2", title = "Probability of correctly detecting an affected individual: p(decision positive | condition true)",
+                                    placement = "right", trigger = "hover", options = list(container = "body")),
+
+                          bsTooltip(id = "spec2", title = "Probability of correctly rejecting an unaffected individual: p(decision negative | condition false) = 1 - FA",
+                                    placement = "right", trigger = "hover", options = list(container = "body"))
+                        ),
+                        
+                        #####
+                        # Main panel for different statistics
+                        mainPanel(
+                          tabsetPanel(type = "tabs",
+                                      #####
+                                      # # Info
+                                      # tabPanel("Info",
+                                      #          br(),
+                                      #          withMathJax(includeMarkdown("www/statstab_riskyr.md"))
+                                      #          ),
+                                      #####
+                                      #  ACC
+                                      tabPanel("Accuracy",
+                                               br(),
+                                               tableOutput("confusiontable1"),
+                                               br(),
+                                               withMathJax(includeMarkdown("www/statstab_riskyr_ACC.md")),
+                                               uiOutput("ACC")
+                                               ),
+                                      #####
+                                      # PPV
+                                      tabPanel("Positive Predictive Value",
+                                               br(),
+                                               tableOutput("confusiontable2"),
+                                               br(),
+                                               withMathJax(includeMarkdown("www/statstab_riskyr_PPV1.md")),
+                                               uiOutput("PPV1"),
+                                               br(),
+                                               withMathJax(includeMarkdown("www/statstab_riskyr_PPV2.md")),
+                                               uiOutput("PPV2")
+                                               ),
+                                      #####
+                                      # NPV
+                                      tabPanel("Negative Predictive Value",
+                                               br(),
+                                               tableOutput("confusiontable3"),
+                                               br(),
+                                               withMathJax(includeMarkdown("www/statstab_riskyr_NPV1.md")),
+                                               uiOutput("NPV1"),
+                                               br(),
+                                               withMathJax(includeMarkdown("www/statstab_riskyr_NPV2.md")),
+                                               uiOutput("NPV2")
+                                               ),
+                                      # FDR
+                                      tabPanel("False Discovery Rate",
+                                               br(),
+                                               tableOutput("confusiontable4"),
+                                               br(),
+                                               withMathJax(includeMarkdown("www/statstab_riskyr_FDR.md")),
+                                               uiOutput("FDR")
+                                               ),
+                                      # FOR
+                                      tabPanel("False Omission Rate",
+                                               br(),
+                                               tableOutput("confusiontable5"),
+                                               br(),
+                                               withMathJax(includeMarkdown("www/statstab_riskyr_FOR.md")),
+                                               uiOutput("FOR")
+                                               )
+                                      )
+                        )
+                        
+                        )
+                      
+                
+             ),
+             
+             #####               
+             tabPanel("3: Representations",
+                      icon = icon("tree-deciduous", lib = "glyphicon"), value = "represent",
+                      
+                      #####
+                      sidebarLayout(
+                        #####
+                        # Sidebar panel for inputs:
+                        sidebarPanel(
+                          radioButtons("checkpop", label = "Population", 
+                                       choiceNames = list("Slider", "Field"),
+                                       choiceValues = c(0, 1), inline = TRUE
+                                       ),
+                          conditionalPanel(condition = "input.checkpop == 0",
+                                           sliderInput("N", label = NULL, value = 100,
+                                                       min = 0, max = 10^6, step = 10
+                                                       )
+                                           ),
+                          conditionalPanel(condition = "input.checkpop == 1",
+                                           numericInput("numN", label = NULL, value = 100,
+                                                        min = 0, max = 10^6, step = 10
+                                                        )
+                                           ),
                           br(),
-                          fluidRow(h5(tags$b("Specificity")),
-                                   column(7, 
-                                          sliderInput("spec", 
-                                                         label = NULL, sep = "",
-                                                         value = 0.75,
-                                                         min = 0,
-                                                         max = 1, 
-                                                         step = 10^-6) 
-                                   ),
-                                   column(5, 
-                                          numericInput("numspec", 
-                                                       label = NULL, 
-                                                       value = 0.75,
-                                                       min = 0,
-                                                       max = 1,
-                                                       step = 10^-6))
-                                   ),
+                          radioButtons("checkprev", label = "Prevalence", 
+                                       choiceNames = list("Slider", "Field"),
+                                       choiceValues = c(0, 1), inline = TRUE
+                                       ),
+                          conditionalPanel(condition = "input.checkprev == 0",
+                                           sliderInput("prev",  label = NULL, sep = "",
+                                                       value = 0.15, min = 0, max = 1, step = 10^-6
+                                                       )
+                                           ),
+                          conditionalPanel(condition = "input.checkprev == 1", 
+                                           numericInput("numprev", label = NULL, value = 0.15,
+                                                        min = 0, max = 1, step = 10^-6
+                                                        )
+                                           ),
+                          br(),
+                          radioButtons("checksens", label = "Sensitivity", 
+                                       choiceNames = list("Slider", "Field"),
+                                       choiceValues = c(0, 1), inline = TRUE
+                                       ),
+                          conditionalPanel(condition = "input.checksens == 0",
+                                           sliderInput("sens", label = NULL, sep = "", value = 0.85,
+                                                       min = 0, max = 1, step = 10^-6
+                                                       )
+                                           ),
+                          conditionalPanel(condition = "input.checksens == 1", 
+                                           numericInput("numsens", label = NULL, value = 0.85,
+                                                        min = 0, max = 1, step = 10^-6
+                                                        )
+                                           ),
+                          radioButtons("checkspec", label = "Specificity", 
+                                       choiceNames = list("Slider", "Field"),
+                                       choiceValues = c(0, 1), inline = TRUE
+                                       ),
+                          conditionalPanel(condition = "input.checkspec == 0",
+                                           sliderInput("spec", label = NULL, sep = "", value = 0.75,
+                                                       min = 0, max = 1, step = 10^-6
+                                                       )
+                                           ),
+                          conditionalPanel(condition = "input.checkspec == 1", 
+                                           numericInput("numspec", label = NULL, value = 0.75,
+                                                        min = 0, max = 1, step = 10^-6
+                                                        )
+                                           ),
                           br(), 
                           
                           ## Provide existing data sets as drop-down list:
@@ -243,9 +282,9 @@ shinyUI(
                                                          datasets$dataset), 
                                       selected = 1),
                           
-                          bsButton("inputhelp", label = "Help", 
-                                   icon = icon("question-sign", lib = "glyphicon"),
-                                   style = "default", type = "action"),
+                          # bsButton("inputhelp", label = "Help", 
+                          #          icon = icon("question-sign", lib = "glyphicon"),
+                          #          style = "default", type = "action"),
                           
                           ## Tooltips on inputs:
                           bsTooltip(id = "N", title = "Number of individuals making up the population",
@@ -272,9 +311,8 @@ shinyUI(
                           
                           ## Tabset with raw data table, icon array, nf tree, confusion table, and PV graphs: 
                           tabsetPanel(type = "tabs",
-                                      # Intro
-                                      # COMMENTED OUT FOR THE TIME BEING...
-                                      # ####
+                                      #####
+                                      # # Intro
                                       # tabPanel("Intro",
                                       #          br(),
                                       #          "This is just a quick page for displaying rendered text based on inputs. ",
@@ -290,31 +328,50 @@ shinyUI(
                                       #          br(), br(),
                                       #          textOutput("spec")
                                       #          ),
+                                      #####
+                                      # Overview
+                                      tabPanel("Overview",
+                                               br(),
+                                               plotOutput("network", width = "550", height = "550"),
+                                               br(),
+                                               wellPanel(
+                                                 fluidRow(
+                                                   column(3, offset = 1,
+                                                          radioButtons("netby", "Build Network by", c("Condition first" = "cddc",
+                                                                                                      "Decision first" = "dccd"), inline = TRUE)),
+                                                   column(6, 
+                                                          radioButtons("nettype","Type of Boxes", c("Default boxes" = "no", "Squares" = "sq", 
+                                                                                                     "Horizontal rectangles" = "hr", "Vertical rectangles" = "vr"), inline = TRUE)
+                                                   )
+                                                   ))
+                                               ),
                                       # Stats
                                       #####
-                                      tabPanel("Stats",
-                                               withMathJax(includeMarkdown("www/statstab_riskyr.md")),
-                                               br(),
-                                               tableOutput("confusiontable1"),
-                                               br(),
-                                               withMathJax(includeMarkdown("www/statstab_riskyr_ACC.md")),
-                                               uiOutput("ACC"),
-                                               br(), br(),
-                                               withMathJax(includeMarkdown("www/statstab_riskyr_PPV1.md")),
-                                               uiOutput("PPV1"),
-                                               withMathJax(includeMarkdown("www/statstab_riskyr_PPV2.md")),
-                                               uiOutput("PPV2"),
-                                               br(), br(),
-                                               withMathJax(includeMarkdown("www/statstab_riskyr_NPV1.md")),
-                                               uiOutput("NPV1"),
-                                               withMathJax(includeMarkdown("www/statstab_riskyr_NPV2.md")),
-                                               uiOutput("NPV2"),
-                                               br(), br(),
-                                               withMathJax(includeMarkdown("www/statstab_riskyr_FORFDR.md"))
-                                               ),
-                                      # Cases
+                                      # Stats
+                                      # tabPanel("Stats",
+                                      #          br(),
+                                      #          withMathJax(includeMarkdown("www/statstab_riskyr.md")),
+                                      #          br(),
+                                      #          tableOutput("confusiontable1"),
+                                      #          br(),
+                                      #          withMathJax(includeMarkdown("www/statstab_riskyr_ACC.md")),
+                                      #          uiOutput("ACC"),
+                                      #          br(), br(),
+                                      #          withMathJax(includeMarkdown("www/statstab_riskyr_PPV1.md")),
+                                      #          uiOutput("PPV1"),
+                                      #          withMathJax(includeMarkdown("www/statstab_riskyr_PPV2.md")),
+                                      #          uiOutput("PPV2"),
+                                      #          br(), br(),
+                                      #          withMathJax(includeMarkdown("www/statstab_riskyr_NPV1.md")),
+                                      #          uiOutput("NPV1"),
+                                      #          withMathJax(includeMarkdown("www/statstab_riskyr_NPV2.md")),
+                                      #          uiOutput("NPV2"),
+                                      #          br(), br(),
+                                      #          withMathJax(includeMarkdown("www/statstab_riskyr_FORFDR.md"))
+                                      #          ),
                                       #####
-                                      tabPanel("Cases", 
+                                      # Cases
+                                      tabPanel("Individual Cases", 
                                                br(),
                                                "Individual cases:", 
                                                br(), br(),
@@ -328,16 +385,16 @@ shinyUI(
                                                DT::dataTableOutput("rawdatatable"),
                                                br()
                                                ),
-                                      # Icons
                                       #####
-                                      tabPanel("Icons", 
+                                      # Icons
+                                      tabPanel("Icon Array", 
                                                br(), 
                                                paste0("Icon array: Coming soon..."), 
                                                br(), br()
                                                ),
-                                      # Tree
                                       #####
-                                      tabPanel("Tree", 
+                                      # Tree
+                                      tabPanel("Tree of Natural Frequencies", 
                                                br(), 
                                                paste0("Tree of natural frequencies:"), 
                                                br(), br(),  
@@ -345,29 +402,31 @@ shinyUI(
                                                br(),
                                                wellPanel(
                                                  fluidRow(
-                                                   column(8, offset = 1,
-                                                          radioButtons("treetype","Type of Boxes", c("Default Boxes" = "no", "Mosaic Boxes" = "sq", 
-                                                                                                    "Horizontally Boxed" = "hr", "Vertically Boxed" = "vr"), inline=TRUE)
+                                                   column(3, offset = 1,
+                                                          radioButtons("treeby", "Build Tree by", c("Condition" = "cd", "Decision" = "dc"), inline = TRUE)),
+                                                   column(6, 
+                                                          radioButtons("treetype","Type of Boxes", c("Default boxes" = "no", "Squares" = "sq", 
+                                                                                                    "Horizontal rectangles" = "hr", "Vertical rectangles" = "vr"), inline = TRUE)
                                                           )
                                                  )
                                                 )
                                                ),
                                       # Table
                                       #####
-                                      tabPanel("Table", 
+                                      tabPanel("Cross-Tabulation", 
                                                br(), 
                                                paste0("Aggregated cases:"), 
                                                br(), br(),  
-                                               tableOutput("confusiontable2"),
+                                               tableOutput("confusiontable"),
                                                br(),
                                                paste0("The following mosaic plot shows the cell frequencies as area sizes:"), 
                                                br(),  br(), 
                                                plotOutput("mosaicplot", height = "400px", width = "400px"),
                                                br()
                                                ),
-                                      # PV curves
                                       #####
-                                      tabPanel("PV curves", 
+                                      # PV curves
+                                      tabPanel("Predictive Values: Curves", 
                                                br(),
                                                paste0("Predictive values (PPV/NPV) by prevalance:"), br(), br(),
                                                plotOutput("PVs"),
@@ -383,140 +442,98 @@ shinyUI(
                                                    )
                                                  )
                                                ),
-                                      # PV cubes
                                       #####
-                                      tabPanel("PV cubes", 
+                                      # PV cubes
+                                      tabPanel("Predictive Values: Cubes", 
                                                br(),
                                                paste0("Predictive values (PPV/NPV) by sensitivity and specificity:"), br(), br(),
                                                fluidRow(
-                                                 column(6, # plotOutput("PVplanes"), DEPRECATED 
-                                                        plotOutput("PV3dPPV")),
-                                                 column(6, 
-                                                        plotOutput("PV3dNPV"))
+                                                 column(6, plotOutput("PV3dPPV")),
+                                                 column(6, plotOutput("PV3dNPV"))
                                                  ),
                                                br(),
-                                               # paste0("PPV = ", data$PPV, ", NPV = ", data$NPV), 
-                                               # ERROR: object of type 'closure' is not subsettable ???
                                                br(),
                                                wellPanel(
-                                                 # br(),
                                                  checkboxInput("boxPVpoints2", label = "Show current PPV/NPV in plots", value = TRUE), 
                                                  br(),
                                                  fluidRow(
-                                                   column(6, sliderInput("theta", "Horizontal viewing angle:", 
-                                                                         value = -45, min = -90, max = +90)
-                                                          ),
-                                                   column(6, sliderInput("phi", "Vertical viewing angle:",
-                                                                      value = 0, min = 0, max =  90))
-                                                   )
-                                               ),
-                                               # br(), 
-                                               # "Perspective effects:",
-                                               # br(),
-                                               # sliderInput("d", 
-                                               #             "D (in-/decrease perspective effect):",
-                                               #             value = 1.2,
-                                               #             min = 0.1,
-                                               #             max = 2), 
-                                               # # br(),
-                                               # sliderInput("expand", 
-                                               #             "Expansion (in z-direction):",
-                                               #             value = 0.9,
-                                               #             min = 0.1,
-                                               #             max = 2), 
-                                               # br(),
-                                               # "Color effects:",
-                                               # br(),
-                                               # sliderInput("ltheta", 
-                                               #             "Ltheta (...):",
-                                               #             value = 200,
-                                               #             min = 0,
-                                               #             max = 1000), 
-                                               # # br(),
-                                               # sliderInput("shade", 
-                                               #             "Shade (...):",
-                                               #             value = 0.10,
-                                               #             min = 0,
-                                               #             max = 1), 
-                                               # br(),
-                                               br()
+                                                   column(6, sliderInput("theta", "Horizontal viewing angle:", value = -45, min = -90, max = +90)),
+                                                   column(6, sliderInput("phi", "Vertical viewing angle:", value = 0, min = 0, max =  90))
+                                                   ),
+                                                 br()
+                                                 )
                                                )
-
-                              )
+                                      )
+                          )
                         )
-                      )
-             ),
+                      ),
              
              #####        
-             tabPanel("2: Information",
+             tabPanel("4: Information",
                       icon = icon("education", lib = "glyphicon")
                       
              ),
              
              #####
-             tabPanel("3: About", 
-                      icon = icon("home", lib = "glyphicon"),
-                      includeMarkdown("about.md")
-             ),
-             
-             #####
-             navbarMenu("4: Customize",
-                        icon = icon("wrench", lib = "glyphicon"), # or icon for "adjust
+             navbarMenu("5: Customize",
+                        icon = icon("wrench", lib = "glyphicon"), 
                         
                         # spacer
                         "----",
                         
-                        # Customize labels:
                         #####
+                        # Customize labels:
                         tabPanel("Customize labels",
                                  icon = icon("pencil", lib = "glyphicon"),
+                                 
                                  sidebarLayout(
-
+                                   #####
                                    # Sidebar panel for inputs:
                                    sidebarPanel(
                                      # Inputs for label customization:
                                      h3("Use your own labels!"),
-                                     helpText("(Just enter values below)"),
                                      br(),
-                                     textInput("target.population.lbl",
-                                               label = "Description of population:",
-                                               value = "Population description"),
-                                     textInput("scenario.txt",
-                                               label = "Description of scenario:",
-                                               value = "Generic Example"),
+                                     fluidRow(
+                                       column(6, textInput("target.population.lbl",
+                                                           label = "Description of population:",
+                                                           value = "Population description")),
+                                       column(6, textInput("scenario.txt",
+                                                         label = "Description of scenario:",
+                                                         value = "Generic Example"))
+                                     ),
                                      br(),
                                      textInput("condition.lbl",
                                                label = "Condition name:",
                                                value = "Current condition"),
-                                     textInput("cond.true.lbl",
-                                               label = "Condition true",
-                                               value = "Condition true"),
-                                     textInput("cond.false.lbl",
-                                               label = "Condition false",
-                                               value = "Condition false"),
+                                     fluidRow(
+                                       column(6, textInput("cond.true.lbl",
+                                                           label = "Condition true",
+                                                           value = "Condition true")),
+                                       column(6, textInput("cond.false.lbl",
+                                                           label = "Condition false",
+                                                           value = "Condition false"))
+                                     ),
                                      br(),
                                      textInput("decision.lbl",
                                                label = "Decision",
                                                value = "Diagnostic decision"),
-                                     textInput("dec.true.lbl",
-                                               label = "Decision positive",
-                                               value = "Decision positive"),
-                                     textInput("dec.false.lbl",
-                                               label = "Decision negative",
-                                               value = "Decision negative"),
+                                     fluidRow(
+                                       column(6, textInput("dec.true.lbl",
+                                                           label = "Decision positive",
+                                                           value = "Decision positive")),
+                                       column(6, textInput("dec.false.lbl",
+                                                           label = "Decision negative",
+                                                           value = "Decision negative"))
+                                       ),
                                      br(),
-                                     textInput("sdt.hi.lbl",
-                                               label = "Hit",
-                                               value = "hit"),
-                                     textInput("sdt.mi.lbl",
-                                               label = "Miss",
-                                               value = "miss"),
-                                     textInput("sdt.fa.lbl",
-                                               label = "False alarm",
-                                               value = "false alarm"),
-                                     textInput("sdt.cr.lbl",
-                                               label = "Correct rejection",
-                                               value = "correct rejection"),
+                                     fluidRow(
+                                       column(6, textInput("sdt.hi.lbl", label = "Hit", value = "hit")),
+                                       column(6, textInput("sdt.mi.lbl", label = "Miss", value = "miss"))
+                                       ),
+                                     fluidRow(
+                                       column(6, textInput("sdt.fa.lbl", label = "False alarm", value = "false alarm")),
+                                       column(6, textInput("sdt.cr.lbl", label = "Correct rejection", value = "correct rejection"))
+                                       ),
                                      br(),
                                      bsButton("applycustomlabel", label = "Customize!",
                                               icon = icon("wrench", lib = "glyphicon"),
@@ -527,9 +544,14 @@ shinyUI(
                                    ),
 
                                    #####
-                                   ## Main panel for displaying different aspects about risk:
-                                   mainPanel("Would be cool to have a sample here, e.g. a 
-                                             scenario generated from the inputs.")
+                                   ## Main panel for displaying preview of labels:
+                                   mainPanel(h3("Here is a simplified preview of your labels:"),
+                                             "Click the 'Customize' button to update your color selection.",
+                                             br(), br(),
+                                             textOutput("labeltext"),
+                                             br(),
+                                             tableOutput("labeltable")
+                                             )
                                  )
                         ),
                         
@@ -539,30 +561,30 @@ shinyUI(
                         #####
                         tabPanel("Customize colors",
                                  icon = icon("adjust", lib = "glyphicon"),
+                                 sidebarLayout(
                                  #####
                                  sidebarPanel(
                                    # Inputs for color customization:
                                    h3("Choose your own colors!"),
-                                   helpText("(Just select colors below)"),
                                    br(),
                                    colourInput("color.hi", label = "Choose the color for hits",
-                                               value = sdt.colors["hi"], showColour = "background",
+                                               value = default.colors["color.hi"], showColour = "background",
                                                palette = "square", allowedCols = NULL),
                                    colourInput("color.mi", label = "Choose the color for miss",
-                                               value = sdt.colors["mi"], showColour = "background",
+                                               value = default.colors["color.mi"], showColour = "background",
                                                palette = "square", allowedCols = NULL),
                                    colourInput("color.fa", label = "Choose the color for false alarm",
-                                               value = sdt.colors["fa"], showColour = "background",
+                                               value = default.colors["color.fa"], showColour = "background",
                                                palette = "square", allowedCols = NULL),
                                    colourInput("color.cr", label = "Choose the color for correct rejection",
-                                               value = sdt.colors["cr"], showColour = "background",
+                                               value = default.colors["color.cr"], showColour = "background",
                                                palette = "square", allowedCols = NULL),
                                    br(),
                                    colourInput("color.ppv", label = "Color for the positive predictive value (PPV)",
-                                               value = col.ppv , showColour = "background",
+                                               value = default.colors["color.ppv"], showColour = "background",
                                                palette = "square", allowedCols = NULL),
                                    colourInput("color.npv", label = "Color for the negative predictive value (NPV)",
-                                               value = col.npv, showColour = "background",
+                                               value = default.colors["color.npv"], showColour = "background",
                                                palette = "square", allowedCols = NULL),
                                    br(),
                                    bsButton("applycustomcolor", label = "Customize!",
@@ -574,12 +596,14 @@ shinyUI(
                                  ),
                                  
                                  #####
-                                 ## Main panel for displaying different aspects about risk:
+                                 ## Main panel for displaying preview plots with colors:
                                  mainPanel(h3("Here are simplified preview plots of your colors:"),
                                            "Click the 'Customize' button to update your color selection.",
-                                           plotOutput("sampleplot"),
-                                           plotOutput("sampleplotcurves")
+                                           fluidRow(column(6, plotOutput("sampleplot")),
+                                                    column(6, plotOutput("sampleplotcurves"))
                                            )
+                                           )
+                                 )
                         ),
                         
                         # spacer

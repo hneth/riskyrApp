@@ -1,16 +1,26 @@
 ## server.R
-## riskyrApp | R Shiny | spds, uni.kn | 2018 01 17
+## riskyR | R Shiny | spds, uni.kn | 2018 01 31
+
+
+##### 
+# To do
+
+# Customizable labels and inputs on UI side as well
+# let example scenarios update labels as well
+# prettify label customization page
+# fill imprint a bit
+# change dropdown navigation to something meaningful
+
+
 
 #####
+# Preparing the ground
 
-## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ # 
 ## Clean up:
 
 rm(list=ls()) # clean all.
 
 ## Dependencies:
-
-# get packages for app
 library("shiny")
 library("shinyBS")
 library("markdown")
@@ -18,30 +28,17 @@ library("DT")
 library("colourpicker")
 library("vcd")
 
-# get riskyr
+## get riskyr
 # install.packages("../riskyr_0.0.0.904.tar.gz", repos = NULL, type="source")
 library("riskyr")
 
-## The honorable mentions that have been outsourced along the way...
-# library("diagram")
-# library("shape")
-# library("tidyr")
-# library("dplyr")
-# library("ggplot2")
 
-
-
-## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ # 
 ## Import ready-made and worked out example data 
-## (in both ui.R and server.R):
-
 datasets <- read.csv2("./www/examples_riskyR.csv", stringsAsFactors = FALSE)
 
 
-## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
-## Customizations
-
-## Sensible set of defaults
+#####
+# Define defaults
 
 # take defaults from example datasets stored in www folder
 default.parameters <- setNames(datasets[1, 2:5], names(datasets)[2:5])
@@ -54,96 +51,25 @@ default.colors <- c(color.hi = rgb(128, 177, 57, max = 255), # col.green.2
                     color.ppv = rgb(242, 100, 24, max = 255), # col.orange.2
                     color.npv = rgb(29, 149, 198, max = 255) # col.blue.3
                     )
-  
-  
-
-{
-
-  ## (and make user-customizable later):
-  # cus$target.population.lbl = "population description"
-  # cus$scenario.txt = "Describe the scenario in a paragraph here."
-  # (a) True condition:
-  condition.lbl <- "Current condition"
-  cond.true.lbl <- "Condition true"   # "has condition", "is affected"
-  cond.false.lbl <- "Condition false" # "does not have condition", "is unaffected"
-  # (b) Decisions:
-  decision.lbl <- "Diagnostic decision"
-  dec.true.lbl <- "Decision positive"  # "has condition", "is affected"
-  dec.false.lbl <- "Decision negative" # "does not have condition", "is unaffected"
-  # (c) sdt cases (combinations):
-  sdt.hi.lbl <- "hit"   # "has condition and is detected as such",     p(dec true  | cond true)
-  sdt.mi.lbl <- "miss"  # "has condition and is NOT detected as such", p(dec false | cond true)
-  sdt.fa.lbl <- "false alarm" # ...
-  sdt.cr.lbl <- "correct rejection" # ... 
-  # (d) PPV/NPV:
-  # (...)
-  
-}
-
-## B. Graphical settings: 
-
-
-  ## Color names:
-  ## (make user-customizable later):
-  {
-
-    ## from uni.kn: 
-    seeblau <- rgb(0, 169, 224, max = 255) # seeblau.4 (non-transparent)
-    
-    ## from https://bootswatch.com/sandstone/ 
-    
-    col.sand.light = rgb(248, 245, 240, max = 255)
-    col.sand.mid   = rgb(142, 140, 132, max = 255)
-    col.sand.dark  = rgb(62, 63, 58, max = 255)
-    
-    
-    col.grey.1 <- rgb(181, 179, 174, max = 255)
-    col.grey.2 <- rgb(123, 121, 113, max = 255)
-    col.grey.3 <- "grey25"
-    col.grey.4 <- "grey10"
-    
-    col.green.1 <- rgb(184, 217, 137, max = 255)
-    col.green.2 <- rgb(128, 177, 57, max = 255)
-    
-    col.red.1 <- rgb(230, 142, 140, max = 255)
-    col.red.2 <- rgb(210, 52, 48, max = 255)
-    
-    col.blue.1 <- rgb(115, 200, 234, max = 255)
-    col.blue.2 <- rgb(121, 149, 177, max = 255)
-    col.blue.3 <- rgb(29, 149, 198, max = 255)
-    col.blue.4 <- rgb(40, 74, 108, max = 255)
-    
-    col.orange.1 <- rgb(247, 169, 127, max = 255)
-    col.orange.2 <- rgb(242, 100, 24, max = 255)
-  
-  }
-  
-  ## Define six default colors for app display:
-  
-  # THESE COLORS ARE STILL USED BY SEVERAL REPRESENATIONS!!!
-  # CHANGE FUNCTION TO TAKE REACTIVE VALUES FROM cus list
-  col.ppv <- col.orange.2 # "orange3" # "firebrick" "red3"
-  col.npv <- col.blue.3 # seeblau "steelblue3" # "green4" "gray50" "brown4" "chartreuse4"
-  sdt.colors <- setNames(c(col.green.2, col.red.2, col.green.1, col.red.1),
-                         c("hi", "mi", "cr", "fa"))
 
 
 #####
-
-## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ # 
-## Define server logic:
+# Define server logic:
 
 shinyServer(function(input, output, session){
   
-  ## Collect all customizable values in reactive list
-  # TO DO: Change on UI side as well
-  cus <- reactiveValues(
-    # initalize with defaults defined above
+  #####
+  # define common data scructure
+  ## Generate 4 data structures as lists of reactive elements:
+  env <- reactiveValues(env = NULL) # Current ENVironment parameters
+  freq <- reactiveValues(freq = NULL) # Calculated FREQuencies, based on parameters
+  prob <- reactiveValues(prob = NULL) # calculated PROBabilities, based on parameters
+  cus <- reactiveValues(  # CUStomizable labels and colors and their defaults
     # headlines
-    target.population.lbl = default.terminology[names(default.terminology) == "target.population.lbl"],
-    scenario.txt = default.terminology[names(default.terminology) == "scenario.txt"],
+    target.population.lbl = as.character(default.terminology[names(default.terminology) == "target.population.lbl"]),
+    scenario.txt = as.character(default.terminology[names(default.terminology) == "scenario.txt"]),
     # (a) Condition
-    condition.lbl = default.terminology[names(default.terminology) == "condition.lbl"],
+    condition.lbl = as.character(default.terminology[names(default.terminology) == "condition.lbl"]),
     cond.true.lbl = default.terminology[names(default.terminology) == "cond.true.lbl"],
     cond.false.lbl = default.terminology[names(default.terminology) == "cond.false.lbl"],
     # (b) Decisions:
@@ -164,122 +90,299 @@ shinyServer(function(input, output, session){
     color.npv = default.colors["color.npv"]
   )
 
-  ## Define a common data structure:
-  ## Generate 3 data structures as lists of reactive elements:
-  env <- reactiveValues(env = NULL)   # 1. a list of current environment parameters (inputs)
-  data <- reactiveValues(data = NULL) # 2. list of derived parameters (list of only scalars/atomic vectors)
-  # population <- reactiveValues(population = NULL) # 3. current population (as df of 3 vectors)
+
+
+
+
+
+
   
   ##### 
-  ## Couple numeric and slider inputs:
-  observeEvent(input$numN,
-               {updateSliderInput(session, "N", value = input$numN)})
-  observeEvent(input$N,
-               {updateNumericInput(session, "numN", value = input$N)})
-  
-  observeEvent(input$numprev,
-               {updateSliderInput(session, "prev", value = input$numprev)})
-  observeEvent(input$prev,
-               {updateNumericInput(session, "numprev", value = input$prev)})
-  
-  observeEvent(input$numsens,
-               {updateSliderInput(session, "sens", value = input$numsens)})
-  observeEvent(input$sens,
-               {updateNumericInput(session, "numsens", value = input$sens)})
-  
-  observeEvent(input$numspec,
-               {updateSliderInput(session, "spec", value = input$numspec)})
-  observeEvent(input$spec,
-               {updateNumericInput(session, "numspec", value = input$spec)})
+  # Couple numeric and slider inputs, connect both stats and representations:
   
   #####
-  ## Observe inputs and generate data used in outputs:
+  ## population
+  
   observeEvent({
-    input$name   # name of current environment 
-    input$N      # N in population
-    input$prev   # prevalence in population = p(true positive)
-    input$sens   # sensitivity = p(decision positive | condition positive)
-    input$spec   # specificity = p(decision negative | condition negative)
-  }, {
-    
-    ## (A) Environment parameters:  
-    ## Set parameters of current environment:
-    env$name <- input$name
-    env$N <- input$N
-    env$prev <- input$prev
-    env$sens <- input$sens
-    env$spec <- input$spec
-    env$source <- "source information"
-    
-    ## (B) Derive data:
-    ## (1) Determine the truth:
-    data$n.true <- round((env$prev * env$N), 0) # n.true cases
-    data$n.false <- (env$N - data$n.true)      # n.false cases
-    
-    ## Vector of true states:
-    data$truth <- c(rep(TRUE, data$n.true), rep(FALSE, data$n.false)) 
-    
-    ## (2) Determine decisions:
-    data$n.hi <- round((env$sens * data$n.true), 0)  # a. hits
-    data$n.mi <- (data$n.true - data$n.hi)           # b. misses
-    data$n.cr <- round((env$spec * data$n.false), 0) # d. correct rejections
-    data$n.fa <- (data$n.false - data$n.cr)          # c. false alarms
-    
-    data$dec.pos <- data$n.hi + data$n.fa # 1. decision positives (true & false)
-    data$dec.neg <- data$n.mi + data$n.cr # 2. decision negatives (true & false)
-    
-    ## Vector of decisions (ordered by truth values):
-    data$decision <- c(rep(TRUE, data$n.hi), rep(FALSE, data$n.mi), 
-                       rep(TRUE, data$n.fa), rep(FALSE, data$n.cr))
-    
-    ## (3) SDT (status decision/truth):
-    data$sdt <- c(rep("hi", data$n.hi), rep("mi", data$n.mi), 
-                  rep("fa", data$n.fa), rep("cr", data$n.cr))
-    
-    ## (4) Coerce 3 vectors into ordered factors:
-    data$truth <- factor(data$truth, 
-                         levels = c(TRUE, FALSE),
-                         labels = c(cus$cond.true.lbl, cus$cond.false.lbl), # explicit labels
-                         ordered = TRUE)
-    
-    
-    data$decision <- factor(data$decision, 
-                            levels = c(TRUE, FALSE),
-                            labels = c(dec.true.lbl, dec.false.lbl), # explicit labels
-                            ordered = TRUE)
-    
-    data$sdt <- factor(data$sdt, 
-                          levels = c("hi", "mi", "fa", "cr"),
-                          labels = c(sdt.hi.lbl, sdt.mi.lbl, sdt.fa.lbl, sdt.cr.lbl), # explicit labels
-                          ordered = TRUE)
-    
-    ## (5) Combine vectors of length N in population data frame:
-    data$population <- data.frame(tru = data$truth,
-                                  dec = data$decision,
-                                  sdt = data$sdt)
-    names(data$population) <- c("Truth", "Decision", "sdt")
-    
-    ## (6) Compute and store current PPV and NPV values (to use in graphs and labels):
-    data$PPV <- riskyr::comp_PPV(env$prev, env$sens, env$spec)
-    data$NPV <- riskyr::comp_NPV(env$prev, env$sens, env$spec)
+    input$N }, {
+      env$N <- input$N
+      updateNumericInput(session, "numN2", value = env$N)
+      updateNumericInput(session, "numN", value = env$N)
+      updateSliderInput(session, "N2", value = env$N)
   })
   
-  ## Integrate worked out examples:
-  observeEvent(input$dataselection, {
-    if (input$dataselection != 1) { # if 1st option is not ("---")
-      updateSliderInput(session, "N", value = datasets[input$dataselection, "N" ]) 
-      updateSliderInput(session, "sens", value = datasets[input$dataselection, "sens" ])
-      updateSliderInput(session, "prev", value = datasets[input$dataselection, "prev" ])
-      updateSliderInput(session, "spec", value = datasets[input$dataselection, "spec" ]) 
-      output$sourceOutput <- renderText(datasets[input$dataselection, "source"]) }
+  observeEvent({
+    input$N2 }, {
+      env$N <- input$N2
+      updateNumericInput(session, "numN2", value = env$N)
+      updateNumericInput(session, "numN", value = env$N)
+      updateSliderInput(session, "N", value = env$N)
+    })
+  
+  observeEvent({
+    input$numN }, {
+      env$N <- input$numN
+      updateNumericInput(session, "numN2", value = env$N)
+      updateNumericInput(session, "N2", value = env$N)
+      updateSliderInput(session, "N", value = env$N)
+    })
+  
+  observeEvent({
+    input$numN2 }, {
+      env$N <- input$numN2
+      updateNumericInput(session, "numN", value = env$N)
+      updateNumericInput(session, "N2", value = env$N)
+      updateSliderInput(session, "N", value = env$N)
+    })
+  
+  #####
+  ## prevalence
+  
+  observeEvent({
+    input$prev }, {
+      env$prev <- input$prev
+      updateNumericInput(session, "numprev", value = env$prev)
+      updateNumericInput(session, "numprev2", value = env$prev)
+      updateSliderInput(session, "prev2", value = env$prev)
+    })
+  
+  observeEvent({
+    input$prev2 }, {
+      env$prev <- input$prev2
+      updateNumericInput(session, "numprev", value = env$prev)
+      updateNumericInput(session, "numprev2", value = env$prev)
+      updateSliderInput(session, "prev", value = env$prev)
+    })
+  
+  observeEvent({
+    input$numprev }, {
+      env$prev <- input$numprev
+      updateNumericInput(session, "numprev2", value = env$prev)
+      updateSliderInput(session, "prev", value = env$prev)
+      updateSliderInput(session, "prev2", value = env$prev)
+    })
+  
+  observeEvent({
+    input$numprev2 }, {
+      env$prev <- input$numprev2
+      updateNumericInput(session, "numprev", value = env$prev)
+      updateSliderInput(session, "prev", value = env$prev)
+      updateSliderInput(session, "prev2", value = env$prev)
+    })
+  
+  #####
+  ## sensitivity
+  
+  observeEvent({
+    input$sens }, {
+      env$sens <- input$sens
+      updateNumericInput(session, "numsens", value = env$sens)
+      updateNumericInput(session, "numsens2", value = env$sens)
+      updateSliderInput(session, "sens2", value = env$sens)
+    })
+  
+  observeEvent({
+    input$sens2 }, {
+      env$sens <- input$sens2
+      updateNumericInput(session, "numsens", value = env$sens)
+      updateNumericInput(session, "numsens2", value = env$sens)
+      updateSliderInput(session, "sens", value = env$sens)
+    })
+  
+  observeEvent({
+    input$numsens }, {
+      env$sens <- input$numsens
+      updateNumericInput(session, "numsens2", value = env$sens)
+      updateSliderInput(session, "sens", value = env$sens)
+      updateSliderInput(session, "sens2", value = env$sens)
+    })
+  
+  observeEvent({
+    input$numsens2 }, {
+      env$sens <- input$numsens2
+      updateNumericInput(session, "numsens", value = env$sens)
+      updateSliderInput(session, "sens", value = env$sens)
+      updateSliderInput(session, "sens2", value = env$sens)
+    })
+  
+  #####
+  ## specificity
+  
+  observeEvent({
+    input$spec }, {
+      env$spec <- input$spec
+      updateNumericInput(session, "numspec", value = env$spec)
+      updateNumericInput(session, "numspec2", value = env$spec)
+      updateSliderInput(session, "spec2", value = env$spec)
+    })
+  
+  observeEvent({
+    input$spec2 }, {
+      env$spec <- input$spec2
+      updateNumericInput(session, "numspec", value = env$spec)
+      updateNumericInput(session, "numspec2", value = env$spec)
+      updateSliderInput(session, "spec", value = env$spec)
+    })
+  
+  observeEvent({
+    input$numspec }, {
+      env$spec <- input$numspec
+      updateNumericInput(session, "numspec2", value = env$spec)
+      updateSliderInput(session, "spec", value = env$spec)
+      updateSliderInput(session, "spec2", value = env$spec)
+    })
+  
+  observeEvent({
+    input$numspec2 }, {
+      env$spec <- input$numspec2
+      updateNumericInput(session, "numspec", value = env$spec)
+      updateSliderInput(session, "spec", value = env$spec)
+      updateSliderInput(session, "spec2", value = env$spec)
+    })
+  
+  #####
+  # input formats
+  
+  observeEvent({
+    input$tabs }, {
+      if(input$tabs == "stats"){ # if tab "stats" is selected
+        updateRadioButtons(session, "checkpop2", selected = input$checkpop)
+        updateRadioButtons(session, "checkprev2", selected = input$checkprev)
+        updateRadioButtons(session, "checksens2", selected = input$checksens)
+        updateRadioButtons(session, "checkspec2", selected = input$checkspec)
+      } else {
+        updateRadioButtons(session, "checkpop", selected = input$checkpop2)
+        updateRadioButtons(session, "checkprev", selected = input$checkprev2)
+        updateRadioButtons(session, "checksens", selected = input$checksens2)
+        updateRadioButtons(session, "checkspec", selected = input$checkspec2)
+      }
+  })
+ 
+  
+  #####
+  # Calculate freq and prob objects
+  observeEvent({
+    env$name   # name of current environment
+    env$N      # N in population
+    env$prev   # prevalence in population = p(true positive)
+    env$sens   # sensitivity = p(decision positive | condition positive)
+    env$spec   # specificity = p(decision negative | condition negative)
+  }, {
+    freq$cond.true <- round((env$N * env$prev), 0)
+    freq$cond.false <- (env$N - freq$cond.true)
+    freq$hi <- round((env$sens * freq$cond.true), 0)
+    freq$mi <- freq$cond.true - freq$hi
+    freq$cr <- round((env$spec * freq$cond.false), 0)
+    freq$fa <- freq$cond.false - freq$cr
+    freq$dec.pos <- freq$hi + freq$fa
+    freq$dec.neg <- freq$mi + freq$cr 
+    prob$PPV <- riskyr::comp_PPV(prev = env$prev, sens = env$sens, spec = env$spec)
+    prob$FDR <- riskyr::comp_FDR(prev = env$prev, sens = env$sens, spec = env$spec)
+    prob$NPV <- riskyr::comp_NPV(prev = env$prev, sens = env$sens, spec = env$spec)
+    prob$FOR <- riskyr::comp_FOR(prev = env$prev, sens = env$sens, spec = env$spec)
+  })
+  
+  
+  #####
+  # Create reactive population object
+  popu <- reactive({ riskyr::comp_popu(
+    hi = freq$hi, mi = freq$mi, 
+    fa = freq$fa, cr = freq$cr, 
+    cond.true.lbl = cus$cond.true.lbl, cond.false.lbl = cus$cond.false.lbl,
+    dec.pos.lbl = cus$dec.true.lbl, dec.neg.lbl = cus$dec.false.lbl,
+    sdt.hi.lbl = cus$sdt.hi.lbl, sdt.mi.lbl = cus$sdt.mi.lbl,
+    sdt.fa.lbl = cus$sdt.fa.lbl, sdt.cr.lbl = cus$sdt.cr.lbl)
+    })
+  
+  
+  #####
+  # Integrate worked out examples:
+  # NEW:
+  observeEvent({
+    input$dataselection
+    input$dataselection2 }, {
+      if(input$tabs == "stats") {
+        updateSelectInput(session, "dataselection", selected = input$dataselection2)
+      }
+      if(input$tabs == "represent") {
+        updateSelectInput(session, "dataselection2", selected = input$dataselection)
+      }
+      if (input$dataselection != 1 | input$dataselection2 != 1) { # if 1st option is not ("---")
+        # update all sliders
+        updateSliderInput(session, "N", value = datasets[input$dataselection, "N" ])
+        updateNumericInput(session, "numN", value = datasets[input$dataselection, "N" ])
+        updateSliderInput(session, "N2", value = datasets[input$dataselection, "N" ])
+        updateNumericInput(session, "numN2", value = datasets[input$dataselection, "N" ])
+        updateSliderInput(session, "sens", value = datasets[input$dataselection, "sens" ])
+        updateNumericInput(session, "numsens", value = datasets[input$dataselection, "sens"])
+        updateSliderInput(session, "sens2", value = datasets[input$dataselection, "sens" ])
+        updateNumericInput(session, "numsens2", value = datasets[input$dataselection, "sens"])
+        updateSliderInput(session, "prev", value = datasets[input$dataselection, "prev"])
+        updateNumericInput(session, "numprev",value = datasets[input$dataselection, "prev"])
+        updateSliderInput(session, "prev2", value = datasets[input$dataselection, "prev"])
+        updateNumericInput(session, "numprev2",value = datasets[input$dataselection, "prev"])
+        updateSliderInput(session, "spec", value = datasets[input$dataselection, "spec" ])
+        updateNumericInput(session, "numspec", value = datasets[input$dataselection, "spec" ])
+        updateSliderInput(session, "spec2", value = datasets[input$dataselection, "spec" ])
+        updateNumericInput(session, "numspec2", value = datasets[input$dataselection, "spec" ])
+        # display source
+        output$sourceOutput <- renderText(datasets[input$dataselection, "source"]) 
+        # set labels
+        updateTextInput(session, "target.population.lbl", value = datasets[input$dataselection, "target.population.lbl"])
+        updateTextInput(session, "scenario.txt", value = datasets[input$dataselection, "scenario.txt"])
+        
+        cus$target.population.lbl <- datasets[input$dataselection, "target.population.lbl"]
+        cus$scenario.txt <- datasets[input$dataselection, "scenario.txt"]
+        # (a) Condition
+        updateTextInput(session, "condition.lbl", value = datasets[input$dataselection, "condition.lbl"])
+        updateTextInput(session, "cond.true.lbl", value = datasets[input$dataselection, "cond.true.lbl"])
+        updateTextInput(session, "cond.false.lbl", value = datasets[input$dataselection, "cond.false.lbl"])
+        
+        cus$condition.lbl <- datasets[input$dataselection, "condition.lbl"]
+        cus$cond.true.lbl <- datasets[input$dataselection, "cond.true.lbl"]
+        cus$cond.false.lbl <- datasets[input$dataselection, "cond.false.lbl"]
+        # (b) Decisions:
+        updateTextInput(session, "decision.lbl", value = datasets[input$dataselection, "decision.lbl"])
+        updateTextInput(session, "dec.true.lbl", value = datasets[input$dataselection, "dec.true.lbl"] )
+        updateTextInput(session, "dec.false.lbl", value = datasets[input$dataselection, "dec.false.lbl"] )
+        
+        
+        cus$decision.lbl <- datasets[input$dataselection, "decision.lbl"]
+        cus$dec.true.lbl <- datasets[input$dataselection, "dec.true.lbl"]
+        cus$dec.false.lbl <- datasets[input$dataselection, "dec.false.lbl"]
+        # (c) sdt cases (combinations):
+        updateTextInput(session, "sdt.hi.lbl", value = datasets[input$dataselection, "sdt.hi.lbl"])
+        updateTextInput(session, "sdt.mi.lbl", value = datasets[input$dataselection, "sdt.mi.lbl"])
+        updateTextInput(session, "sdt.fa.lbl", value = datasets[input$dataselection, "sdt.fa.lbl"])
+        updateTextInput(session, "sdt.cr.lbl", value = datasets[input$dataselection, "sdt.cr.lbl"])
+
+        cus$sdt.hi.lbl <- datasets[input$dataselection, "sdt.hi.lbl"]
+        cus$sdt.mi.lbl <- datasets[input$dataselection, "sdt.mi.lbl"]
+        cus$sdt.fa.lbl <- datasets[input$dataselection, "sdt.fa.lbl"]
+        cus$sdt.cr.lbl <- datasets[input$dataselection, "sdt.cr.lbl"]
+        }
   }, ignoreInit = TRUE)
   
+  # # OLD:
+  # observeEvent(input$dataselection, {
+  #   if (input$dataselection != 1) { # if 1st option is not ("---")
+  #     updateSliderInput(session, "N", value = datasets[input$dataselection, "N" ])
+  #     updateNumericInput(session, "numN", value = datasets[input$dataselection, "N" ])
+  #     updateSliderInput(session, "sens", value = datasets[input$dataselection, "sens" ])
+  #     updateNumericInput(session, "numsens", value = datasets[input$dataselection, "sens"])
+  #     updateSliderInput(session, "prev", value = datasets[input$dataselection, "prev"])
+  #     updateNumericInput(session, "numprev",value = datasets[input$dataselection, "prev"])
+  #     updateSliderInput(session, "spec", value = datasets[input$dataselection, "spec" ])
+  #     updateNumericInput(session, "numspec", value = datasets[input$dataselection, "spec" ])
+  #     output$sourceOutput <- renderText(datasets[input$dataselection, "source"]) }
+  # }, ignoreInit = TRUE)
+
 
   #####
   ## Outputs:
   ## (1) Intro tab:
   ## get all current inputs within text statements as outputs
-  output$N <- renderText({ paste0("1. Population size: We are considering a population of ", input$N, " individuals. ") })
+  output$N <- renderText({ paste0("1. Population size: We are considering a population of ", env$N, " individuals. ") })
   output$prev <- renderText({ paste0("2. Prevalence describes the probability of being affected: p(true).  The current prevalence is ", input$prev, ". ")})
   output$sens <- renderText({ paste0("3. Sensitivity describes the probability of correctly detecting an affected individual: p(decision positive | condition true).  The current sensitivity is ", input$sens, ". ") })
   output$spec <- renderText({ paste0("4. Specificity describes the probability of correctly rejecting an unaffected individual: p(decision negative | condition false) = 1 - FA.  The current specificity is ", input$spec, ". ") })
@@ -287,161 +390,159 @@ shinyServer(function(input, output, session){
   
   ## (2) Stats tab:
   output$ACC <- renderUI({
-    withMathJax(paste0("$$ ACC = \\frac{", data$n.hi, " + ", data$n.mi, "}{", env$N, "} = ", round((data$n.hi + data$n.mi)/env$N, 4), "$$"))
+    withMathJax(paste0("$$ ACC = \\frac{", freq$hi, " + ", freq$mi, "}{", env$N, "} = ", round((freq$hi + freq$mi)/env$N, 4), "$$"))
   })
   
   output$PPV1 <- renderUI({
-    withMathJax(paste0("$$ PPV = \\frac{", data$n.hi, "}{", data$dec.pos, "} = \\frac{", data$n.hi, "}{", data$n.hi, " + ", data$n.fa, "}= ", 
-                       round(data$PPV, 4), "$$"))
+    withMathJax(paste0("$$ PPV = \\frac{", freq$hi, "}{", freq$dec.pos, "} = \\frac{", freq$hi, "}{", freq$hi, " + ", freq$fa, "}= ", 
+                       round(prob$PPV, 4), "$$"))
   })
 
   output$PPV2 <- renderUI({
-    withMathJax(paste0("$$PPV = \\frac{", input$sens, " \\times ", input$prev,"}{", input$sens, " \\times ", 
-                       input$prev," + (1 - ", input$spec,") \\times (1 - ", input$prev,")} = ", round(data$PPV, 4), "$$"))
+    withMathJax(paste0("$$PPV = \\frac{", env$sens, " \\times ", env$prev,"}{", env$sens, " \\times ", 
+                       env$prev," + (1 - ", env$spec,") \\times (1 - ", env$prev,")} = ", round(prob$PPV, 4), "$$"))
   })
   
   output$NPV1 <- renderUI({
-    withMathJax(paste0("$$ NPV = \\frac{", data$n.cr, "}{", data$dec.neg, "} = \\frac{", data$n.cr, "}{", data$n.cr, " + ", data$n.mi, "}= ", 
-                       round(data$NPV, 4), "$$"))
+    withMathJax(paste0("$$ NPV = \\frac{", freq$cr, "}{", freq$dec.neg, "} = \\frac{", freq$cr, "}{", freq$cr, " + ", freq$mi, "}= ", 
+                       round(prob$NPV, 4), "$$"))
   })
   
   output$NPV2 <- renderUI({
-    withMathJax(paste0("$$NPV = \\frac{", input$spec, " \\times (1 - ", input$prev,")}{(1 - ", input$sens, ") \\times ", 
-                       input$prev," + ", input$spec," \\times (1 - ", input$prev,")} = ", round(data$NPV, 4), "$$"))
+    withMathJax(paste0("$$NPV = \\frac{", env$spec, " \\times (1 - ", env$prev,")}{(1 - ", env$sens, ") \\times ", 
+                       env$prev," + ", env$spec," \\times (1 - ", env$prev,")} = ", round(prob$NPV, 4), "$$"))
   })
+  
+  output$FDR <- renderUI({
+    withMathJax(paste0("$$ FDR = 1 - ", round(prob$PPV, 4), " = \\frac{", freq$fa, "}{", freq$dec.pos, "} = \\frac{", freq$fa, "}{", freq$hi, " + ", freq$fa, "}= ", 
+                       round(prob$FOR, 4), "$$"))
+  })
+  
+  output$FOR <- renderUI({
+    withMathJax(paste0("$$ FOR = 1 - ", round(prob$NPV, 4), " = \\frac{", freq$mi, "}{", freq$dec.neg, "} = \\frac{", freq$mi, "}{", freq$cr, " + ", freq$mi, "}= ", 
+                       round(prob$FOR, 4), "$$"))
+  })
+  
+  
+  ## (0) Overview:
+  output$network <- renderPlot({
+    riskyr::plot_fnet(prev = env$prev, sens = env$sens, spec = env$spec, N = env$N,
+                      # user inputs
+                      area = input$nettype, by = input$netby,
+                      title.lbl = cus$scenario.txt,
+                      popu.lbl = cus$target.population.lbl, cond.lbl = cus$condition.lbl,
+                      cond.true.lbl = cus$cond.true.lbl, cond.false.lbl = cus$cond.false.lbl,
+                      dec.lbl = cus$decision.lbl, dec.pos.lbl = cus$dec.true.lbl, 
+                      dec.neg.lbl = cus$dec.false.lbl, 
+                      sdt.hi.lbl = cus$sdt.hi.lbl, sdt.mi.lbl = cus$sdt.mi.lbl, 
+                      sdt.fa.lbl = cus$sdt.fa.lbl, sdt.cr.lbl = cus$sdt.cr.lbl, 
+                      col.boxes = c("#F2F2F2FC", "lightgoldenrod1", "lightskyblue2", 
+                                    cus$color.hi, cus$color.mi, cus$color.fa, cus$color.cr,
+                                    "rosybrown3", "lightsteelblue3", "#F2F2F2FC"),
+                      col.txt = grey(0.01, alpha = 0.99), 
+                      col.border = "grey10", col.shadow = rgb(62, 63, 58, max = 255))
+  })
+  
   
   
   ## (a) Raw data table: 
   output$rawdatatable <- DT::renderDataTable(DT::datatable({
-    if(input$sort == FALSE) {display <- data$population[sample(rownames(data$population)), ]}
-    else display <- data$population[sort(as.numeric(rownames(data$population))), ]
-    display
-    }) %>%
-    formatStyle("sdt", target = "row", backgroundColor = styleEqual(levels = c("hit", "miss", "false alarm", "correct rejection"),
-                                                                    values = c(cus$color.hi, cus$color.mi, cus$color.fa, cus$color.cr)))
+    if(input$sort == FALSE) {display <- popu()[sample(rownames(popu())), ]}
+    else display <- popu()[sort(as.numeric(rownames(popu()))), ]
+    display }, options = list(lengthChange = TRUE)) %>%
+    formatStyle("STD", target = "row", backgroundColor = styleEqual(
+      levels = c(cus$sdt.hi.lbl, cus$sdt.mi.lbl, cus$sdt.fa.lbl, cus$sdt.cr.lbl),
+      values = c(cus$color.hi, cus$color.mi, cus$color.fa, cus$color.cr)))
   )
   
   ## (b) Icon array:
   ## ... 
   
   ## (c) 2x2 confusion table (ordered by rows/decisions):
-  # To be precise, we need two confusion tables (at table and stats tab)
-  # We create a reactive table and then render it twice (shiny doesn't allow identical output elements)
-  
-  confusiontable <- reactive({matrix(data = c(data$n.hi, data$n.fa, data$dec.pos, 
-                                              data$n.mi, data$n.cr, data$dec.neg, 
-                                              data$n.true, data$n.false, env$N),
+  # We need two confusion tables (at table and stats tab)
+
+  confustableraw <- reactive({matrix(data = c(freq$hi, freq$fa, freq$dec.pos, 
+                                              freq$mi, freq$cr, freq$dec.neg, 
+                                              freq$cond.true, freq$cond.false, env$N),
                                      nrow = 3, byrow = TRUE,
-                                     dimnames = list(c(dec.true.lbl,  # "Decision positive:", 
-                                                       dec.false.lbl, # "Decision negative:", 
+                                     dimnames = list(c(cus$dec.true.lbl,  # "Decision positive:", 
+                                                       cus$dec.false.lbl, # "Decision negative:", 
                                                        "Truth sums:"), 
-                                                     c(cond.true.lbl,  # "Condition true:", 
-                                                       cond.false.lbl, # "Condition false:", 
+                                                     c(cus$cond.true.lbl,  # "Condition true:", 
+                                                       cus$cond.false.lbl, # "Condition false:", 
                                                        "Decision sums:")
                                                      )
                                      )
   })
   
-  output$confusiontable1 <- renderTable(confusiontable(), bordered = TRUE, hover = TRUE,  
+  output$confusiontable <- renderTable(confustableraw(), bordered = TRUE, hover = TRUE,  
+                                       align = 'r', digits = 0, rownames = TRUE, na = 'missing')
+  
+  output$confusiontable1 <- renderTable(confustableraw(), bordered = TRUE, hover = TRUE,  
                                         align = 'r', digits = 0, rownames = TRUE, na = 'missing')
   
-  output$confusiontable2 <- renderTable(confusiontable(), bordered = TRUE, hover = TRUE,  
+  output$confusiontable2 <- renderTable(confustableraw(), bordered = TRUE, hover = TRUE,  
+                                        align = 'r', digits = 0, rownames = TRUE, na = 'missing')
+  
+  output$confusiontable3 <- renderTable(confustableraw(), bordered = TRUE, hover = TRUE,  
+                                        align = 'r', digits = 0, rownames = TRUE, na = 'missing')
+  
+  output$confusiontable4 <- renderTable(confustableraw(), bordered = TRUE, hover = TRUE,  
+                                        align = 'r', digits = 0, rownames = TRUE, na = 'missing')
+  
+  output$confusiontable5 <- renderTable(confustableraw(), bordered = TRUE, hover = TRUE,  
                                         align = 'r', digits = 0, rownames = TRUE, na = 'missing')
   
   
   ## (d) Mosaic plot:
-  output$mosaicplot <- renderPlot({ 
-    mosaic(Truth ~ Decision, data = data$population,
-           shade=TRUE, colorize = TRUE, 
-           gp = gpar(fill = matrix(data = c(cus$color.hi, cus$color.mi, cus$color.fa, cus$color.cr),
-                                   nrow = 2, ncol = 2, byrow = FALSE)),
-           main_gp = gpar(fontsize = 12, fontface = "bold"),
-           main = paste0(env$name, "\n(N = ", env$N, ")"))
+  output$mosaicplot <- renderPlot({
+    riskyr::plot_mosaic(prev = env$prev, sens = env$sens, spec = env$spec, N = env$N,
+                        title.lbl = cus$scenario.txt, 
+                        col.sdt = c(cus$color.hi, cus$color.mi, cus$color.fa, cus$color.cr))
+    
   })
   
+
   ## (e) Tree with natural frequencies:
   output$nftree <- renderPlot({
-    plot_nftree(prev = env$prev, sens = env$sens, spec = env$spec, fart = (1-env$spec), N = env$N,
-                box.area = input$treetype,
-                title.lbl = cus$scenario.txt,    # custom labels
-                popu.lbl = cus$target.population.lbl,
-                cond.lbl = cus$condition.lbl,     # condition
-                cond.true.lbl = cus$cond.true.lbl,
-                cond.false.lbl = cus$cond.false.lbl,
-                dec.lbl = cus$decision.lbl,       # decision
-                dec.true.lbl = cus$dec.true.lbl,
-                dec.false.lbl = cus$dec.false.lbl,
-                sdt.hi.lbl = cus$sdt.hi.lbl, # SDT combinations
-                sdt.mi.lbl = cus$sdt.mi.lbl,
-                sdt.fa.lbl = cus$sdt.fa.lbl,
-                sdt.cr.lbl = cus$sdt.cr.lbl,
-                col.boxes = c("#F2F2F2FC", "lightgoldenrod1", "lightskyblue2", 
-                              cus$color.hi, cus$color.mi, cus$color.fa, cus$color.cr),
-                col.txt = grey(0.01, alpha = 0.99), 
-                col.border = "grey10",
-                col.shadow = col.sand.dark, cex.shadow = 0)}
-  )
-  
-
-  # output$nftree <- renderPlot(
-  #   plot_nftree(prev = env$prev, sens = env$sens, spec = env$spec, fart = (1-env$spec),
-  #                                         N = env$N, n.true = data$n.true, n.false = data$n.false,
-  #                                         n.hi = data$n.hi, n.mi = data$n.mi, n.fa = data$n.fa, n.cr = data$n.cr,
-  #                                         title.lbl = cus$scenario.txt,    # custom labels
-  #                                         popu.lbl = cus$target.population.lbl,
-  #                                         cond.lbl = cus$condition.lbl,     # condition
-  #                                         cond.true.lbl = cus$cond.true.lbl,
-  #                                         cond.false.lbl = cus$cond.false.lbl,
-  #                                         dec.lbl = cus$decision.lbl,       # decision
-  #                                         dec.true.lbl = cus$dec.true.lbl,
-  #                                         dec.false.lbl = cus$dec.false.lbl,
-  #                                         sdt.hi.lbl = cus$sdt.hi.lbl, # SDT combinations
-  #                                         sdt.mi.lbl = cus$sdt.mi.lbl,
-  #                                         sdt.fa.lbl = cus$sdt.fa.lbl,
-  #                                         sdt.cr.lbl = cus$sdt.cr.lbl,
-  #                                         col.txt = "black", #grey(.01, alpha = .99), # black
-  #                                         col.border = grey(.01, alpha = .99), #col.grey.4,
-  #                                         col.N = col.sand.light, # col.sand.light,
-  #                                         col.true = col.sand.light, col.false = col.sand.light, # both col.N, previously
-  #                                         col.hi = cus$color.hi, col.mi = cus$color.mi, col.fa = cus$color.fa, col.cr = cus$color.cr
-  #                                         )
-  # )
-                                          
-                                                     
-                                                   
-                                                      
+    riskyr:: plot_tree(prev = env$prev, sens = env$sens, spec = env$spec, N = env$N, 
+                       # user inputs
+                       area = input$treetype, by = input$treeby,
+                       title.lbl = cus$scenario.txt,
+                       popu.lbl = cus$target.population.lbl, cond.lbl = cus$condition.lbl,
+                       cond.true.lbl = cus$cond.true.lbl, cond.false.lbl = cus$cond.false.lbl,
+                       dec.lbl = cus$decision.lbl, dec.pos.lbl = cus$dec.true.lbl, 
+                       dec.neg.lbl = cus$dec.false.lbl, 
+                       sdt.hi.lbl = cus$sdt.hi.lbl, sdt.mi.lbl = cus$sdt.mi.lbl, 
+                       sdt.fa.lbl = cus$sdt.fa.lbl, sdt.cr.lbl = cus$sdt.cr.lbl, 
+                       col.boxes = c("#F2F2F2FC", "lightgoldenrod1", "lightskyblue2", 
+                                     cus$color.hi, cus$color.mi, cus$color.fa, cus$color.cr),
+                       col.txt = grey(0.01, alpha = 0.99), 
+                       col.border = "grey10", col.shadow = rgb(62, 63, 58, max = 255), cex.shadow = 0)
+    })
   
   ## (f) 2D plot of PPV and NPV as a function of prev.range:
-  output$PVs <- renderPlot(plot_PV(prev = env$prev, sens = env$sens, spec = env$spec,
-                                   show.PVprev = input$boxPVprev, # mark current prevalence in plot                
-                                   show.PVpoints = input$boxPVpoints1, # mark cur.PPV/cur.NPV in plot
-                                   log.scale = input$boxPVlog,
-                                   title.lbl = cus$scenario.txt,
-                                   col.ppv = cus$color.ppv,
-                                   col.npv = cus$color.npv)
-    )
+  output$PVs <- renderPlot({
+    riskyr::plot_PV(prev = env$prev, sens = env$sens, spec = env$spec,
+                    show.PVprev = input$boxPVprev, show.PVpoints = input$boxPVpoints1, 
+                    log.scale = input$boxPVlog, title.lbl = cus$scenario.txt,
+                    col.ppv = cus$color.ppv, col.npv = cus$color.npv)})
   
 
   ## (g) 3D plots of PPV and NPV planes as functions of sens and spec:
-  output$PV3dPPV <- renderPlot(plot_PV3d(prev = env$prev, sens = env$sens, spec = env$spec,
-                                         is.ppv = TRUE,
-                                         show.PVpoints = input$boxPVpoints2,
-                                         cur.theta = input$theta,
-                                         cur.phi = input$phi,
-                                         title.lbl = cus$scenario.txt,
-                                         col.pv = cus$color.ppv
-                                         )
-                               )
+  output$PV3dPPV <- renderPlot({
+    riskyr::plot_PV3d(prev = env$prev, sens = env$sens, spec = env$spec,
+                      is.ppv = TRUE, show.PVpoints = input$boxPVpoints2,
+                      cur.theta = input$theta, cur.phi = input$phi,
+                      title.lbl = cus$scenario.txt, col.pv = cus$color.ppv)
+    })
   
-  output$PV3dNPV <- renderPlot(plot_PV3d(prev = env$prev, sens = env$sens, spec = env$spec,
-                                         is.ppv = FALSE,
-                                         show.PVpoints = input$boxPVpoints2,
-                                         cur.theta = input$theta,
-                                         cur.phi = input$phi,
-                                         title.lbl = cus$scenario.txt,
-                                         col.pv = cus$color.npv
-  )
-  )
+  output$PV3dNPV <- renderPlot({
+    riskyr::plot_PV3d(prev = env$prev, sens = env$sens, spec = env$spec,
+                      is.ppv = FALSE, show.PVpoints = input$boxPVpoints2,
+                      cur.theta = input$theta, cur.phi = input$phi,
+                      title.lbl = cus$scenario.txt, col.pv = cus$color.npv)
+    })
   
   
   
@@ -472,10 +573,10 @@ shinyServer(function(input, output, session){
   
   # Reset labels to default
   observeEvent(input$resetcustomlabel, {
-    cus$target.population.lbl <- default.terminology[names(default.terminology) == "target.population.lbl"]
-    cus$scenario.txt <- default.terminology[names(default.terminology) == "scenario.txt"]
+    cus$target.population.lbl <- as.character(default.terminology[names(default.terminology) == "target.population.lbl"])
+    cus$scenario.txt <- as.character(default.terminology[names(default.terminology) == "scenario.txt"])
     # (a) Condition
-    cus$condition.lbl <- default.terminology[names(default.terminology) == "condition.lbl"]
+    cus$condition.lbl <- as.character(default.terminology[names(default.terminology) == "condition.lbl"])
     cus$cond.true.lbl <- default.terminology[names(default.terminology) == "cond.true.lbl"]
     cus$cond.false.lbl <- default.terminology[names(default.terminology) == "cond.false.lbl"]
     # (b) Decisions:
@@ -504,6 +605,21 @@ shinyServer(function(input, output, session){
     updateTextInput(session, "sdt.cr.lbl", value = default.terminology[["sdt.cr.lbl"]])
     
   })
+
+  output$labeltable <- renderTable({ matrix(data = c(cus$dec.true.lbl,cus$sdt.hi.lbl, cus$sdt.fa.lbl,  
+                                                     cus$dec.false.lbl, cus$sdt.mi.lbl, cus$sdt.cr.lbl),
+                                              nrow = 2, byrow = TRUE,
+                                            dimnames = list(rep(NA, 2),  c(cus$decision.lbl, cus$cond.true.lbl, cus$cond.false.lbl))
+                                 ) }, 
+                            bordered = TRUE, hover = TRUE, align = 'r', digits = 0, rownames = FALSE, na = 'missing'
+    )
+
+  output$labeltext <- renderText({paste0("The current population is called '", cus$target.population.lbl,
+                                         "', the current scenario is called '", cus$scenario.txt,
+                                         "', and the condition is currently called '", cus$condition.lbl, "'.")
+    })
+  
+  
   
   
   ## Customize colors
@@ -526,7 +642,7 @@ shinyServer(function(input, output, session){
          xright = c(1, 2, 1, 2), ytop = c(1, 1, 2, 2),
          col = c(cus$color.mi, cus$color.cr, cus$color.hi, cus$color.fa))
     text(x = c(0.5, 1.5, 0.5, 1.5), y = c(1.5, 1.5, 0.5, 0.5), col = "black",
-         labels = c("hit", "false alarm", "miss", "correct rejection"), cex = 1.1)
+         labels = c("hit", "false alarm", "miss", "correct\nrejection"), cex = 1.1)
   })
   
   # Simplified plot with PPV and NPV curves
