@@ -1,5 +1,5 @@
 ## server.R
-## riskyR | R Shiny | spds, uni.kn | 2018 01 31
+## riskyR | R Shiny | spds, uni.kn | 2018 02 01
 
 
 ##### 
@@ -28,8 +28,9 @@ library("DT")
 library("colourpicker")
 library("vcd")
 
-## get riskyr
-# install.packages("../riskyr_0.0.0.904.tar.gz", repos = NULL, type="source")
+## Install the currently included version of riskyr:
+# install.packages("./riskyr_0.0.0.911.tar.gz", repos = NULL, type = "source")
+# detach("package:riskyr", unload = TRUE) 
 library("riskyr")
 
 
@@ -390,7 +391,7 @@ shinyServer(function(input, output, session){
   
   ## (2) Stats tab:
   output$ACC <- renderUI({
-    withMathJax(paste0("$$ ACC = \\frac{", freq$hi, " + ", freq$mi, "}{", env$N, "} = ", round((freq$hi + freq$mi)/env$N, 4), "$$"))
+    withMathJax(paste0("$$ ACC = \\frac{", freq$hi, " + ", freq$cr, "}{", env$N, "} = ", round((freq$hi + freq$cr)/env$N, 4), "$$"))
   })
   
   output$PPV1 <- renderUI({
@@ -428,7 +429,8 @@ shinyServer(function(input, output, session){
   output$network <- renderPlot({
     riskyr::plot_fnet(prev = env$prev, sens = env$sens, spec = env$spec, N = env$N,
                       # user inputs
-                      area = input$nettype, by = input$netby,
+                      area = input$nettype, 
+                      by = input$netby,
                       title.lbl = cus$scenario.txt,
                       popu.lbl = cus$target.population.lbl, cond.lbl = cus$condition.lbl,
                       cond.true.lbl = cus$cond.true.lbl, cond.false.lbl = cus$cond.false.lbl,

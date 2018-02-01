@@ -22,13 +22,13 @@ library("riskyr")
 ## Import ready-made and worked out example data:
 datasets <- read.csv2("./www/examples_riskyR.csv", stringsAsFactors = FALSE)
 
-default.colors <- c(color.hi = rgb(128, 177, 57, max = 255), # col.green.2
-                    color.mi = rgb(210, 52, 48, max = 255), # col.red.2
-                    color.fa = rgb(184, 217, 137, max = 255), # col.green.1
-                    color.cr = rgb(230, 142, 140, max = 255), # col.red.1
-                    color.ppv = rgb(242, 100, 24, max = 255), # col.orange.2
-                    color.npv = rgb(29, 149, 198, max = 255) # col.blue.3
-)
+default.colors <- c(color.hi =  rgb(128, 177,  57, max = 255),  # col.green.2
+                    color.mi =  rgb(210,  52,  48, max = 255),  # col.red.2
+                    color.fa =  rgb(230, 142, 140, max = 255),  # col.red.1
+                    color.cr =  rgb(184, 217, 137, max = 255),  # col.green.1 
+                    color.ppv = rgb(242, 100,  24, max = 255),  # col.orange.2
+                    color.npv = rgb( 29, 149, 198, max = 255)   # col.blue.3
+                    )
 
 #####
 ## Define user interface logic:
