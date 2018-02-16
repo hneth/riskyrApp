@@ -1,16 +1,6 @@
 ## server.R
-## riskyR | R Shiny | spds, uni.kn | 2018 02 01
-
-
-##### 
-# To do
-
-# Customizable labels and inputs on UI side as well
-# let example scenarios update labels as well
-# prettify label customization page
-# fill imprint a bit
-# change dropdown navigation to something meaningful
-
+## riskyrApp | R Shiny | spds, uni.kn | 2018 02 15
+## riskyr package version 0.0.0.925
 
 
 #####
@@ -29,13 +19,14 @@ library("colourpicker")
 library("vcd")
 
 ## Install the currently included version of riskyr:
-# install.packages("./riskyr_0.0.0.911.tar.gz", repos = NULL, type = "source")
 # detach("package:riskyr", unload = TRUE) 
+# devtools::install_github("hneth/riskyr")
 library("riskyr")
+# sessionInfo()
 
 
 ## Import ready-made and worked out example data 
-datasets <- read.csv2("./www/examples_riskyR.csv", stringsAsFactors = FALSE)
+datasets <- read.csv2("./www/examples_riskyrApp_2018-02-15.csv", stringsAsFactors = FALSE)
 
 
 #####
@@ -43,7 +34,7 @@ datasets <- read.csv2("./www/examples_riskyR.csv", stringsAsFactors = FALSE)
 
 # take defaults from example datasets stored in www folder
 default.parameters <- setNames(datasets[1, 2:5], names(datasets)[2:5])
-default.terminology <- setNames(datasets[1, 7:18], names(datasets)[7:18])
+default.terminology <- setNames(datasets[1, 9:20], names(datasets)[9:20])
 # define default colors: 
 default.colors <- c(color.hi  = rgb(128, 177,  57, max = 255),  # col.green.2
                     color.mi  = rgb(210,  52,  48, max = 255),  # col.red.2
@@ -291,8 +282,8 @@ shinyServer(function(input, output, session){
     fa = freq$fa, cr = freq$cr, 
     cond.true.lbl = cus$cond.true.lbl, cond.false.lbl = cus$cond.false.lbl,
     dec.pos.lbl = cus$dec.true.lbl, dec.neg.lbl = cus$dec.false.lbl,
-    sdt.hi.lbl = cus$sdt.hi.lbl, sdt.mi.lbl = cus$sdt.mi.lbl,
-    sdt.fa.lbl = cus$sdt.fa.lbl, sdt.cr.lbl = cus$sdt.cr.lbl)
+    hi.lbl = cus$sdt.hi.lbl, mi.lbl = cus$sdt.mi.lbl,
+    fa.lbl = cus$sdt.fa.lbl, cr.lbl = cus$sdt.cr.lbl)
     })
   
   
@@ -432,12 +423,14 @@ shinyServer(function(input, output, session){
                       area = input$nettype, 
                       by = input$netby,
                       title.lbl = cus$scenario.txt,
-                      popu.lbl = cus$target.population.lbl, cond.lbl = cus$condition.lbl,
+                      popu.lbl = cus$target.population.lbl, 
+                      # cond.lbl = cus$condition.lbl, seemingly deprecated
                       cond.true.lbl = cus$cond.true.lbl, cond.false.lbl = cus$cond.false.lbl,
-                      dec.lbl = cus$decision.lbl, dec.pos.lbl = cus$dec.true.lbl, 
+                      # dec.lbl = cus$decision.lbl, seemingly deprecated
+                      dec.pos.lbl = cus$dec.true.lbl, 
                       dec.neg.lbl = cus$dec.false.lbl, 
-                      sdt.hi.lbl = cus$sdt.hi.lbl, sdt.mi.lbl = cus$sdt.mi.lbl, 
-                      sdt.fa.lbl = cus$sdt.fa.lbl, sdt.cr.lbl = cus$sdt.cr.lbl, 
+                      hi.lbl = cus$sdt.hi.lbl, mi.lbl = cus$sdt.mi.lbl, 
+                      fa.lbl = cus$sdt.fa.lbl, cr.lbl = cus$sdt.cr.lbl, 
                       col.boxes = c("#F2F2F2FC", "lightgoldenrod1", "lightskyblue2", 
                                     cus$color.hi, cus$color.mi, cus$color.fa, cus$color.cr,
                                     "rosybrown3", "lightsteelblue3", "#F2F2F2FC"),
@@ -459,6 +452,23 @@ shinyServer(function(input, output, session){
   
   ## (b) Icon array:
   ## ... 
+  
+  output$iconarray <- renderPlot({ plot_icons(prev = env$prev, sens = env$sens, 
+                                              spec = env$spec, N = env$N, 
+                                              ident.order = c("hi", "mi", "fa", "cr"), 
+                                              random.position = input$array.position,
+                                              random.identities = input$array.identities, 
+                                              # type.sort = input$array.sort,
+                                              # fill_array = input$array.fill,
+                                              type = input$arraytype,
+                                              icon.colors = c(as.character(cus$color.hi), as.character(cus$color.mi), 
+                                                              as.character(cus$color.fa), as.character(cus$color.cr)),
+                                              icon.types = c(as.integer(input$symbol.hi), as.integer(input$symbol.mi), 
+                                                             as.integer(input$symbol.cr), as.integer(input$symbol.fa)), 
+                                              type.lbls = c(cus$sdt.hi.lbl, cus$sdt.mi.lbl, cus$sdt.fa.lbl, cus$sdt.cr.lbl),
+                                              title.lbl = cus$scenario.txt
+                                              )
+  })
   
   ## (c) 2x2 confusion table (ordered by rows/decisions):
   # We need two confusion tables (at table and stats tab)
@@ -511,12 +521,14 @@ shinyServer(function(input, output, session){
                        # user inputs
                        area = input$treetype, by = input$treeby,
                        title.lbl = cus$scenario.txt,
-                       popu.lbl = cus$target.population.lbl, cond.lbl = cus$condition.lbl,
+                       popu.lbl = cus$target.population.lbl, 
+                       # cond.lbl = cus$condition.lbl, seemingly deprecated
                        cond.true.lbl = cus$cond.true.lbl, cond.false.lbl = cus$cond.false.lbl,
-                       dec.lbl = cus$decision.lbl, dec.pos.lbl = cus$dec.true.lbl, 
+                       # dec.lbl = cus$decision.lbl, seemingly deprecated
+                       dec.pos.lbl = cus$dec.true.lbl, 
                        dec.neg.lbl = cus$dec.false.lbl, 
-                       sdt.hi.lbl = cus$sdt.hi.lbl, sdt.mi.lbl = cus$sdt.mi.lbl, 
-                       sdt.fa.lbl = cus$sdt.fa.lbl, sdt.cr.lbl = cus$sdt.cr.lbl, 
+                       hi.lbl = cus$sdt.hi.lbl, mi.lbl = cus$sdt.mi.lbl, 
+                       fa.lbl = cus$sdt.fa.lbl, cr.lbl = cus$sdt.cr.lbl, 
                        col.boxes = c("#F2F2F2FC", "lightgoldenrod1", "lightskyblue2", 
                                      cus$color.hi, cus$color.mi, cus$color.fa, cus$color.cr),
                        col.txt = grey(0.01, alpha = 0.99), 
@@ -525,25 +537,34 @@ shinyServer(function(input, output, session){
   
   ## (f) 2D plot of PPV and NPV as a function of prev.range:
   output$PVs <- renderPlot({
-    riskyr::plot_PV(prev = env$prev, sens = env$sens, spec = env$spec,
-                    show.PVprev = input$boxPVprev, show.PVpoints = input$boxPVpoints1, 
-                    log.scale = input$boxPVlog, title.lbl = cus$scenario.txt,
-                    col.ppv = cus$color.ppv, col.npv = cus$color.npv)})
+    riskyr::plot_curve(prev = env$prev, sens = env$sens, spec = env$spec,
+                       # show.PVprev = input$boxPVprev, 
+                       show.points = input$boxPVpoints1,
+                       log.scale = input$boxPVlog,
+                       what = c("prev", "PPV", "NPV", "acc", "ppod")[c(TRUE, TRUE, TRUE, input$boxPVacc, input$boxPVppod)],
+                       what.col = c(rgb(62, 63, 58, max = 255), cus$color.ppv, 
+                                    cus$color.npv, "red", "blue")[c(TRUE, TRUE, TRUE, input$boxPVacc, input$boxPVppod)],
+                       title.lbl = cus$scenario.txt)
+                       })
   
 
   ## (g) 3D plots of PPV and NPV planes as functions of sens and spec:
   output$PV3dPPV <- renderPlot({
-    riskyr::plot_PV3d(prev = env$prev, sens = env$sens, spec = env$spec,
-                      is.ppv = TRUE, show.PVpoints = input$boxPVpoints2,
-                      cur.theta = input$theta, cur.phi = input$phi,
-                      title.lbl = cus$scenario.txt, col.pv = cus$color.ppv)
+    riskyr::plot_plane(prev = env$prev, sens = env$sens, spec = env$spec,
+                       what = "PPV",
+                       what.col = cus$color.ppv,
+                       show.point = input$boxPVpoints2,
+                       theta = input$theta, phi = input$phi,
+                       title.lbl = cus$scenario.txt)
     })
   
   output$PV3dNPV <- renderPlot({
-    riskyr::plot_PV3d(prev = env$prev, sens = env$sens, spec = env$spec,
-                      is.ppv = FALSE, show.PVpoints = input$boxPVpoints2,
-                      cur.theta = input$theta, cur.phi = input$phi,
-                      title.lbl = cus$scenario.txt, col.pv = cus$color.npv)
+    riskyr::plot_plane(prev = env$prev, sens = env$sens, spec = env$spec,
+                       what = "NPV",
+                       what.col = cus$color.npv,
+                       show.point = input$boxPVpoints2,
+                       theta = input$theta, phi = input$phi,
+                       title.lbl = cus$scenario.txt)
     })
   
   
@@ -608,18 +629,51 @@ shinyServer(function(input, output, session){
     
   })
 
-  output$labeltable <- renderTable({ matrix(data = c(cus$dec.true.lbl,cus$sdt.hi.lbl, cus$sdt.fa.lbl,  
-                                                     cus$dec.false.lbl, cus$sdt.mi.lbl, cus$sdt.cr.lbl),
-                                              nrow = 2, byrow = TRUE,
-                                            dimnames = list(rep(NA, 2),  c(cus$decision.lbl, cus$cond.true.lbl, cus$cond.false.lbl))
-                                 ) }, 
-                            bordered = TRUE, hover = TRUE, align = 'r', digits = 0, rownames = FALSE, na = 'missing'
+  # output$labeltable <- renderTable({ matrix(data = c(cus$dec.true.lbl,cus$sdt.hi.lbl, cus$sdt.fa.lbl,  
+  #                                                    cus$dec.false.lbl, cus$sdt.mi.lbl, cus$sdt.cr.lbl),
+  #                                             nrow = 2, byrow = TRUE,
+  #                                           dimnames = list(rep(NA, 2),  c(cus$decision.lbl, cus$cond.true.lbl, cus$cond.false.lbl))
+  #                                ) }, 
+  #                           bordered = TRUE, hover = TRUE, align = 'r', digits = 0, rownames = FALSE, na = 'missing'
+  #   )
+  # 
+  # output$labeltext <- renderText({paste0("The current population is called '", cus$target.population.lbl,
+  #                                        "', the current scenario is called '", cus$scenario.txt,
+  #                                        "', and the condition is currently called '", cus$condition.lbl, "'.")
+  #   })
+  
+  output$previewlabels <- renderPlot({
+    
+    M <- matrix(nrow = 10, ncol = 11, byrow = TRUE, data = 0)
+    M[2:3, 1] <- M[4:5, 2] <- M[6:7, 3] <- M[4, 8] <- ""
+    M[6, 8] <- M[5, 9] <-  M[7, 9] <-  M[8:9, 10] <- ""
+    
+    diagram::plotmat(M, pos = c(1, 2, 4, 2, 1), curve = 0, lwd = 1,
+                     box.type = "rect", relsize = 0.98, arr.pos = 0.5, 
+                     box.prop = 1/2,
+                     arr.length = 0.2, arr.type = "triangle", arr.width = 0.15,
+                     box.col = "lightgrey", shadow.size = 0,
+                     lcol = rgb(62, 63, 58, max = 255),
+                     name = c(cus$target.population.lbl,
+                              paste0(cus$condition.lbl, ":\n",
+                                     cus$cond.true.lbl),
+                              paste0(cus$condition.lbl, ":\n",
+                                     cus$cond.false.lbl),
+                              cus$sdt.hi.lbl,
+                              cus$sdt.mi.lbl,
+                              cus$sdt.fa.lbl,  
+                              cus$sdt.cr.lbl,
+                              paste0(cus$decision.lbl, ":\n",
+                                     cus$dec.true.lbl),
+                              paste0(cus$decision.lbl, ":\n",
+                                     cus$dec.false.lbl),
+                             cus$target.population.lbl
+                              )
     )
-
-  output$labeltext <- renderText({paste0("The current population is called '", cus$target.population.lbl,
-                                         "', the current scenario is called '", cus$scenario.txt,
-                                         "', and the condition is currently called '", cus$condition.lbl, "'.")
-    })
+    
+    
+  })
+  
   
   
   

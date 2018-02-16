@@ -1,5 +1,6 @@
 ## ui.R
-## riskyrApp | R Shiny | spds, uni.kn | 2018 02 01
+## riskyrApp | R Shiny | spds, uni.kn | 2018 02 15
+## riskyr package version 0.0.0.925
 
 
 #####
@@ -14,13 +15,15 @@ library("colourpicker")
 library("vcd")
 
 ## Install the currently included version of riskyr:
-# install.packages("./riskyr_0.0.0.911.tar.gz", repos = NULL, type = "source")
-# detach("package:riskyr", unload = TRUE)
+# detach("package:riskyr", unload = TRUE) 
+# devtools::install_github("hneth/riskyr")
 library("riskyr")
+# sessionInfo()
+
 
 
 ## Import ready-made and worked out example data:
-datasets <- read.csv2("./www/examples_riskyR.csv", stringsAsFactors = FALSE)
+datasets <- read.csv2("./www/examples_riskyrApp_2018-02-15.csv", stringsAsFactors = FALSE)
 
 default.colors <- c(color.hi =  rgb(128, 177,  57, max = 255),  # col.green.2
                     color.mi =  rgb(210,  52,  48, max = 255),  # col.red.2
@@ -38,13 +41,25 @@ shinyUI(
   navbarPage(title = "riskyrApp",
              theme = "bootstrap.sandstone.css",
              id = "tabs",
-             selected = "represent", # should be changed to about in the end
+             selected = "about", # should be changed to about in the end
              
              
              #####
              tabPanel("1: About", 
                       icon = icon("home", lib = "glyphicon"),
+                      value = "about",
+                      fluidRow(column(4, h1("Welcome to the riskyrApp"),
+                                      
+                                      h2("About"),
+                                      "The ", code("riskyrApp"), " is an R Shiny application that complements the ", code("riskyr"),
+                                      "toolbox for transparent communication and teaching of risk literacy.",
+                                      br()
+                                      ),
+                               column(3, HTML(' <a href="https://github.com/hneth/riskyr">
+                                                 <img src="riskyr_cube_s.png" alt="riskyr@GitHub">
+                                                 </a>'))),
                       includeMarkdown("about.md")
+
              ),
              
              #####
@@ -62,12 +77,12 @@ shinyUI(
                           ),
                           conditionalPanel(condition = "input.checkpop2 == 0",
                                            sliderInput("N2", label = NULL, value = 100,
-                                                       min = 0, max = 10^6, step = 10
+                                                       min = 1, max = 10^6, step = 10
                                            )
                           ),
                           conditionalPanel(condition = "input.checkpop2 == 1",
                                            numericInput("numN2", label = NULL, value = 100,
-                                                        min = 0, max = 10^6, step = 10
+                                                        min = 1, max = 10^6, step = 10
                                            )
                           ),
                           br(),
@@ -222,12 +237,12 @@ shinyUI(
                                        ),
                           conditionalPanel(condition = "input.checkpop == 0",
                                            sliderInput("N", label = NULL, value = 100,
-                                                       min = 0, max = 10^6, step = 10
+                                                       min = 1, max = 10^6, step = 10
                                                        )
                                            ),
                           conditionalPanel(condition = "input.checkpop == 1",
                                            numericInput("numN", label = NULL, value = 100,
-                                                        min = 0, max = 10^6, step = 10
+                                                        min = 1, max = 10^6, step = 10
                                                         )
                                            ),
                           br(),
@@ -389,8 +404,55 @@ shinyUI(
                                       # Icons
                                       tabPanel("Icon Array", 
                                                br(), 
-                                               paste0("Icon array: Coming soon..."), 
-                                               br(), br()
+                                               plotOutput("iconarray", width = "550", height = "550"), 
+                                               br(), 
+                                               wellPanel(
+                                                 fluidRow(
+                                                   column(3, offset = 0,
+                                                          radioButtons("arraytype", "Display:",
+                                                                       choices = list("Array" = "array", "Shuffled" = "shuffledarray",
+                                                                                      "Scattered" = "scatter"), inline = TRUE)
+                                                   #        bsButton("array.position", label = "Stack/Spread", value = FALSE, 
+                                                   #                 icon = icon("random", lib = "glyphicon"),
+                                                   #                 style = "default", type = "toggle")
+                                                   #        ),
+                                                   # column(3, offset = 0,
+                                                   #        bsButton("array.identities", label = "Sort/Shuffle", value = FALSE, 
+                                                   #                 icon = icon("random", lib = "glyphicon"),
+                                                   #                 style = "default", type = "toggle")
+                                                          )
+                                                   # ,
+                                                   # column(3, offset = 0,
+                                                   #        radioButtons("array.sort", label = "Type of sorting",
+                                                   #                     choices = list("Mosaic" = "mosaic", "Equal" = "equal"), inline = TRUE)
+                                                   # ),
+                                                   # column(3,
+                                                   #        selectInput("array.fill", label = "Fill array from:", 
+                                                   #                    choices = list("Top" = "top", "Left" = "left", "Right" = "right", "Bottom" = "Bottom"))
+                                                  ), br(),
+                                                 fluidRow(
+                                                   column(3,
+                                                          selectInput("symbol.hi", label = "Symbol of hits (hi):", 
+                                                                      choices = list("Circle" = 21, "Square" = 22, "Rhombus" = 23, "Triangle" = 24),
+                                                                      selected = "22")
+                                                          ),
+                                                   column(3,
+                                                          selectInput("symbol.mi", label = "Symbol of miss (mi):", 
+                                                                      choices = list("Circle" = 21, "Square" = 22, "Rhombus" = 23, "Triangle" = 24),
+                                                                      selected = "22")
+                                                          ),
+                                                   column(3,
+                                                          selectInput("symbol.cr", label = "Symbol of correct rejections (cr):", 
+                                                                      choices = list("Circle" = 21, "Square" = 22, "Rhombus" = 23, "Triangle" = 24),
+                                                                      selected = "22")
+                                                          ),
+                                                   column(3,
+                                                          selectInput("symbol.fa", label = "Symbol of false alarms (fa):", 
+                                                                      choices = list("Circle" = 21, "Square" = 22, "Rhombus" = 23, "Triangle" = 24),
+                                                                      selected = "22")
+                                                          )
+                                                  )
+                                                 )
                                                ),
                                       #####
                                       # Tree
@@ -428,7 +490,7 @@ shinyUI(
                                       # PV curves
                                       tabPanel("Predictive Values: Curves", 
                                                br(),
-                                               paste0("Predictive values (PPV/NPV) by prevalance:"), br(), br(),
+                                               paste0("Positive Predictive Value (PPV) and Negative Predictive Value (NPV) by prevalance:"), br(), br(),
                                                plotOutput("PVs"),
                                                br(),
                                                # paste0("PPV = ", data()$PPV, ", NPV = ", data()$NPV), 
@@ -436,9 +498,11 @@ shinyUI(
                                                # ERROR: object of type 'closure' is not subsettable ???
                                                wellPanel(
                                                  fluidRow(
-                                                   column(4, checkboxInput("boxPVprev", label = "Show current prevalence in plot", value = TRUE)),
-                                                   column(4, checkboxInput("boxPVpoints1", label = "Show current PPV/NPV in plot", value = TRUE)),
-                                                   column(4, checkboxInput("boxPVlog", label = "Show prevalence on logarithmic scale", value = FALSE))
+                                                   # column(4, checkboxInput("boxPVprev", label = "Show current prevalence in plot", value = TRUE)),
+                                                   column(2, checkboxInput("boxPVpoints1", label = "Show point values in plot", value = TRUE)),
+                                                   column(3, checkboxInput("boxPVlog", label = "Show prevalence on logarithmic scale", value = FALSE)),
+                                                   column(2, checkboxInput("boxPVacc", label = "Show accuracy (acc)", value = FALSE)),
+                                                   column(4, checkboxInput("boxPVppod", label = "Show proportion of positive decision (ppod)", value = FALSE))
                                                    )
                                                  )
                                                ),
@@ -469,13 +533,13 @@ shinyUI(
                       ),
              
              #####        
-             tabPanel("4: Information",
-                      icon = icon("education", lib = "glyphicon")
-                      
-             ),
+             # tabPanel("4: Information",
+             #          icon = icon("education", lib = "glyphicon")
+             #          
+             # ),
              
              #####
-             navbarMenu("5: Customize",
+             navbarMenu("4: Customize",
                         icon = icon("wrench", lib = "glyphicon"), 
                         
                         # spacer
@@ -546,11 +610,14 @@ shinyUI(
                                    #####
                                    ## Main panel for displaying preview of labels:
                                    mainPanel(h3("Here is a simplified preview of your labels:"),
-                                             "Click the 'Customize' button to update your color selection.",
-                                             br(), br(),
-                                             textOutput("labeltext"),
+                                             "Click the 'Customize' button to update your selection of labels to build your own case study.",
                                              br(),
-                                             tableOutput("labeltable")
+                                             # br(),
+                                             # textOutput("labeltext"),
+                                             # br(),
+                                             # tableOutput("labeltable"),
+                                             # br(),
+                                             plotOutput("previewlabels", width = "800", height = "750")
                                              )
                                  )
                         ),
@@ -599,8 +666,8 @@ shinyUI(
                                  ## Main panel for displaying preview plots with colors:
                                  mainPanel(h3("Here are simplified preview plots of your colors:"),
                                            "Click the 'Customize' button to update your color selection.",
-                                           fluidRow(column(6, plotOutput("sampleplot")),
-                                                    column(6, plotOutput("sampleplotcurves"))
+                                           fluidRow(column(3, plotOutput("sampleplot")),
+                                                    column(3, plotOutput("sampleplotcurves"))
                                            )
                                            )
                                  )
@@ -611,28 +678,38 @@ shinyUI(
                         ),
              
              #####
-             navbarMenu("Dropdown-Navigation",
-                        
+             navbarMenu("Further information",
+
                         # spacer
                         "----",
-                        
+
                         # 1st screen in dropdown navigation:
-                        tabPanel("Further information",
+                        tabPanel("References & Readings",
                                  icon = icon("book", lib = "glyphicon"),
-                                 "Text of tab panel", br() 
+                                 includeMarkdown("www/recommended_readings.md")
                         ),
-                        
+
                         # spacer
                         "----",
-                        
-                        # 2nd screen in dropdown navigation: 
-                        tabPanel("B Imprint",
+
+                        # 2nd screen in dropdown navigation:
+                        tabPanel("Imprint",
                                  icon = icon("info-sign", lib = "glyphicon"),
-                                 "Hier Text für Panel B", br(), br(),
-                                 a("SPDS@uni.kn", href = "https://www.spds.uni-konstanz.de"), br(), br(),
-                                 tags$code("This text will be displayed as computer code."), br() 
+                                 h2("Imprint"),
+                                 fluidRow(
+                                 HTML('<a href="https://github.com/hneth/riskyr"> 
+                                        <img src="riskyr_cube_s.png" alt="riskyr@GitHub"
+                                      align = "left">
+                                        </a>'),
+                                 HTML('<a href="https://www.spds.uni-konstanz.de"> 
+                                        <img src="uniKn_logo_s.png" alt="SPDS@uni.KN"
+                                        align = "left">
+                                      </a>')
+                                 ),
+                                 br(),
+                                 includeMarkdown("www/imprint.md")
                         ),
-                        
+
                         # spacer
                         "----"
              )
