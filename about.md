@@ -15,9 +15,11 @@ Develop and assemble a set of basic risk literacy tools in R:
 Status
 ---------
 
-This app is currently a **prototype for functionalities** provided by the package. In a next step, we will extend it to align to a **didactic concept**.
+This app is currently a **prototype for functionalities** provided by the `riskyr`package. In a next step, we will extend it to align to a **didactic concept**.
 
-We are still developing this software and have yet to choose a license for it. Please [contact us](http://spds.uni-konstanz.de) in case you want to use or share it.
+The `riskyr` package is open source software written in [R](https://www.r-project.org/) and released under the [GPL 2](https://tldrlegal.com/license/gnu-general-public-license-v2) | [GPL 3](https://tldrlegal.com/license/gnu-general-public-license-v3-(gpl-3)) licenses.
+
+Please email at <contact.riskyr@gmail.com> in case you want to use, adapt, or share this software.
 
 
 Reference
@@ -25,17 +27,20 @@ Reference
 
 In APA format:
 
-- Neth, H., Gaisbauer, F., Gradwohl, N., & Gaissmaier, W. (2018).  
-`riskyr`: A toolbox for rendering risk literacy more transparent [Computer software].  
-Retrieved from https://github.com/hneth/riskyr (R package version 0.0.0.925)
+-  Neth, H., Gaisbauer, F., Gradwohl, N., & Gaissmaier, W. (2018).    
+    `riskyr`: A toolbox for rendering risk literacy more transparent.    
+    Social Psychology and Decision Sciences, University of Konstanz, Germany.    
+    Computer software (R package version 0.1.0, Feb. 16, 2018).    
+    Retrieved from <https://github.com/hneth/riskyr>.
 
 As BibTeX reference: 
 
-    @manual{riskyr,
-      title = {{riskyr}: A toolbox for rendering risk literacy more transparent},
-      author = {Neth, Hansj\"{o}rg and Gaisbauer, Felix and Gradwohl, Nico and Gaissmaier, Wolfgang}, 
-      year = 2018,
-      note = {R package version 0.0.0.925},
-      url = {https://github.com/hneth/riskyr}
-    }
-
+     @manual{,
+      title = {riskyr: A toolbox for rendering risk literacy more transparent},
+      author = {Hansjörg Neth and Felix Gaisbauer and Nico Gradwohl and Wolfgang Gaissmaier},
+      year = {2018},
+      organization = {Social Psychology and Decision Sciences, University of Konstanz},
+      address = {Konstanz, Germany},
+      note = {R package (version 0.1.0, Feb. 16, 2018)},
+      url = {https://github.com/hneth/riskyr},
+      }    

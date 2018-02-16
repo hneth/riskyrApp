@@ -1,6 +1,6 @@
 ## ui.R
-## riskyrApp | R Shiny | spds, uni.kn | 2018 02 15
-## riskyr package version 0.0.0.925
+## riskyrApp | R Shiny | spds, uni.kn | 2018 02 16
+## riskyr package version 0.1.0
 
 
 #####
@@ -15,8 +15,9 @@ library("colourpicker")
 library("vcd")
 
 ## Install the currently included version of riskyr:
-# detach("package:riskyr", unload = TRUE) 
+# detach("package:riskyr", unload = TRUE)
 # devtools::install_github("hneth/riskyr")
+# install.packages("./riskyr_0.1.0.tar.gz", repos = NULL, type = "source")
 library("riskyr")
 # sessionInfo()
 
@@ -351,39 +352,16 @@ shinyUI(
                                                br(),
                                                wellPanel(
                                                  fluidRow(
-                                                   column(3, offset = 1,
+                                                   column(3, offset = 0,
                                                           radioButtons("netby", "Build Network by", c("Condition first" = "cddc",
                                                                                                       "Decision first" = "dccd"), inline = TRUE)),
                                                    column(6, 
                                                           radioButtons("nettype", "Type of Boxes", c("Default boxes" = "no", "Squares" = "sq", 
-                                                                                                     "Horizontal rectangles" = "hr", "Vertical rectangles" = "vr"), inline = TRUE)
+                                                                                                     "Horizontal rectangles" = "hr", "Vertical rectangles" = "vr"), inline = TRUE)),
+                                                   column(2, downloadButton("fnetdl", label = "Save Network"))
                                                    )
-                                                   ))
+                                               )
                                                ),
-                                      # Stats
-                                      #####
-                                      # Stats
-                                      # tabPanel("Stats",
-                                      #          br(),
-                                      #          withMathJax(includeMarkdown("www/statstab_riskyr.md")),
-                                      #          br(),
-                                      #          tableOutput("confusiontable1"),
-                                      #          br(),
-                                      #          withMathJax(includeMarkdown("www/statstab_riskyr_ACC.md")),
-                                      #          uiOutput("ACC"),
-                                      #          br(), br(),
-                                      #          withMathJax(includeMarkdown("www/statstab_riskyr_PPV1.md")),
-                                      #          uiOutput("PPV1"),
-                                      #          withMathJax(includeMarkdown("www/statstab_riskyr_PPV2.md")),
-                                      #          uiOutput("PPV2"),
-                                      #          br(), br(),
-                                      #          withMathJax(includeMarkdown("www/statstab_riskyr_NPV1.md")),
-                                      #          uiOutput("NPV1"),
-                                      #          withMathJax(includeMarkdown("www/statstab_riskyr_NPV2.md")),
-                                      #          uiOutput("NPV2"),
-                                      #          br(), br(),
-                                      #          withMathJax(includeMarkdown("www/statstab_riskyr_FORFDR.md"))
-                                      #          ),
                                       #####
                                       # Cases
                                       tabPanel("Individual Cases", 
@@ -393,6 +371,7 @@ shinyUI(
                                                bsButton("sort", label = "Sort/Shuffle", value = FALSE, 
                                                         icon = icon("random", lib = "glyphicon"),
                                                         style = "default", type = "toggle"),
+                                               downloadButton("rawdatadl", label = "Save Raw Data"),
                                                br(), br(),
                                                conditionalPanel(condition = "input.dataselection != 1",
                                                                 "Source:",
@@ -408,28 +387,13 @@ shinyUI(
                                                br(), 
                                                wellPanel(
                                                  fluidRow(
-                                                   column(3, offset = 0,
+                                                   column(4, offset = 0,
                                                           radioButtons("arraytype", "Display:",
                                                                        choices = list("Array" = "array", "Shuffled" = "shuffledarray",
-                                                                                      "Scattered" = "scatter"), inline = TRUE)
-                                                   #        bsButton("array.position", label = "Stack/Spread", value = FALSE, 
-                                                   #                 icon = icon("random", lib = "glyphicon"),
-                                                   #                 style = "default", type = "toggle")
-                                                   #        ),
-                                                   # column(3, offset = 0,
-                                                   #        bsButton("array.identities", label = "Sort/Shuffle", value = FALSE, 
-                                                   #                 icon = icon("random", lib = "glyphicon"),
-                                                   #                 style = "default", type = "toggle")
-                                                          )
-                                                   # ,
-                                                   # column(3, offset = 0,
-                                                   #        radioButtons("array.sort", label = "Type of sorting",
-                                                   #                     choices = list("Mosaic" = "mosaic", "Equal" = "equal"), inline = TRUE)
-                                                   # ),
-                                                   # column(3,
-                                                   #        selectInput("array.fill", label = "Fill array from:", 
-                                                   #                    choices = list("Top" = "top", "Left" = "left", "Right" = "right", "Bottom" = "Bottom"))
-                                                  ), br(),
+                                                                                      "Scattered" = "scatter", "Mosaic" = "mosaic"), inline = TRUE)),
+                                                          column(2, downloadButton("iconarraydl", label = "Save Icon Array"))
+                                                   ), 
+                                                   br(),
                                                  fluidRow(
                                                    column(3,
                                                           selectInput("symbol.hi", label = "Symbol of hits (hi):", 
@@ -464,12 +428,12 @@ shinyUI(
                                                br(),
                                                wellPanel(
                                                  fluidRow(
-                                                   column(3, offset = 1,
+                                                   column(3, offset = 0,
                                                           radioButtons("treeby", "Build Tree by", c("Condition" = "cd", "Decision" = "dc"), inline = TRUE)),
                                                    column(6, 
                                                           radioButtons("treetype","Type of Boxes", c("Default boxes" = "no", "Squares" = "sq", 
-                                                                                                    "Horizontal rectangles" = "hr", "Vertical rectangles" = "vr"), inline = TRUE)
-                                                          )
+                                                                                                    "Horizontal rectangles" = "hr", "Vertical rectangles" = "vr"), inline = TRUE)),
+                                                   column(2, downloadButton("nftreedl", label = "Save Frequency Tree"))
                                                  )
                                                 )
                                                ),
@@ -477,14 +441,34 @@ shinyUI(
                                       #####
                                       tabPanel("Cross-Tabulation", 
                                                br(), 
-                                               paste0("Aggregated cases:"), 
-                                               br(), br(),  
-                                               tableOutput("confusiontable"),
-                                               br(),
-                                               paste0("The following mosaic plot shows the cell frequencies as area sizes:"), 
-                                               br(),  br(), 
-                                               plotOutput("mosaicplot", height = "400px", width = "400px"),
-                                               br()
+                                               # paste0("Aggregated cases:"), 
+                                               # br(), br(),  
+                                               # tableOutput("confusiontable"),
+                                               # br(),
+                                               # paste0("The following mosaic plot shows the cell frequencies as area sizes:"), 
+                                               # br(),  br(), 
+                                               # plotOutput("mosaicplot", height = "400px", width = "400px"),
+                                               # br(),
+                                               # wellPanel(
+                                               #   fluidRow(
+                                               #     column(2, downloadButton("mosaicplotdl", label = "Save Mosaic Plot")),
+                                               #     column(2, downloadButton("confusiontabledl", label = "Save Confusion Table"))
+                                               #   ))
+                                               
+                                               fluidRow(
+                                                 column(5,  paste0("Aggregated cases:"), 
+                                                        br(), br(),  
+                                                        tableOutput("confusiontable")),
+                                                 column(5, paste0("The following mosaic plot shows the cell frequencies as area sizes:"), 
+                                                        br(),  br(), 
+                                                        plotOutput("mosaicplot", height = "400px", width = "400px"))
+                                               ),
+                                               wellPanel(
+                                                 fluidRow(
+                                                   column(2, offset = 0, downloadButton("confusiontabledl", label = "Save Confusion Table")),
+                                                   column(2, offset = 3, downloadButton("mosaicplotdl", label = "Save Mosaic Plot"))
+                                                 ))
+                                               
                                                ),
                                       #####
                                       # PV curves
@@ -493,16 +477,14 @@ shinyUI(
                                                paste0("Positive Predictive Value (PPV) and Negative Predictive Value (NPV) by prevalance:"), br(), br(),
                                                plotOutput("PVs"),
                                                br(),
-                                               # paste0("PPV = ", data()$PPV, ", NPV = ", data()$NPV), 
-                                               # print(data()$PPV),
-                                               # ERROR: object of type 'closure' is not subsettable ???
                                                wellPanel(
                                                  fluidRow(
                                                    # column(4, checkboxInput("boxPVprev", label = "Show current prevalence in plot", value = TRUE)),
-                                                   column(2, checkboxInput("boxPVpoints1", label = "Show point values in plot", value = TRUE)),
-                                                   column(3, checkboxInput("boxPVlog", label = "Show prevalence on logarithmic scale", value = FALSE)),
+                                                   column(2, checkboxInput("boxPVpoints1", label = "Show point values", value = TRUE)),
+                                                   column(3, checkboxInput("boxPVlog", label = "Scale prevalence on logarithmic scale", value = FALSE)),
                                                    column(2, checkboxInput("boxPVacc", label = "Show accuracy (acc)", value = FALSE)),
-                                                   column(4, checkboxInput("boxPVppod", label = "Show proportion of positive decision (ppod)", value = FALSE))
+                                                   column(4, checkboxInput("boxPVppod", label = "Show proportion of positive decisions (ppod)", value = FALSE)),
+                                                   column(1, downloadButton("PVsdl", label = "Save Curves"))
                                                    )
                                                  )
                                                ),
@@ -518,7 +500,12 @@ shinyUI(
                                                br(),
                                                br(),
                                                wellPanel(
-                                                 checkboxInput("boxPVpoints2", label = "Show current PPV/NPV in plots", value = TRUE), 
+                                                 fluidRow(
+                                                   column(3, checkboxInput("boxPVpoints2", label = "Show current PPV/NPV in plots", value = TRUE)), 
+                                                   column(2, offset = 1, downloadButton("PV3dPPVdl", label = "Save PPV Cube")),
+                                                   column(2, offset = 4,
+                                                          downloadButton("PV3dNPVdl", label = "Save NPV Cube"))
+                                                 ),
                                                  br(),
                                                  fluidRow(
                                                    column(6, sliderInput("theta", "Horizontal viewing angle:", value = -45, min = -90, max = +90)),

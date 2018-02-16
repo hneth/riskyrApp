@@ -1,7 +1,6 @@
-### `riskyrApp`
+## `riskyrApp`
 SPDS, uni.kn  
-2018 02 15
-
+2018 02 16
 
 `riskyrApp` is an interactive application that complements the R package `riskyr`. 
 
@@ -72,7 +71,7 @@ To cite `riskyr` in derivations and publications use:
 
 A BibTeX entry for LaTeX users is: 
 
-    @Manual{,
+    @Manual{riskyr,
       title = {riskyr: A toolbox for rendering risk literacy more transparent},
       author = {Hansjörg Neth and Felix Gaisbauer and Nico Gradwohl and Wolfgang Gaissmaier},
       year = {2018},

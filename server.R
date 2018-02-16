@@ -1,6 +1,6 @@
 ## server.R
-## riskyrApp | R Shiny | spds, uni.kn | 2018 02 15
-## riskyr package version 0.0.0.925
+## riskyrApp | R Shiny | spds, uni.kn | 2018 02 16
+## riskyr package version 0.1.0
 
 
 #####
@@ -19,10 +19,12 @@ library("colourpicker")
 library("vcd")
 
 ## Install the currently included version of riskyr:
-# detach("package:riskyr", unload = TRUE) 
+# detach("package:riskyr", unload = TRUE)
 # devtools::install_github("hneth/riskyr")
+# install.packages("./riskyr_0.1.0.tar.gz", repos = NULL, type = "source")
 library("riskyr")
 # sessionInfo()
+
 
 
 ## Import ready-made and worked out example data 
@@ -417,7 +419,8 @@ shinyServer(function(input, output, session){
   
   
   ## (0) Overview:
-  output$network <- renderPlot({
+
+  fnet <- function(){
     riskyr::plot_fnet(prev = env$prev, sens = env$sens, spec = env$spec, N = env$N,
                       # user inputs: 
                       area = input$nettype, 
@@ -436,39 +439,67 @@ shinyServer(function(input, output, session){
                                     "rosybrown3", "lightsteelblue3", "#F2F2F2FC"),
                       col.txt = grey(0.01, alpha = 0.99), 
                       col.border = "grey10", col.shadow = rgb(62, 63, 58, max = 255))
-  })
+  }
   
+  output$network <- renderPlot({ fnet() }) 
   
-  
+  output$fnetdl <- downloadHandler(
+    filename = function() {paste0("riskyrApp_fnet_", gsub(":", "-", Sys.time()), ".png")},
+    content =  function(file){
+      png(file, width = 550, height = 550)
+      fnet()
+      dev.off()}
+    )
+
+
   ## (a) Raw data table: 
-  output$rawdatatable <- DT::renderDataTable(DT::datatable({
+  
+  rawdata <- function(){
     if(input$sort == FALSE) {display <- popu()[sample(rownames(popu())), ]}
     else display <- popu()[sort(as.numeric(rownames(popu()))), ]
-    display }, options = list(lengthChange = TRUE)) %>%
-    formatStyle("STD", target = "row", backgroundColor = styleEqual(
-      levels = c(cus$sdt.hi.lbl, cus$sdt.mi.lbl, cus$sdt.fa.lbl, cus$sdt.cr.lbl),
-      values = c(cus$color.hi, cus$color.mi, cus$color.fa, cus$color.cr)))
+    display
+  }
+    
+  output$rawdatatable <- DT::renderDataTable(DT::datatable({rawdata() }, options = list(lengthChange = TRUE)) %>%
+      formatStyle("STD", target = "row", backgroundColor = styleEqual(
+        levels = c(cus$sdt.hi.lbl, cus$sdt.mi.lbl, cus$sdt.fa.lbl, cus$sdt.cr.lbl),
+        values = c(cus$color.hi, cus$color.mi, cus$color.fa, cus$color.cr)))
   )
+  
+  output$rawdatadl <- downloadHandler(
+    filename = function() {paste0("riskyrApp_rawdata_", gsub(":", "-", Sys.time()), ".csv")},
+    content = function(file) {
+      write.csv(rawdata(), file, row.names = TRUE)
+    }
+  )
+  
+  
   
   ## (b) Icon array:
   ## ... 
   
-  output$iconarray <- renderPlot({ plot_icons(prev = env$prev, sens = env$sens, 
-                                              spec = env$spec, N = env$N, 
-                                              ident.order = c("hi", "mi", "fa", "cr"), 
-                                              random.position = input$array.position,
-                                              random.identities = input$array.identities, 
-                                              # type.sort = input$array.sort,
-                                              # fill_array = input$array.fill,
-                                              type = input$arraytype,
-                                              icon.colors = c(as.character(cus$color.hi), as.character(cus$color.mi), 
-                                                              as.character(cus$color.fa), as.character(cus$color.cr)),
-                                              icon.types = c(as.integer(input$symbol.hi), as.integer(input$symbol.mi), 
-                                                             as.integer(input$symbol.cr), as.integer(input$symbol.fa)), 
-                                              type.lbls = c(cus$sdt.hi.lbl, cus$sdt.mi.lbl, cus$sdt.fa.lbl, cus$sdt.cr.lbl),
-                                              title.lbl = cus$scenario.txt
-                                              )
-  })
+  icons <- function(){
+    plot_icons(prev = env$prev, sens = env$sens, 
+               spec = env$spec, N = env$N, 
+               ident.order = c("hi", "mi", "fa", "cr"), 
+               type = input$arraytype,
+               icon.colors = c(as.character(cus$color.hi), as.character(cus$color.mi), 
+                               as.character(cus$color.fa), as.character(cus$color.cr)),
+               icon.types = c(as.integer(input$symbol.hi), as.integer(input$symbol.mi), 
+                              as.integer(input$symbol.cr), as.integer(input$symbol.fa)), 
+               type.lbls = c(cus$sdt.hi.lbl, cus$sdt.mi.lbl, cus$sdt.fa.lbl, cus$sdt.cr.lbl),
+               title.lbl = cus$scenario.txt)
+  }
+  
+  output$iconarray <- renderPlot({ icons() })
+  
+  output$iconarraydl <- downloadHandler(
+    filename = function() {paste0("riskyrApp_icon-array_", gsub(":", "-", Sys.time()), ".png")},
+    content =  function(file){
+      png(file, width = 550, height = 550)
+      icons()
+      dev.off()}
+  )
   
   ## (c) 2x2 confusion table (ordered by rows/decisions):
   # We need two confusion tables (at table and stats tab)
@@ -505,18 +536,37 @@ shinyServer(function(input, output, session){
   output$confusiontable5 <- renderTable(confustableraw(), bordered = TRUE, hover = TRUE,  
                                         align = 'r', digits = 0, rownames = TRUE, na = 'missing')
   
+  output$confusiontabledl <- downloadHandler(
+    filename = function() {paste0("riskyrApp_confusion-table_", gsub(":", "-", Sys.time()), ".csv")},
+    content = function(file) {
+      write.csv(confustableraw(), file, row.names = TRUE)
+    }
+  )
+  
   
   ## (d) Mosaic plot:
-  output$mosaicplot <- renderPlot({
+  
+  mosaicplot <- function(){
     riskyr::plot_mosaic(prev = env$prev, sens = env$sens, spec = env$spec, N = env$N,
                         title.lbl = cus$scenario.txt, 
                         col.sdt = c(cus$color.hi, cus$color.mi, cus$color.fa, cus$color.cr))
-    
-  })
+  }
+  
+  output$mosaicplot <- renderPlot({ mosaicplot() })
+  
+  output$mosaicplotdl <- downloadHandler(
+    filename = function() {paste0("riskyrApp_mosaic-plot_", gsub(":", "-", Sys.time()), ".png")},
+    content =  function(file){
+      png(file, width = 550, height = 550)
+      mosaicplot()
+      dev.off()}
+  )
+
   
 
   ## (e) Tree with natural frequencies:
-  output$nftree <- renderPlot({
+  
+  nftree <- function(){
     riskyr:: plot_tree(prev = env$prev, sens = env$sens, spec = env$spec, N = env$N, 
                        # user inputs
                        area = input$treetype, by = input$treeby,
@@ -533,10 +583,21 @@ shinyServer(function(input, output, session){
                                      cus$color.hi, cus$color.mi, cus$color.fa, cus$color.cr),
                        col.txt = grey(0.01, alpha = 0.99), 
                        col.border = "grey10", col.shadow = rgb(62, 63, 58, max = 255), cex.shadow = 0)
-    })
+  }
+  
+  output$nftree <- renderPlot({ nftree() })
+  
+  output$nftreedl <- downloadHandler(
+    filename = function() {paste0("riskyrApp_frequency-tree_", gsub(":", "-", Sys.time()), ".png")},
+    content =  function(file){
+      png(file, width = 550, height = 550)
+      nftree()
+      dev.off()}
+  )
   
   ## (f) 2D plot of PPV and NPV as a function of prev.range:
-  output$PVs <- renderPlot({
+  
+  PVs <- function(){
     riskyr::plot_curve(prev = env$prev, sens = env$sens, spec = env$spec,
                        # show.PVprev = input$boxPVprev, 
                        show.points = input$boxPVpoints1,
@@ -544,29 +605,59 @@ shinyServer(function(input, output, session){
                        what = c("prev", "PPV", "NPV", "acc", "ppod")[c(TRUE, TRUE, TRUE, input$boxPVacc, input$boxPVppod)],
                        what.col = c(rgb(62, 63, 58, max = 255), cus$color.ppv, 
                                     cus$color.npv, "red", "blue")[c(TRUE, TRUE, TRUE, input$boxPVacc, input$boxPVppod)],
-                       title.lbl = cus$scenario.txt)
-                       })
+                       title.lbl = cus$scenario.txt)}
+  
+  output$PVs <- renderPlot({ PVs() })
+  
+  output$PVsdl <- downloadHandler(
+    filename = function() {paste0("riskyrApp_predictive-value-curves_", gsub(":", "-", Sys.time()), ".png")},
+    content =  function(file){
+      png(file, width = 1250, height = 400)
+      PVs()
+      dev.off()}
+  )
   
 
   ## (g) 3D plots of PPV and NPV planes as functions of sens and spec:
-  output$PV3dPPV <- renderPlot({
-    riskyr::plot_plane(prev = env$prev, sens = env$sens, spec = env$spec,
-                       what = "PPV",
-                       what.col = cus$color.ppv,
-                       show.point = input$boxPVpoints2,
-                       theta = input$theta, phi = input$phi,
-                       title.lbl = cus$scenario.txt)
-    })
   
-  output$PV3dNPV <- renderPlot({
+  PV3dPPV <- function(){    
+    riskyr::plot_plane(prev = env$prev, sens = env$sens, spec = env$spec,
+                                               what = "PPV",
+                                               what.col = cus$color.ppv,
+                                               show.point = input$boxPVpoints2,
+                                               theta = input$theta, phi = input$phi,
+                                               title.lbl = cus$scenario.txt) 
+    }
+  
+  output$PV3dPPV <- renderPlot({ PV3dPPV() })
+  
+  output$PV3dPPVdl <- downloadHandler(
+    filename = function() {paste0("riskyrApp_PPV-cube_", gsub(":", "-", Sys.time()), ".png")},
+    content =  function(file){
+      png(file, width = 610, height = 400)
+      PV3dPPV()
+      dev.off()}
+  )
+  
+  PV3dNPV <- function(){
     riskyr::plot_plane(prev = env$prev, sens = env$sens, spec = env$spec,
                        what = "NPV",
                        what.col = cus$color.npv,
                        show.point = input$boxPVpoints2,
                        theta = input$theta, phi = input$phi,
                        title.lbl = cus$scenario.txt)
-    })
+    
+  }
   
+  output$PV3dNPV <- renderPlot({ PV3dNPV() })
+  
+  output$PV3dNPVdl <- downloadHandler(
+    filename = function() {paste0("riskyrApp_NPV-cube_", gsub(":", "-", Sys.time()), ".png")},
+    content =  function(file){
+      png(file, width = 610, height = 400)
+      PV3dNPV()
+      dev.off()}
+  )
   
   
   
