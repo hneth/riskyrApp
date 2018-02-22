@@ -60,7 +60,6 @@ shinyUI(
                                                  <img src="riskyr_cube_s.png" alt="riskyr@GitHub">
                                                  </a>'))),
                       includeMarkdown("about.md")
-
              ),
              
              #####
@@ -348,8 +347,10 @@ shinyUI(
                                       # Overview
                                       tabPanel("Overview",
                                                br(),
-                                               plotOutput("network", width = "550", height = "550"),
-                                               br(),
+                                               fluidRow(
+                                                 column(8, offset = 2, plotOutput("network", width = "550", height = "550"))),
+                                               # plotOutput("network", width = "550", height = "550"),
+                                               # br(),
                                                wellPanel(
                                                  fluidRow(
                                                    column(3, offset = 0,
@@ -368,26 +369,35 @@ shinyUI(
                                                br(),
                                                "Individual cases:", 
                                                br(), br(),
-                                               bsButton("sort", label = "Sort/Shuffle", value = FALSE, 
-                                                        icon = icon("random", lib = "glyphicon"),
-                                                        style = "default", type = "toggle"),
-                                               downloadButton("rawdatadl", label = "Save Raw Data"),
-                                               br(), br(),
+                                             
                                                conditionalPanel(condition = "input.dataselection != 1",
                                                                 "Source:",
                                                                 verbatimTextOutput("sourceOutput")),
                                                DT::dataTableOutput("rawdatatable"),
+                                               br(), br(),
+                                               wellPanel(
+                                                 fluidRow(
+                                                   column(2, offset = 2,
+                                                          bsButton("sort", label = "Sort/Shuffle", value = TRUE, 
+                                                                   icon = icon("random", lib = "glyphicon"),
+                                                                   style = "default", type = "toggle")),
+                                                   column(2, offset = 2,
+                                                          downloadButton("rawdatadl", label = "Save Raw Data"))
+                                                 )
+                                               ),
                                                br()
                                                ),
                                       #####
                                       # Icons
                                       tabPanel("Icon Array", 
                                                br(), 
-                                               plotOutput("iconarray", width = "550", height = "550"), 
-                                               br(), 
+                                               fluidRow(
+                                                 column(8, offset = 2, plotOutput("iconarray", width = "550", height = "550"))),
+                                               # plotOutput("iconarray", width = "550", height = "550"), 
+                                               # br(), 
                                                wellPanel(
                                                  fluidRow(
-                                                   column(4, offset = 0,
+                                                   column(4, offset = 2,
                                                           radioButtons("arraytype", "Display:",
                                                                        choices = list("Array" = "array", "Shuffled" = "shuffledarray",
                                                                                       "Scattered" = "scatter", "Mosaic" = "mosaic"), inline = TRUE)),
@@ -424,8 +434,9 @@ shinyUI(
                                                br(), 
                                                paste0("Tree of natural frequencies:"), 
                                                br(), br(),  
-                                               plotOutput("nftree", width = "550", height = "550"), 
-                                               br(),
+                                               fluidRow(
+                                                 column(8, offset = 2, plotOutput("nftree", width = "550", height = "550"))),
+                                               # br(),
                                                wellPanel(
                                                  fluidRow(
                                                    column(3, offset = 0,
@@ -456,33 +467,35 @@ shinyUI(
                                                #   ))
                                                
                                                fluidRow(
-                                                 column(5,  paste0("Aggregated cases:"), 
-                                                        br(), br(),  
-                                                        tableOutput("confusiontable")),
-                                                 column(5, paste0("The following mosaic plot shows the cell frequencies as area sizes:"), 
-                                                        br(),  br(), 
-                                                        plotOutput("mosaicplot", height = "400px", width = "400px"))
+                                                 column(6, offset = 0, paste0("Aggregated cases:"), br(), br(),br(), br()),
+                                                 column(6, offset = 0, paste0("The following mosaic plot shows the cell frequencies as area sizes:"),
+                                                        br(), br())
+                                                 ), 
+                                              fluidRow(
+                                                 column(5, offset = 1, tableOutput("confusiontable")),
+                                                 column(5, offset = 1, plotOutput("mosaicplot", height = "400px", width = "400px"))
                                                ),
                                                wellPanel(
                                                  fluidRow(
-                                                   column(2, offset = 0, downloadButton("confusiontabledl", label = "Save Confusion Table")),
-                                                   column(2, offset = 3, downloadButton("mosaicplotdl", label = "Save Mosaic Plot"))
+                                                   column(2, offset = 2, downloadButton("confusiontabledl", label = "Save Confusion Table")),
+                                                   column(2, offset = 4, downloadButton("mosaicplotdl", label = "Save Mosaic Plot"))
                                                  ))
-                                               
                                                ),
                                       #####
                                       # PV curves
                                       tabPanel("Predictive Values: Curves", 
                                                br(),
                                                paste0("Positive Predictive Value (PPV) and Negative Predictive Value (NPV) by prevalance:"), br(), br(),
-                                               plotOutput("PVs"),
+                                               fluidRow(
+                                                 column(8, offset = 2, plotOutput("PVs"))),
                                                br(),
                                                wellPanel(
                                                  fluidRow(
                                                    # column(4, checkboxInput("boxPVprev", label = "Show current prevalence in plot", value = TRUE)),
-                                                   column(2, checkboxInput("boxPVpoints1", label = "Show point values", value = TRUE)),
-                                                   column(3, checkboxInput("boxPVlog", label = "Scale prevalence on logarithmic scale", value = FALSE)),
-                                                   column(2, checkboxInput("boxPVacc", label = "Show accuracy (acc)", value = FALSE)),
+                                                   column(2, offset = 2, checkboxInput("boxPVpoints1", label = "Show point values", value = TRUE)),
+                                                   column(3, checkboxInput("boxPVlog", label = "Scale prevalence on logarithmic scale", value = FALSE))),
+                                                 fluidRow(
+                                                   column(2, offset = 2, checkboxInput("boxPVacc", label = "Show accuracy (acc)", value = FALSE)),
                                                    column(4, checkboxInput("boxPVppod", label = "Show proportion of positive decisions (ppod)", value = FALSE)),
                                                    column(1, downloadButton("PVsdl", label = "Save Curves"))
                                                    )

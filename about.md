@@ -1,6 +1,6 @@
 
 
-Both the package and the app are developed by the working group for [Social Psychology and Decision Sciences](https://spds.uni-konstanz.de) at the Social [University of Konstanz](https://www.uni-konstanz.de), Germany.   
+Both the `riskyr` package and the corresponding app are developed by the research group for [Social Psychology and Decision Sciences](https://spds.uni-konstanz.de) at the Social [University of Konstanz](https://www.uni-konstanz.de), Germany.   
 
 
 Goal
@@ -28,19 +28,19 @@ Reference
 In APA format:
 
 -  Neth, H., Gaisbauer, F., Gradwohl, N., & Gaissmaier, W. (2018).    
-    `riskyr`: A toolbox for rendering risk literacy more transparent.    
+    riskyr: A toolbox for rendering risk literacy more transparent.    
     Social Psychology and Decision Sciences, University of Konstanz, Germany.    
-    Computer software (R package version 0.1.0, Feb. 16, 2018).    
-    Retrieved from <https://github.com/hneth/riskyr>.
+    Computer software (R package version 0.1.0, Feb. 19, 2018).    
+    Retrieved from <https://CRAN.R-project.org/package=riskyr>.
 
 As BibTeX reference: 
 
-     @manual{,
+     @manual{riskyr,
       title = {riskyr: A toolbox for rendering risk literacy more transparent},
       author = {Hansjörg Neth and Felix Gaisbauer and Nico Gradwohl and Wolfgang Gaissmaier},
       year = {2018},
       organization = {Social Psychology and Decision Sciences, University of Konstanz},
       address = {Konstanz, Germany},
-      note = {R package (version 0.1.0, Feb. 16, 2018)},
-      url = {https://github.com/hneth/riskyr},
+      note = {R package (version 0.1.0, Feb. 19, 2018)},
+      url = {https://CRAN.R-project.org/package=riskyr},
       }    

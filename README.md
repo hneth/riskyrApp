@@ -1,6 +1,6 @@
 ## `riskyrApp`
 SPDS, uni.kn  
-2018 02 16
+2018 02 20
 
 `riskyrApp` is an interactive application that complements the R package `riskyr`. 
 
@@ -27,7 +27,7 @@ Visit [`riskyr` on GitHub](https://github.com/hneth/riskyr) for additional infor
 ### About
 
 `riskyr` originated out of a series of lectures and workshops on risk literacy in spring/summer 2017. 
-The current version (`riskyr` 0.1.0, as of Feb. 16, 2018) is still under development. 
+The current version (`riskyr` 0.1.0, as of Feb. 19, 2018) is still under development. 
 Its primary developers and designers are 
 [Hansjörg Neth](https://www.spds.uni-konstanz.de/hans-neth), 
 [Felix Gaisbauer](https://www.spds.uni-konstanz.de/felix-gaisbauer), and 
@@ -63,11 +63,11 @@ We appreciate your feedback, comments, or questions.
 
 To cite `riskyr` in derivations and publications use:
 
-- Neth, H., Gaisbauer, F., Gradwohl, N., & Gaissmaier, W. (2018).  
-  `riskyr`: A toolbox for rendering risk literacy more transparent.  
-  Social Psychology and Decision Sciences, University of Konstanz, Germany.  
-  Computer software (R package version 0.1.0, Feb. 16, 2018).  
-  Retrieved from <https://github.com/hneth/riskyr>.  
+-  Neth, H., Gaisbauer, F., Gradwohl, N., & Gaissmaier, W. (2018).    
+    riskyr: A toolbox for rendering risk literacy more transparent.    
+    Social Psychology and Decision Sciences, University of Konstanz, Germany.    
+    Computer software (R package version 0.1.0, Feb. 19, 2018).    
+    Retrieved from <https://CRAN.R-project.org/package=riskyr>.   
 
 A BibTeX entry for LaTeX users is: 
 
@@ -77,8 +77,8 @@ A BibTeX entry for LaTeX users is:
       year = {2018},
       organization = {Social Psychology and Decision Sciences, University of Konstanz},
       address = {Konstanz, Germany},
-      note = {R package (version 0.1.0, Feb. 16, 2018)},
-      url = {https://github.com/hneth/riskyr},
+      note = {R package (version 0.1.0, Feb. 19, 2018)},
+      url = {https://CRAN.R-project.org/package=riskyr},
       }    
     
 Calling `citation("riskyr")` in the package also displays this information.
