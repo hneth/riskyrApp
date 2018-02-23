@@ -56,8 +56,8 @@ shinyUI(
                                       "toolbox for transparent communication and teaching of risk literacy.",
                                       br()
                                       ),
-                               column(3, HTML(' <a href="https://github.com/hneth/riskyr">
-                                                 <img src="riskyr_cube_s.png" alt="riskyr@GitHub">
+                               column(6, HTML(' <a href="https://github.com/hneth/riskyr">
+                                                 <img src="riskyr_cube_s.png" align = "right" alt="riskyr@GitHub">
                                                  </a>'))),
                       includeMarkdown("about.md")
              ),
