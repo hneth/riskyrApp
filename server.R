@@ -1,5 +1,5 @@
 ## server.R
-## riskyrApp | R Shiny | spds, uni.kn | 2018 02 16
+## riskyrApp | R Shiny | spds, uni.kn | 2018 02 26
 ## riskyr package version 0.1.0
 
 
@@ -604,7 +604,7 @@ shinyServer(function(input, output, session){
                        log.scale = input$boxPVlog,
                        what = c("prev", "PPV", "NPV", "acc", "ppod")[c(TRUE, TRUE, TRUE, input$boxPVacc, input$boxPVppod)],
                        what.col = c(rgb(62, 63, 58, max = 255), cus$color.ppv, 
-                                    cus$color.npv, "red", "blue")[c(TRUE, TRUE, TRUE, input$boxPVacc, input$boxPVppod)],
+                                    cus$color.npv, cus$color.hi, "rosybrown3")[c(TRUE, TRUE, TRUE, input$boxPVacc, input$boxPVppod)],
                        title.lbl = cus$scenario.txt)}
   
   output$PVs <- renderPlot({ PVs() })

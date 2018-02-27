@@ -1,5 +1,5 @@
 ## ui.R
-## riskyrApp | R Shiny | spds, uni.kn | 2018 02 16
+## riskyrApp | R Shiny | spds, uni.kn | 2018 02 26
 ## riskyr package version 0.1.0
 
 
@@ -348,7 +348,7 @@ shinyUI(
                                       tabPanel("Overview",
                                                br(),
                                                fluidRow(
-                                                 column(8, offset = 2, plotOutput("network", width = "550", height = "550"))),
+                                                 column(8, offset = 2, plotOutput("network", width = "600", height = "600"))),
                                                # plotOutput("network", width = "550", height = "550"),
                                                # br(),
                                                wellPanel(
@@ -365,7 +365,7 @@ shinyUI(
                                                ),
                                       #####
                                       # Cases
-                                      tabPanel("Individual Cases", 
+                                      tabPanel("Table", 
                                                br(),
                                                "Individual cases:", 
                                                br(), br(),
@@ -389,10 +389,10 @@ shinyUI(
                                                ),
                                       #####
                                       # Icons
-                                      tabPanel("Icon Array", 
+                                      tabPanel("Icons", 
                                                br(), 
                                                fluidRow(
-                                                 column(8, offset = 2, plotOutput("iconarray", width = "550", height = "550"))),
+                                                 column(8, offset = 2, plotOutput("iconarray", width = "650", height = "500"))),
                                                # plotOutput("iconarray", width = "550", height = "550"), 
                                                # br(), 
                                                wellPanel(
@@ -430,7 +430,7 @@ shinyUI(
                                                ),
                                       #####
                                       # Tree
-                                      tabPanel("Tree of Natural Frequencies", 
+                                      tabPanel("Tree", 
                                                br(), 
                                                paste0("Tree of natural frequencies:"), 
                                                br(), br(),  
@@ -483,7 +483,7 @@ shinyUI(
                                                ),
                                       #####
                                       # PV curves
-                                      tabPanel("Predictive Values: Curves", 
+                                      tabPanel("Curves", 
                                                br(),
                                                paste0("Positive Predictive Value (PPV) and Negative Predictive Value (NPV) by prevalance:"), br(), br(),
                                                fluidRow(
@@ -503,7 +503,7 @@ shinyUI(
                                                ),
                                       #####
                                       # PV cubes
-                                      tabPanel("Predictive Values: Cubes", 
+                                      tabPanel("Cubes", 
                                                br(),
                                                paste0("Predictive values (PPV/NPV) by sensitivity and specificity:"), br(), br(),
                                                fluidRow(
