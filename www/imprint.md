@@ -2,7 +2,7 @@
 
 
 `riskyr` and the `riskyrApp` originated out of a series of lectures and workshops on risk literacy in spring/summer 2017.   
-The current package version (riskyr 0.1.0, as of Feb. 16, 2018) is still under development.  
+The current package version (riskyr 0.1.0, as of Feb. 19, 2018) is still under development.  
 Its primary designers and developers are [Hansjörg Neth](https://www.spds.uni-konstanz.de/hans-neth), [Felix Gaisbauer](https://www.spds.uni-konstanz.de/felix-gaisbauer), and [Nico Gradwohl](https://www.spds.uni-konstanz.de/nico-gradwohl),   
 who are researchers at the department of [Social Psychology and Decision Sciences](https://www.spds.uni-konstanz.de) at the [University of Konstanz](https://www.uni-konstanz.de/en/), Germany.
 
@@ -13,13 +13,12 @@ Please email at <contact.riskyr@gmail.com> in case you want to use, adapt, or sh
 
 ### Contact
 
-
-
 We appreciate your feedback, comments, or questions.
 
 -   Please report any `riskyr`-related issues at <https://github.com/hneth/riskyr/issues>.
 
 -   For general inquiries, please email us at <contact.riskyr@gmail.com>.
+
 
 ### Reference
 
@@ -28,18 +27,19 @@ To cite `riskyr` or the `riskyrApp` in derivations and publications use:
 -    Neth, H., Gaisbauer, F., Gradwohl, N., & Gaissmaier, W. (2018).  
     `riskyr`: A toolbox for rendering risk literacy more transparent.  
     Social Psychology and Decision Sciences, University of Konstanz, Germany.  
-    Computer software (R package version 0.1.0, Feb. 16, 2018).  
-    Retrieved from <https://github.com/hneth/riskyr>.
+    Computer software (R package version 0.1.0, Feb. 19, 2018).  
+    Retrieved from <https://CRAN.R-project.org/package=riskyr>.
 
 A BibTeX entry for LaTeX users is:
 
-     @manual{,
+
+     @manual{riskyr,
       title = {riskyr: A toolbox for rendering risk literacy more transparent},
       author = {Hansjörg Neth and Felix Gaisbauer and Nico Gradwohl and Wolfgang Gaissmaier},
       year = {2018},
       organization = {Social Psychology and Decision Sciences, University of Konstanz},
       address = {Konstanz, Germany},
-      note = {R package (version 0.1.0, Feb. 16, 2018)},
-      url = {https://github.com/hneth/riskyr},
-      }    
+      note = {R package (version 0.1.0, Feb. 19, 2018)},
+      url = {https://CRAN.R-project.org/package=riskyr},
+      }  
       
