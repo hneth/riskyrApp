@@ -1,12 +1,10 @@
 ## ui.R
-## riskyrApp | R Shiny | spds, uni.kn | 2018 02 26
-## riskyr package version 0.1.0
+## riskyrApp | R Shiny | spds, uni.kn | 2018 02 28
+## riskyr package version 0.1.0 ------
 
+##### Preparing the ground: ------
 
-#####
-# Preparing the ground
-
-## Dependencies:
+## Dependencies: ------
 library("shiny")
 library("shinyBS")
 library("markdown")
@@ -14,16 +12,15 @@ library("DT")
 library("colourpicker")
 library("vcd")
 
-## Install the currently included version of riskyr:
+## Install the currently included version of riskyr: ------
 # detach("package:riskyr", unload = TRUE)
+# from CRAN: <https://CRAN.R-project.org/package=riskyr>
 # devtools::install_github("hneth/riskyr")
 # install.packages("./riskyr_0.1.0.tar.gz", repos = NULL, type = "source")
 library("riskyr")
 # sessionInfo()
 
-
-
-## Import ready-made and worked out example data:
+## Import ready-made and worked out example data: ------
 datasets <- read.csv2("./www/examples_riskyrApp_2018-02-15.csv", stringsAsFactors = FALSE)
 
 default.colors <- c(color.hi =  rgb(128, 177,  57, max = 255),  # col.green.2
@@ -35,7 +32,7 @@ default.colors <- c(color.hi =  rgb(128, 177,  57, max = 255),  # col.green.2
                     )
 
 #####
-## Define user interface logic:
+## Define user interface logic: ------
 
 shinyUI(
   
@@ -49,15 +46,15 @@ shinyUI(
              tabPanel("1: About", 
                       icon = icon("home", lib = "glyphicon"),
                       value = "about",
-                      fluidRow(column(4, h1("Welcome to the riskyrApp"),
+                      fluidRow(column(4, h1("Welcome to the riskyrApp!"),
                                       
                                       h2("About"),
                                       "The ", code("riskyrApp"), " is an R Shiny application that complements the ", code("riskyr"),
-                                      "toolbox for transparent communication and teaching of risk literacy.",
+                                      "toolbox for rendering risk literacy more transparent.",
                                       br()
                                       ),
-                               column(6, HTML(' <a href="https://github.com/hneth/riskyr">
-                                                 <img src="riskyr_cube_s.png" align = "right" alt="riskyr@GitHub">
+                               column(6, HTML(' <a href="https://CRAN.R-project.org/package=riskyr">
+                                                 <img src="riskyr_cube_s.png" align = "right" alt="riskyr@CRAN">
                                                  </a>'))),
                       includeMarkdown("about.md")
              ),
@@ -697,13 +694,13 @@ shinyUI(
                                  icon = icon("info-sign", lib = "glyphicon"),
                                  h2("Imprint"),
                                  fluidRow(
-                                 HTML('<a href="https://github.com/hneth/riskyr"> 
-                                        <img src="riskyr_cube_s.png" alt="riskyr@GitHub"
+                                 HTML('<a href="https://CRAN.R-project.org/package=riskyr"> 
+                                        <img src="riskyr_cube_s.png" alt="riskyr@CRAN"
                                       align = "left">
                                         </a>'),
                                  HTML('<a href="https://www.spds.uni-konstanz.de"> 
                                         <img src="uniKn_logo_s.png" alt="SPDS@uni.KN"
-                                        align = "left">
+                                        align = "right">
                                       </a>')
                                  ),
                                  br(),
@@ -716,5 +713,5 @@ shinyUI(
   )
 )
 
-## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ # 
+## ------
 ## eof. #

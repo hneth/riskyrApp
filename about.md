@@ -1,5 +1,5 @@
 
-Both the `riskyr` package and the corresponding app are developed by the research group for [Social Psychology and Decision Sciences](https://spds.uni-konstanz.de) at the Social [University of Konstanz](https://www.uni-konstanz.de), Germany.   
+Both the `riskyr` package and the corresponding app are developed by the research group for [Social Psychology and Decision Sciences](https://spds.uni-konstanz.de) at the [University of Konstanz](https://www.uni-konstanz.de), Germany.   
 
 
 Goal
@@ -7,7 +7,7 @@ Goal
 
 We aim to develop and assemble a set of basic risk literacy tools in R: 
 
-- The `riskyr` package renders risk literacy more transparent by providing a set of computational and representational tools and corresponding visualizations.
+- The `riskyr` package renders risk literacy more transparent by providing a set of computational and representational tools and corresponding visualizations. The current release of `riskyr` is available at <https://CRAN.R-project.org/package=riskyr>.
 
 - The `riskyrApp` (implemented in R Shiny) allows using `riskyr` in an interactive fashion without any coding.
 
@@ -15,7 +15,7 @@ We aim to develop and assemble a set of basic risk literacy tools in R:
 Status
 ---------
 
-This app is currently a **prototype** for testing functionalities provided by the `riskyr`package. In a next step, we will extend it and implement a **didactic concept**.
+This app is currently a prototype for testing functionalities provided by the `riskyr`package. In a next step, we will extend it and implement a didactic concept.
 
 The `riskyr` package is open source software written in [R](https://www.r-project.org/) and released under the [GPL 2](https://tldrlegal.com/license/gnu-general-public-license-v2) | [GPL 3](https://tldrlegal.com/license/gnu-general-public-license-v3-(gpl-3)) licenses.
 

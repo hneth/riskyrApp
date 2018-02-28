@@ -1,16 +1,14 @@
 ## server.R
-## riskyrApp | R Shiny | spds, uni.kn | 2018 02 26
-## riskyr package version 0.1.0
+## riskyrApp | R Shiny | spds, uni.kn | 2018 02 28
+## riskyr package version 0.1.0: ------
 
+##### Preparing the ground: ------
 
-#####
-# Preparing the ground
-
-## Clean up:
+## Clean up: ------
 
 rm(list=ls()) # clean all.
 
-## Dependencies:
+## Dependencies: ------
 library("shiny")
 library("shinyBS")
 library("markdown")
@@ -18,21 +16,18 @@ library("DT")
 library("colourpicker")
 library("vcd")
 
-## Install the currently included version of riskyr:
+## Install the currently included version of riskyr: ------
 # detach("package:riskyr", unload = TRUE)
 # devtools::install_github("hneth/riskyr")
 # install.packages("./riskyr_0.1.0.tar.gz", repos = NULL, type = "source")
 library("riskyr")
 # sessionInfo()
 
-
-
-## Import ready-made and worked out example data 
+## Import ready-made and worked out example data: ------
 datasets <- read.csv2("./www/examples_riskyrApp_2018-02-15.csv", stringsAsFactors = FALSE)
 
-
-#####
-# Define defaults
+##### 
+## Define defaults: ------
 
 # take defaults from example datasets stored in www folder
 default.parameters <- setNames(datasets[1, 2:5], names(datasets)[2:5])
@@ -48,7 +43,7 @@ default.colors <- c(color.hi  = rgb(128, 177,  57, max = 255),  # col.green.2
 
 
 #####
-# Define server logic:
+## Define server logic: ------
 
 shinyServer(function(input, output, session){
   
@@ -765,11 +760,8 @@ shinyServer(function(input, output, session){
     
   })
   
-  
-  
-  
-  
-  ## Customize colors
+
+  ## Customize colors: ------
 
   # Apply color selection
   observeEvent(input$applycustomcolor, {
@@ -808,7 +800,7 @@ shinyServer(function(input, output, session){
   })
 
   
-  # Reset colors to default
+  # Reset colors to default: ------
   observeEvent(input$resetcustomcolor, {
     # reset colors in background
     cus$color.hi <- default.colors["color.hi"]
@@ -830,5 +822,5 @@ shinyServer(function(input, output, session){
 }
 )
 
-## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ # 
+## ------
 ## eof. #
