@@ -1,5 +1,5 @@
 ## ui.R
-## riskyrApp | R Shiny | spds, uni.kn | 2018 02 28
+## riskyrApp | R Shiny | spds, uni.kn | 2018 03 03
 ## riskyr package version 0.1.0 ------
 
 ##### Preparing the ground: ------
@@ -73,12 +73,12 @@ shinyUI(
                                        choiceValues = c(0, 1), inline = TRUE
                           ),
                           conditionalPanel(condition = "input.checkpop2 == 0",
-                                           sliderInput("N2", label = NULL, value = 100,
+                                           sliderInput("N2", label = NULL, value = 1000,
                                                        min = 1, max = 10^6, step = 10
                                            )
                           ),
                           conditionalPanel(condition = "input.checkpop2 == 1",
-                                           numericInput("numN2", label = NULL, value = 100,
+                                           numericInput("numN2", label = NULL, value = 1000,
                                                         min = 1, max = 10^6, step = 10
                                            )
                           ),
@@ -345,7 +345,7 @@ shinyUI(
                                       tabPanel("Overview",
                                                br(),
                                                fluidRow(
-                                                 column(8, offset = 2, plotOutput("network", width = "600", height = "600"))),
+                                                 column(8, offset = 2, plotOutput("network", width = "550", height = "550"))),
                                                # plotOutput("network", width = "550", height = "550"),
                                                # br(),
                                                wellPanel(
