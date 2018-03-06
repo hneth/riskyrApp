@@ -351,12 +351,12 @@ shinyUI(
                                                wellPanel(
                                                  fluidRow(
                                                    column(3, offset = 0,
-                                                          radioButtons("netby", "Build Network by", c("Condition first" = "cddc",
-                                                                                                      "Decision first" = "dccd"), inline = TRUE)),
+                                                          radioButtons("netby", "Build network by", c("condition first" = "cddc",
+                                                                                                      "decision first" = "dccd"), inline = TRUE)),
                                                    column(6, 
-                                                          radioButtons("nettype", "Type of Boxes", c("Default boxes" = "no", "Squares" = "sq", 
-                                                                                                     "Horizontal rectangles" = "hr", "Vertical rectangles" = "vr"), inline = TRUE)),
-                                                   column(2, downloadButton("fnetdl", label = "Save Network"))
+                                                          radioButtons("nettype", "Type of boxes", c("default boxes" = "no", "squares" = "sq", 
+                                                                                                     "horizontal rectangles" = "hr", "vertical rectangles" = "vr"), inline = TRUE)),
+                                                   column(2, downloadButton("fnetdl", label = "Save network diagram"))
                                                    )
                                                )
                                                ),
@@ -379,7 +379,7 @@ shinyUI(
                                                                    icon = icon("random", lib = "glyphicon"),
                                                                    style = "default", type = "toggle")),
                                                    column(2, offset = 2,
-                                                          downloadButton("rawdatadl", label = "Save Raw Data"))
+                                                          downloadButton("rawdatadl", label = "Save raw data"))
                                                  )
                                                ),
                                                br()
@@ -396,9 +396,9 @@ shinyUI(
                                                  fluidRow(
                                                    column(4, offset = 2,
                                                           radioButtons("arraytype", "Display:",
-                                                                       choices = list("Array" = "array", "Shuffled" = "shuffledarray",
-                                                                                      "Scattered" = "scatter", "Mosaic" = "mosaic"), inline = TRUE)),
-                                                          column(2, downloadButton("iconarraydl", label = "Save Icon Array"))
+                                                                       choices = list("array" = "array", "shuffled" = "shuffledarray",
+                                                                                      "scattered" = "scatter", "Mosaic" = "mosaic"), inline = TRUE)),
+                                                          column(2, downloadButton("iconarraydl", label = "Save icon array"))
                                                    ), 
                                                    br(),
                                                  fluidRow(
@@ -437,11 +437,11 @@ shinyUI(
                                                wellPanel(
                                                  fluidRow(
                                                    column(3, offset = 0,
-                                                          radioButtons("treeby", "Build Tree by", c("Condition" = "cd", "Decision" = "dc"), inline = TRUE)),
+                                                          radioButtons("treeby", "Build tree by", c("condition" = "cd", "decision" = "dc"), inline = TRUE)),
                                                    column(6, 
-                                                          radioButtons("treetype","Type of Boxes", c("Default boxes" = "no", "Squares" = "sq", 
-                                                                                                    "Horizontal rectangles" = "hr", "Vertical rectangles" = "vr"), inline = TRUE)),
-                                                   column(2, downloadButton("nftreedl", label = "Save Frequency Tree"))
+                                                          radioButtons("treetype","Type of boxes", c("Default boxes" = "no", "squares" = "sq", 
+                                                                                                    "horizontal rectangles" = "hr", "vertical rectangles" = "vr"), inline = TRUE)),
+                                                   column(2, downloadButton("nftreedl", label = "Save frequency tree"))
                                                  )
                                                 )
                                                ),
@@ -465,7 +465,7 @@ shinyUI(
                                                
                                                fluidRow(
                                                  column(6, offset = 0, paste0("Aggregated cases:"), br(), br(),br(), br()),
-                                                 column(6, offset = 0, paste0("The following mosaic plot shows the cell frequencies as area sizes:"),
+                                                 column(6, offset = 0, paste0("A mosaic plot shows the cell frequencies as area sizes:"),
                                                         br(), br())
                                                  ), 
                                               fluidRow(
@@ -474,8 +474,8 @@ shinyUI(
                                                ),
                                                wellPanel(
                                                  fluidRow(
-                                                   column(2, offset = 2, downloadButton("confusiontabledl", label = "Save Confusion Table")),
-                                                   column(2, offset = 4, downloadButton("mosaicplotdl", label = "Save Mosaic Plot"))
+                                                   column(2, offset = 2, downloadButton("confusiontabledl", label = "Save confusion table")),
+                                                   column(2, offset = 4, downloadButton("mosaicplotdl", label = "Save mosaic plot"))
                                                  ))
                                                ),
                                       #####
@@ -494,7 +494,7 @@ shinyUI(
                                                  fluidRow(
                                                    column(2, offset = 2, checkboxInput("boxPVacc", label = "Show accuracy (acc)", value = FALSE)),
                                                    column(4, checkboxInput("boxPVppod", label = "Show proportion of positive decisions (ppod)", value = FALSE)),
-                                                   column(1, downloadButton("PVsdl", label = "Save Curves"))
+                                                   column(1, downloadButton("PVsdl", label = "Save curves"))
                                                    )
                                                  )
                                                ),
@@ -512,9 +512,9 @@ shinyUI(
                                                wellPanel(
                                                  fluidRow(
                                                    column(3, checkboxInput("boxPVpoints2", label = "Show current PPV/NPV in plots", value = TRUE)), 
-                                                   column(2, offset = 1, downloadButton("PV3dPPVdl", label = "Save PPV Cube")),
+                                                   column(2, offset = 1, downloadButton("PV3dPPVdl", label = "Save PPV cube")),
                                                    column(2, offset = 4,
-                                                          downloadButton("PV3dNPVdl", label = "Save NPV Cube"))
+                                                          downloadButton("PV3dNPVdl", label = "Save NPV cube"))
                                                  ),
                                                  br(),
                                                  fluidRow(
