@@ -1,5 +1,5 @@
 
-### References and recommended readings
+## Recommended readings
 
 We recommend the following resources for learning more about the scientific background of risk literacy research:
 

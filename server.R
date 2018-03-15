@@ -1,5 +1,5 @@
 ## server.R
-## riskyrApp | R Shiny | spds, uni.kn | 2018 03 03
+## riskyrApp | R Shiny | spds, uni.kn | 2018 03 07
 ## riskyr package version 0.1.0: ------
 
 ##### Preparing the ground: ------
@@ -82,9 +82,158 @@ shinyServer(function(input, output, session){
 
 
 
-
-
-
+#####
+  # Internal linking from start page
+  
+  observeEvent(input$link_to_about, { updateTabsetPanel(session, "tabs", "about") })
+  observeEvent(input$link_to_statistics, { updateTabsetPanel(session, "tabs", "stats") })
+  observeEvent(input$link_to_representations, { updateTabsetPanel(session, "tabs", "represent") })
+  observeEvent(input$link_to_representations, { updateTabsetPanel(session, "tabs", "represent") })
+  observeEvent(input$link_to_custom_labels, { updateTabsetPanel(session, "tabs", "custom_labels") })
+  observeEvent(input$link_to_custom_colors, { updateTabsetPanel(session, "tabs", "custom_colors") })
+  observeEvent(input$link_to_references, { updateTabsetPanel(session, "tabs", "references") })
+  
+#####
+  # Tutorial elements (under development)
+  
+  ######
+  # Add popovers for diagrams
+  
+  addPopover(session, id = "network", title = "Network diagram", 
+             content = paste0("<p>The network diagram plots all different frequencies as nodes and depicts all probabilities as edges between these nodes.</p>
+                              <p>The network diagram is thus a generalization of the tree diagram.</p>"),
+             placement = "right", trigger = "hover", options = NULL)
+  
+  addPopover(session, id = "rawdatatable", title = "Raw data", 
+             content = paste0("<p>The raw data table provides the arguably most simple and least informative representation:</p>
+                              <p>Every row represents an individual case and every column contains an attribute for that case.</p>"),
+             placement = "bottom",
+             trigger = "hover", options = NULL)
+  
+  addPopover(session, id = "iconarray", title = "Icon array", 
+             content = paste0("<p>The icon array plots an entire population of individuals.</p>
+                              <p>Each individual is represented as a color-coded symbol.</p>"),
+             placement = "right", trigger = "hover", options = NULL)
+  
+  addPopover(session, id = "nftree", title = "Tree diagram", 
+             content = paste0("<p>The tree diagram visualizes the frequency of population 
+                              subgroups as nodes and the probabilities as edges.</p>"),
+             placement = "right", trigger = "hover", options = NULL)
+  
+  addPopover(session, id = "mosaicplot", title = "Mosaic plot", 
+             content = paste0("<p>The mosaic plot depicts the population as a square and dissects it 
+                              into various subgroups that represent parts of the population.</p> 
+                              <p>The relative proportions of rectangle sizes represent the relative frequencies of the corresponding subgroups.</p>"),
+             placement = "bottom", trigger = "hover", options = NULL)
+  
+  addPopover(session, id = "PVs", title = "Curves", 
+             content = paste0("<p>The curves (or lines) show selected parameters as a function of the prevalence for a given decision process or diagnostic test (i.e., given values of sensitivity and specificity).</p>
+                              <p>Rather than just computing a single value, we could ask: How do values of the <b>Positive Predictive Value (PPV)</b> develop as a function of prevalence?</p> 
+                              <p>The curves illustrate this relationship (and some more).</p>"),
+             placement = "bottom", trigger = "hover", options = NULL)
+  
+  addPopover(session, id = "PV3dPPV", title = "Planes", 
+             content = paste0("<p>This plane shows the <b>Positive Predictive Value (PPV)</b> as a function of 
+                               sensitivity and specificity for a given prevalence.</p>"),
+             placement = "bottom", trigger = "hover", options = NULL)
+  
+  addPopover(session, id = "PV3dNPV", title = "Planes", 
+             content = paste0("<p>This plane shows the <b>Negative Predictive Value (NPV)</b> as a function of 
+                              sensitivity and specificity for a given prevalence.</p>"),
+             placement = "bottom", trigger = "hover", options = NULL)
+  
+  
+  #####
+  # create modals with tutorial/help contents
+  
+  tut_start_modal <- modalDialog(
+    title = "So you want to take the guided tour (aka tutorial)...", 
+    img(src = "bulb_64.png"),
+    "First of all, please note that the riskyrApp comprises several tabs.",
+    br(),
+    "The tab menu is visible at all times in the upper left corner of the screen and looks like this:",
+    br(),
+    img(src = "riskyr_header_menu.png"),
+    br(),
+    "Let's check out the tab for statistics...",
+    easyClose = FALSE, size = "l",
+    footer = list(modalButton("Close Tutorial"), bsButton("tut_welcome", "Continue to statistics"))
+  )
+  
+  stats_modal <-  modalDialog(
+    title = "Statistics", 
+    br(),
+    "Coming soon...",
+    easyClose = FALSE, size = "l",
+    footer = list(modalButton("Close Tutorial"), bsButton("tut_back_welcome", "Go back to overview"), bsButton("tut_represent", "Continue to representations"))
+  )
+  
+  represent_modal <- modalDialog(
+    title = "Representations", 
+    br(),
+    "Coming soon...",
+    easyClose = FALSE, size = "l",
+    footer = list(modalButton("Close Tutorial"), bsButton("tut_welcome", "Go back to statistics"), bsButton("tut_custom_labels", "Continue to customizing labels"))
+  )
+  
+  custom_labels_modal <- modalDialog(
+    title = "Customize Labels", 
+    br(),
+    "Coming soon...",
+    easyClose = FALSE, size = "l",
+    footer = list(modalButton("Close Tutorial"), bsButton("tut_represent", "Go back to representations"), bsButton("tut_custom_colors", "Continue to customizing colors"))
+  )
+  
+  custom_colors_modal <- modalDialog(
+    title = "Customize Colors", 
+    br(),
+    "Coming soon...",
+    easyClose = FALSE, size = "l",
+    footer = list(modalButton("Close Tutorial"),  bsButton("tut_custom_labels", "Go back to customizing labels"), bsButton("tut_references", "Continue to references"))
+  )
+  
+  references_modal <- modalDialog(
+    title = "References and recommended Readings", 
+    br(),
+    "Coming soon...",
+    easyClose = FALSE, size = "l",
+    footer = list(modalButton("Close Tutorial"), bsButton("tut_custom_colors", "Go back to customizing colors"), bsButton("tut_overview", "Continue to overview"))
+  )
+  
+  tut_end_modal <- modalDialog(
+    title = "You have finished the tutorial", 
+    br(),
+    "Coming soon...",
+    "Now that you have an overview of the riskyrApp, it is time to play around with it.",
+    "That what it is meant for.",
+    "Enjoy your path to risk literacy.",
+    easyClose = FALSE, size = "l",
+    footer = modalButton("End Tutorial")
+  )
+  
+  
+  #####
+  # Help buttons deliever tutorial/help modals
+  
+  observeEvent(input$help_stats, { showModal(stats_modal) })
+  observeEvent(input$help_represent, { showModal(represent_modal) })
+  observeEvent(input$help_custom_labels, { showModal(custom_labels_modal) })
+  observeEvent(input$help_custom_colors, { showModal(custom_colors_modal) })
+  
+  
+  #####
+  # Create tutorial with modals
+  
+  observeEvent(input$link_to_tutorial, {  showModal(tut_start_modal) })
+  observeEvent(input$tut_back_welcome, { updateTabsetPanel(session, "tabs", "welcome"); showModal(tut_start_modal) })
+  observeEvent(input$tut_welcome, { updateTabsetPanel(session, "tabs", "stats"); showModal(stats_modal) })
+  observeEvent(input$tut_represent, { updateTabsetPanel(session, "tabs", "represent"); showModal(represent_modal) })
+  observeEvent(input$tut_custom_labels, { updateTabsetPanel(session, "tabs", "custom_labels"); showModal(custom_labels_modal) })
+  observeEvent(input$tut_custom_colors, { updateTabsetPanel(session, "tabs", "custom_colors"); showModal(custom_colors_modal) })
+  observeEvent(input$tut_references, { updateTabsetPanel(session, "tabs", "references"); showModal(references_modal) })
+  observeEvent(input$tut_overview, { updateTabsetPanel(session, "tabs", "welcome"); showModal(tut_end_modal) })
+  
+  
   
   ##### 
   # Couple numeric and slider inputs, connect both stats and representations:
@@ -654,8 +803,146 @@ shinyServer(function(input, output, session){
       dev.off()}
   )
   
+  ####
+  ## Quiz tab (under dev)
+  
+  createAlert(session, anchorId = "alert_question1",
+              title = "Not yet answered.",
+              content = NULL,
+              style = "info", append = FALSE,
+              dismiss = FALSE)
+  
+  observeEvent(input$submit_question1, {
+    answer <- input$question1
+
+    if(is.null(answer)) {
+      
+      createAlert(session, anchorId = "alert_question1",
+                  title = "Not yet answered.",
+                  content = NULL,
+                  style = "info", append = FALSE,
+                  dismiss = FALSE)
+      
+    } else if(length(answer) == 2 & all(answer %in% c("1", "3"))) {
+      createAlert(session, anchorId = "alert_question1",
+                  title = "That's right!",
+                  content = NULL,
+                  style = "success", append = FALSE,
+                  dismiss = FALSE) 
+    } else if(length(answer) %in% c(1,2) & any(answer %in% c("1", "3")) == TRUE) {
+      createAlert(session, anchorId = "alert_question1",
+                  title = "That's not (yet) completely right!",
+                  content = NULL,
+                  style = "warning", append = FALSE,
+                  dismiss = FALSE) 
+      } else {
+
+              createAlert(session, anchorId = "alert_question1",
+                  title = "That's wrong!",
+                  content = NULL,
+                  style = "danger", append = FALSE,
+                  dismiss = FALSE)
+    }
+
+  }, ignoreInit = TRUE)
+  
+  createAlert(session, anchorId = "alert_question2",
+              title = "Not yet answered.",
+              content = NULL,
+              style = "info", append = FALSE,
+              dismiss = FALSE)
   
   
+  observeEvent(input$submit_question2, {
+    answer <- input$question2
+
+    if(is.null(answer)){  createAlert(session, anchorId = "alert_question2",
+                                      title = "Not yet answered.",
+                                      content = NULL,
+                                      style = "info", append = FALSE,
+                                      dismiss = FALSE)
+      } else if(answer == 2) {
+      createAlert(session, anchorId = "alert_question2",
+                  title = "That's right!",
+                  content = NULL,
+                  style = "success", append = FALSE,
+                  dismiss = FALSE) 
+      } else {
+      createAlert(session, anchorId = "alert_question2",
+                  title = "That's wrong!",
+                  content = NULL,
+                  style = "danger", append = FALSE,
+                  dismiss = FALSE)
+    }
+    
+  }, ignoreInit = TRUE)
+  
+  createAlert(session, anchorId = "alert_question3",
+              title = "Not yet answered.",
+              content = NULL,
+              style = "info", append = FALSE,
+              dismiss = FALSE)
+  
+  observeEvent(input$submit_question3, {
+    
+    answer <- input$question3
+    
+    if(is.na(answer)) {
+      createAlert(session, anchorId = "alert_question3",
+                  title = "Not yet answered.",
+                  content = NULL,
+                  style = "info", append = FALSE,
+                  dismiss = FALSE)
+      } else if (answer == 0.95) {
+      createAlert(session, anchorId = "alert_question3",
+                  title = "That's right!",
+                  content = NULL,
+                  style = "success", append = FALSE,
+                  dismiss = FALSE) 
+    } else  {
+      createAlert(session, anchorId = "alert_question3",
+                  title = "That's wrong!",
+                  content = NULL,
+                  style = "danger", append = FALSE,
+                  dismiss = FALSE)
+    } 
+    
+  }, ignoreInit = FALSE)
+  
+  # question 4
+  
+  createAlert(session, anchorId = "alert_question4",
+              title = "Not yet answered.",
+              content = NULL,
+              style = "info", append = FALSE,
+              dismiss = FALSE)
+  
+  
+  observeEvent(input$submit_question4, {
+    answer <- input$question4
+
+    if(is.null(answer)){  createAlert(session, anchorId = "alert_question4",
+                                      title = "Not yet answered.",
+                                      content = NULL,
+                                      style = "info", append = FALSE,
+                                      dismiss = FALSE)
+    } else if(answer == 1) {
+      createAlert(session, anchorId = "alert_question4",
+                  title = "That's right!",
+                  content = NULL,
+                  style = "success", append = FALSE,
+                  dismiss = FALSE) 
+    } else {
+      createAlert(session, anchorId = "alert_question4",
+                  title = "That's wrong!",
+                  content = NULL,
+                  style = "danger", append = FALSE,
+                  dismiss = FALSE)
+    }
+    
+  }, ignoreInit = TRUE)
+  
+ 
   
   #####
   ## Customization tab

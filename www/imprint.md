@@ -1,5 +1,6 @@
 
 
+
 `riskyr` and the `riskyrApp` originated out of a series of lectures and workshops on risk literacy in spring/summer 2017.   
 The current package version (riskyr 0.1.0, as of Feb. 19, 2018) is still under development.  
 Its primary designers and developers are [Hansjörg Neth](https://www.spds.uni-konstanz.de/hans-neth), [Felix Gaisbauer](https://www.spds.uni-konstanz.de/felix-gaisbauer), and [Nico Gradwohl](https://www.spds.uni-konstanz.de/nico-gradwohl),   
@@ -32,13 +33,13 @@ To cite `riskyr` or the `riskyrApp` in derivations and publications use:
 A BibTeX entry for LaTeX users is:
 
 
-    @manual{riskyr,
-       title = {riskyr: A toolbox for rendering risk literacy more transparent},
-       author = {Hansj\"org Neth and Felix Gaisbauer and Nico Gradwohl and Wolfgang Gaissmaier},
-       year = {2018},
-       organization = {Social Psychology and Decision Sciences, University of Konstanz},
-       address = {Konstanz, Germany},
-       note = {R package (version 0.1.0, Feb. 19, 2018)},
-       url = {https://CRAN.R-project.org/package=riskyr},
-       }  
+     @manual{riskyr,
+      title = {riskyr: A toolbox for rendering risk literacy more transparent},
+      author = {Hansjörg Neth and Felix Gaisbauer and Nico Gradwohl and Wolfgang Gaissmaier},
+      year = {2018},
+      organization = {Social Psychology and Decision Sciences, University of Konstanz},
+      address = {Konstanz, Germany},
+      note = {R package (version 0.1.0, Feb. 19, 2018)},
+      url = {https://CRAN.R-project.org/package=riskyr},
+      }  
       

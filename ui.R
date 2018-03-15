@@ -1,5 +1,5 @@
 ## ui.R
-## riskyrApp | R Shiny | spds, uni.kn | 2018 03 03
+## riskyrApp | R Shiny | spds, uni.kn | 2018 03 15
 ## riskyr package version 0.1.0 ------
 
 ##### Preparing the ground: ------
@@ -39,14 +39,41 @@ shinyUI(
   navbarPage(title = "riskyrApp",
              theme = "bootstrap.sandstone.css",
              id = "tabs",
-             selected = "about", # should be changed to about in the end
+             selected = "welcome", # start screen
              
              
              #####
+             tabPanel("Welcome!",
+                      icon = icon("flag", lib = "glyphicon"),
+                      value = "welcome",
+                      fluidRow(column(4, offset = 0, 
+                                      h1("Welcome to the riskyrApp!"))),
+                      br(),
+                      fluidRow(column(2, offset = 0, img(src = "bulb_64.png"),
+                                      " Learn more ", actionLink("link_to_about", "about"), "the riskyrApp"),
+                               column(2, img(src = "calculator_64.png"), 
+                                      " Calculate ", actionLink("link_to_statistics", "risk statistics")),
+                               column(2, img(src = "represent_64.png"), 
+                                      " Check out ", actionLink("link_to_representations", "risk representations")),
+                               column(2, img(src = "help_64.png"), 
+                                      " Take the ", actionLink("link_to_tutorial", "guided tour")),
+                               column(2, img(src = "customize_64.png"), 
+                                                  " Customize ", actionLink("link_to_custom_labels", "labels"), " or ",
+                                                  actionLink("link_to_custom_colors", "colors")),
+                               column(2, img(src = "library_64.png"),
+                                      " ", actionLink("link_to_references", "Read up"), " on risk research")
+                                           
+                                  ),
+                      fluidRow(column(12, offset = 0, 
+                                      HTML('<p style="text-align:center;"><img src="riskyr_start.png" alt="riskyr"></p>')
+                      )
+                      )
+                      ),
              tabPanel("1: About", 
                       icon = icon("home", lib = "glyphicon"),
                       value = "about",
-                      fluidRow(column(4, h1("Welcome to the riskyrApp!"),
+                      fluidRow(column(4, 
+                                      h1("The riskyrApp"),
                                       
                                       h2("About"),
                                       "The ", code("riskyrApp"), " is an R Shiny application that complements the ", code("riskyr"),
@@ -134,23 +161,10 @@ shinyUI(
                                                          datasets$dataset),
                                       selected = 1),
                           
-                          # bsButton("inputhelp", label = "Help", 
-                          #          icon = icon("question-sign", lib = "glyphicon"),
-                          #          style = "default", type = "action"),
-                          
-                          # Tooltips on inputs:
-                          bsTooltip(id = "N2", title = "Number of individuals making up the population",
-                                    placement = "right", trigger = "hover", options = list(container = "body")),
-
-                          bsTooltip(id = "prev2", title = "Probability of being affected: p(true)",
-                                    placement = "right", trigger = "hover", options = list(container = "body")),
-
-                          bsTooltip(id = "sens2", title = "Probability of correctly detecting an affected individual: p(decision positive | condition true)",
-                                    placement = "right", trigger = "hover", options = list(container = "body")),
-
-                          bsTooltip(id = "spec2", title = "Probability of correctly rejecting an unaffected individual: p(decision negative | condition false) = 1 - FA",
-                                    placement = "right", trigger = "hover", options = list(container = "body"))
-                        ),
+                          bsButton("help_stats", label = "Help",
+                                   icon = icon("question-sign", lib = "glyphicon"),
+                                   style = "default", type = "action")
+                          ),
                         
                         #####
                         # Main panel for different statistics
@@ -294,32 +308,14 @@ shinyUI(
                                                          datasets$dataset), 
                                       selected = 1),
                           
-                          # bsButton("inputhelp", label = "Help", 
-                          #          icon = icon("question-sign", lib = "glyphicon"),
-                          #          style = "default", type = "action"),
+                          bsButton("help_represent", label = "Help",
+                                   icon = icon("question-sign", lib = "glyphicon"),
+                                   style = "default", type = "action")
                           
-                          ## Tooltips on inputs:
-                          bsTooltip(id = "N", title = "Number of individuals making up the population",
-                                    placement = "right", trigger = "hover", options = list(container = "body")), 
-                          
-                          bsTooltip(id = "prev", title = "Probability of being affected: p(true)",
-                                    placement = "right", trigger = "hover", options = list(container = "body")),
-                          
-                          bsTooltip(id = "sens", title = "Probability of correctly detecting an affected individual: p(decision positive | condition true)",
-                                    placement = "right", trigger = "hover", options = list(container = "body")), 
-                          
-                          bsTooltip(id = "spec", title = "Probability of correctly rejecting an unaffected individual: p(decision negative | condition false) = 1 - FA",
-                                    placement = "right", trigger = "hover", options = list(container = "body"))
                         ),
                         #####
                         ## Main panel for displaying different aspects about risk:
                         mainPanel(
-                          
-                          ## Help modal:
-                          bsModal(id = "modalinputhelp", 
-                                  title = "So you want to know more about the inputs", 
-                                  "Here, we will provide some theoretical background information.",
-                                  trigger = "inputhelp", size = "medium"),
                           
                           ## Tabset with raw data table, icon array, nf tree, confusion table, and PV graphs: 
                           tabsetPanel(type = "tabs",
@@ -351,12 +347,12 @@ shinyUI(
                                                wellPanel(
                                                  fluidRow(
                                                    column(3, offset = 0,
-                                                          radioButtons("netby", "Build network by", c("condition first" = "cddc",
-                                                                                                      "decision first" = "dccd"), inline = TRUE)),
+                                                          radioButtons("netby", "Build Network by", c("Condition first" = "cddc",
+                                                                                                      "Decision first" = "dccd"), inline = TRUE)),
                                                    column(6, 
-                                                          radioButtons("nettype", "Type of boxes", c("default boxes" = "no", "squares" = "sq", 
-                                                                                                     "horizontal rectangles" = "hr", "vertical rectangles" = "vr"), inline = TRUE)),
-                                                   column(2, downloadButton("fnetdl", label = "Save network diagram"))
+                                                          radioButtons("nettype", "Type of Boxes", c("Default boxes" = "no", "Squares" = "sq", 
+                                                                                                     "Horizontal rectangles" = "hr", "Vertical rectangles" = "vr"), inline = TRUE)),
+                                                   column(2, downloadButton("fnetdl", label = "Save Network"))
                                                    )
                                                )
                                                ),
@@ -379,7 +375,7 @@ shinyUI(
                                                                    icon = icon("random", lib = "glyphicon"),
                                                                    style = "default", type = "toggle")),
                                                    column(2, offset = 2,
-                                                          downloadButton("rawdatadl", label = "Save raw data"))
+                                                          downloadButton("rawdatadl", label = "Save Raw Data"))
                                                  )
                                                ),
                                                br()
@@ -396,9 +392,9 @@ shinyUI(
                                                  fluidRow(
                                                    column(4, offset = 2,
                                                           radioButtons("arraytype", "Display:",
-                                                                       choices = list("array" = "array", "shuffled" = "shuffledarray",
-                                                                                      "scattered" = "scatter", "Mosaic" = "mosaic"), inline = TRUE)),
-                                                          column(2, downloadButton("iconarraydl", label = "Save icon array"))
+                                                                       choices = list("Array" = "array", "Shuffled" = "shuffledarray",
+                                                                                      "Scattered" = "scatter", "Mosaic" = "mosaic"), inline = TRUE)),
+                                                          column(2, downloadButton("iconarraydl", label = "Save Icon Array"))
                                                    ), 
                                                    br(),
                                                  fluidRow(
@@ -437,11 +433,11 @@ shinyUI(
                                                wellPanel(
                                                  fluidRow(
                                                    column(3, offset = 0,
-                                                          radioButtons("treeby", "Build tree by", c("condition" = "cd", "decision" = "dc"), inline = TRUE)),
+                                                          radioButtons("treeby", "Build Tree by", c("Condition" = "cd", "Decision" = "dc"), inline = TRUE)),
                                                    column(6, 
-                                                          radioButtons("treetype","Type of boxes", c("Default boxes" = "no", "squares" = "sq", 
-                                                                                                    "horizontal rectangles" = "hr", "vertical rectangles" = "vr"), inline = TRUE)),
-                                                   column(2, downloadButton("nftreedl", label = "Save frequency tree"))
+                                                          radioButtons("treetype","Type of Boxes", c("Default boxes" = "no", "Squares" = "sq", 
+                                                                                                    "Horizontal rectangles" = "hr", "Vertical rectangles" = "vr"), inline = TRUE)),
+                                                   column(2, downloadButton("nftreedl", label = "Save Frequency Tree"))
                                                  )
                                                 )
                                                ),
@@ -453,7 +449,7 @@ shinyUI(
                                                # br(), br(),  
                                                # tableOutput("confusiontable"),
                                                # br(),
-                                               # paste0("The following mosaic plot shows the cell frequencies as area sizes:"), 
+                                               # paste0("A mosaic plot shows cell frequencies as area sizes:"), 
                                                # br(),  br(), 
                                                # plotOutput("mosaicplot", height = "400px", width = "400px"),
                                                # br(),
@@ -465,7 +461,7 @@ shinyUI(
                                                
                                                fluidRow(
                                                  column(6, offset = 0, paste0("Aggregated cases:"), br(), br(),br(), br()),
-                                                 column(6, offset = 0, paste0("A mosaic plot shows the cell frequencies as area sizes:"),
+                                                 column(6, offset = 0, paste0("A mosaic plot shows cell frequencies as area sizes:"),
                                                         br(), br())
                                                  ), 
                                               fluidRow(
@@ -474,8 +470,8 @@ shinyUI(
                                                ),
                                                wellPanel(
                                                  fluidRow(
-                                                   column(2, offset = 2, downloadButton("confusiontabledl", label = "Save confusion table")),
-                                                   column(2, offset = 4, downloadButton("mosaicplotdl", label = "Save mosaic plot"))
+                                                   column(2, offset = 2, downloadButton("confusiontabledl", label = "Save Confusion Table")),
+                                                   column(2, offset = 4, downloadButton("mosaicplotdl", label = "Save Mosaic Plot"))
                                                  ))
                                                ),
                                       #####
@@ -494,7 +490,7 @@ shinyUI(
                                                  fluidRow(
                                                    column(2, offset = 2, checkboxInput("boxPVacc", label = "Show accuracy (acc)", value = FALSE)),
                                                    column(4, checkboxInput("boxPVppod", label = "Show proportion of positive decisions (ppod)", value = FALSE)),
-                                                   column(1, downloadButton("PVsdl", label = "Save curves"))
+                                                   column(1, downloadButton("PVsdl", label = "Save Curves"))
                                                    )
                                                  )
                                                ),
@@ -512,9 +508,9 @@ shinyUI(
                                                wellPanel(
                                                  fluidRow(
                                                    column(3, checkboxInput("boxPVpoints2", label = "Show current PPV/NPV in plots", value = TRUE)), 
-                                                   column(2, offset = 1, downloadButton("PV3dPPVdl", label = "Save PPV cube")),
+                                                   column(2, offset = 1, downloadButton("PV3dPPVdl", label = "Save PPV Cube")),
                                                    column(2, offset = 4,
-                                                          downloadButton("PV3dNPVdl", label = "Save NPV cube"))
+                                                          downloadButton("PV3dNPVdl", label = "Save NPV Cube"))
                                                  ),
                                                  br(),
                                                  fluidRow(
@@ -530,10 +526,71 @@ shinyUI(
                       ),
              
              #####        
-             # tabPanel("4: Information",
-             #          icon = icon("education", lib = "glyphicon")
-             #          
-             # ),
+             tabPanel("Under Dev: Quiz",
+                      icon = icon("education", lib = "glyphicon"), value = "quiz",
+                      
+                      sidebarLayout(
+                        #####
+                        # Sidebar panel for feedback:
+                        sidebarPanel(
+                          h2("Question 1:"), br(),
+                          bsAlert("alert_question1"),
+                          h2("Question 2:"), br(),
+                          bsAlert("alert_question2"),
+                          h2("Question 3:"), br(),
+                          bsAlert("alert_question3"),
+                          h2("Question 4:"), br(),
+                          bsAlert("alert_question4")
+                        ),
+                        #####
+                        # Sidebar panel for questions:
+                        mainPanel(
+                          
+                          tabsetPanel(type = "tabs",
+                                      tabPanel("Question 1",
+                                               h2("Question 1"),
+                                               "This is a sample multiple choice question. Options 1 and 3 are correct.",
+                                               checkboxGroupInput("question1", label = h3("Sample item"), 
+                                                                  choices = list("Choice 1" = 1, "Choice 2" = 2, "Choice 3" = 3, "Choice 4" = 4),
+                                                                  selected = NULL),
+                                               bsButton("submit_question1", label = "Submit answer", type = "action")
+                                              ),
+                                      tabPanel("Question 2",
+                                               h2("Question 2"),
+                                               "This is a sample forced choice question. Option 2 is correct.",
+                                               radioButtons("question2", label = h3("Sample item"),
+                                                            choices = list("Choice 1" = 1, "Choice 2" = 2, "Choice 3" = 3, "Choice 4" = 4), 
+                                                            selected = character(0)),
+                                               bsButton("submit_question2", label = "Submit answer", type = "action")
+                                               ),
+                                      tabPanel("Question 3",
+                                               h2("Question 3"),
+                                               "This is a sample calculation question. The correct answer is '0.95'.",
+                                               numericInput("question3", label = h3("Sample Item"), min = 0, max = 1, value = NULL),
+                                               bsButton("submit_question3", label = "Submit answer", type = "action")
+                                               
+                                               ),
+                                      
+                                      tabPanel("Question 4",
+                                               h2("Question 4"),
+                                               "This is a sample item for graph literacy. The left option is correct.",
+                                               h3("Which graph is a tree diagram by condition?"),
+                                               fluidRow(
+                                                 column(5, offset = 0, img(src = "optionA.png")),
+                                                 column(5, offset = 1, img(src = "optionB.png"))
+                                               ),
+                                               radioButtons("question4", label = "Sample Item",
+                                                            choices = list("Option A" = 1, "Option B" = 2),
+                                                            inline = TRUE, selected = character(0)),
+                                               bsButton("submit_question4", label = "Submit answer", type = "action")
+                                               )
+                                      )
+                          )
+                        )
+                        
+                      
+
+             ),
              
              #####
              navbarMenu("4: Customize",
@@ -545,7 +602,7 @@ shinyUI(
                         #####
                         # Customize labels:
                         tabPanel("Customize labels",
-                                 icon = icon("pencil", lib = "glyphicon"),
+                                 icon = icon("pencil", lib = "glyphicon"), value = "custom_labels",
                                  
                                  sidebarLayout(
                                    #####
@@ -601,6 +658,9 @@ shinyUI(
                                               style = "default", type = "action"),
                                      bsButton("resetcustomlabel", label = "Reset default",
                                               icon = icon("refresh", lib = "glyphicon"),
+                                              style = "default", type = "action"),
+                                     bsButton("help_custom_labels", label = "Help",
+                                              icon = icon("question-sign", lib = "glyphicon"),
                                               style = "default", type = "action")
                                    ),
 
@@ -625,6 +685,7 @@ shinyUI(
                         #####
                         tabPanel("Customize colors",
                                  icon = icon("adjust", lib = "glyphicon"),
+                                 value = "custom_colors",
                                  sidebarLayout(
                                  #####
                                  sidebarPanel(
@@ -656,6 +717,9 @@ shinyUI(
                                             style = "default", type = "action"),
                                    bsButton("resetcustomcolor", label = "Reset default",
                                             icon = icon("refresh", lib = "glyphicon"),
+                                            style = "default", type = "action"),
+                                   bsButton("help_custom_colors", label = "Help",
+                                            icon = icon("question-sign", lib = "glyphicon"),
                                             style = "default", type = "action")
                                  ),
                                  
@@ -683,7 +747,15 @@ shinyUI(
                         # 1st screen in dropdown navigation:
                         tabPanel("References & Readings",
                                  icon = icon("book", lib = "glyphicon"),
-                                 includeMarkdown("www/recommended_readings.md")
+                                 value = "references",
+                                 h1("References and recommended readings"),
+                                 fluidRow(
+                                   column(5, offset = 0,
+                                          includeMarkdown("www/recommended_readings.md")),
+                                   column(5, offset = 1,
+                                          includeMarkdown("www/references.md"))
+                                 )
+                                 # includeMarkdown("www/recommended_readings.md")
                         ),
 
                         # spacer
@@ -700,7 +772,7 @@ shinyUI(
                                         </a>'),
                                  HTML('<a href="https://www.spds.uni-konstanz.de"> 
                                         <img src="uniKn_logo_s.png" alt="SPDS@uni.KN"
-                                        align = "right">
+                                        align = "left">
                                       </a>')
                                  ),
                                  br(),
@@ -709,7 +781,53 @@ shinyUI(
 
                         # spacer
                         "----"
-             )
+             ),
+             
+             ### TUTORIAL ELEMENTS (under development)
+             # bsModal(id = "tutstart", 
+             #         title = "So you want to take the guided tour (aka tutorial)...", 
+             #         br(),
+             #         "First of all, please note that the riskyrApp comprises several tabs.",
+             #         br(),
+             #         "The tab menu is visible at all times in the upper left corner of the screen and looks like this:",
+             #         br(),
+             #         img(src = "riskyr_header_menu.png"),
+             #         footer = list(modalButton("OK"), bsButton("tut1", "Continue Tutorial")),
+             #         trigger = "link_to_tutorial", size = "large"),
+             
+            
+             
+             ######
+             ## Tooltips
+             
+             # On inputs
+             bsTooltip(id = list("N", "numN", "N2", "numN2"), 
+                       title = "Number of individuals making up the population",
+                       placement = "right", trigger = "hover", options = list(container = "body")),
+             
+             bsTooltip(id = list("prev", "numprev", "prev2", "numprev2"),
+                       title = "Probability of being affected: p(true)",
+                       placement = "right", trigger = "hover", options = list(container = "body")),
+             
+             bsTooltip(id = list("sens", "numsens", "sens2", "numsens2"),
+                       title = "Probability of correctly detecting an affected individual: p(decision positive | condition true)",
+                       placement = "right", trigger = "hover", options = list(container = "body")),
+             
+             bsTooltip(id = list("spec", "numspec", "spec2", "numspec2"),
+                       title = "Probability of correctly rejecting an unaffected individual: p(decision negative | condition false) = 1 - FA",
+                       placement = "right", trigger = "hover", options = list(container = "body")),
+             
+             # On Download buttons
+             
+             bsTooltip(id = list("fnetdl", "iconarraydl", "nftreedl", "mosaicplotdl", "PVsdl", "PV3dPPVdl", "PV3dNPVdl"),
+                       title = "Click this button to download and save the graph as .png file.",
+                       placement = "above", trigger = "hover", options = list(container = "body")),
+             
+             
+             bsTooltip(id = list("rawdatadl", "confusiontabledl"),
+                       title = "Click this button to download and save the table as .csv file.",
+                       placement = "above", trigger = "hover", options = list(container = "body"))
+
   )
 )
 
