@@ -251,39 +251,23 @@ shinyServer(function(input, output, session){
   # Couple numeric and slider inputs, connect both stats and representations:
   
   #####
-  ## population
+  ## population (logified version)
   
   observeEvent({
-    input$N }, {
-      env$N <- input$N
-      updateNumericInput(session, "numN2", value = env$N)
-      updateNumericInput(session, "numN", value = env$N)
-      updateSliderInput(session, "N2", value = env$N)
+    input$N
+  }, {
+    env$N <- 10**input$N
+    env$recalc.N <- input$N
+    updateSliderInput(session, "N2", value = env$recalc.N)
   })
   
   observeEvent({
-    input$N2 }, {
-      env$N <- input$N2
-      updateNumericInput(session, "numN2", value = env$N)
-      updateNumericInput(session, "numN", value = env$N)
-      updateSliderInput(session, "N", value = env$N)
-    })
-  
-  observeEvent({
-    input$numN }, {
-      env$N <- input$numN
-      updateNumericInput(session, "numN2", value = env$N)
-      updateNumericInput(session, "N2", value = env$N)
-      updateSliderInput(session, "N", value = env$N)
-    })
-  
-  observeEvent({
-    input$numN2 }, {
-      env$N <- input$numN2
-      updateNumericInput(session, "numN", value = env$N)
-      updateNumericInput(session, "N2", value = env$N)
-      updateSliderInput(session, "N", value = env$N)
-    })
+    input$N2
+  }, {
+    env$N <- 10**input$N2
+    env$recalc.N <- input$N2
+    updateSliderInput(session, "N", value =  env$recalc.N)
+  })
   
   #####
   ## prevalence

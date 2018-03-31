@@ -31,6 +31,40 @@ default.colors <- c(color.hi =  rgb(128, 177,  57, max = 255),  # col.green.2
                     color.npv = rgb( 29, 149, 198, max = 255)   # col.blue.3
                     )
 
+## logifySlider javascript function
+JS.logify <-
+  "
+// function to logify a sliderInput
+function logifySlider (sliderId, sci = false) {
+if (sci) {
+// scientific style
+$('#'+sliderId).data('ionRangeSlider').update({
+'prettify': function (num) { return ('10<sup>'+num+'</sup>'); }
+})
+} else {
+// regular number style
+$('#'+sliderId).data('ionRangeSlider').update({
+'prettify': function (num) { return (Math.pow(10, num)); }
+})
+}
+}"
+
+## call logifySlider for each relevant sliderInput
+JS.onload <-
+  "
+// execute upon document loading
+$(document).ready(function() {
+// wait a few ms to allow other scripts to execute
+setTimeout(function() {
+// include call for each slider
+logifySlider('N', sci = false)
+logifySlider('N2', sci = false)
+
+}, 5)})
+"
+
+
+
 #####
 ## Define user interface logic: ------
 
@@ -46,14 +80,10 @@ shinyUI(
              tabPanel("Welcome!",
                       icon = icon("flag", lib = "glyphicon"),
                       value = "welcome",
-                      fluidRow(column(4, offset = 0, 
-                                      h1("Welcome to the riskyrApp!")),
-                               "Hover over the image to find your way."),
+                      fluidRow(column(4, offset = 0, h1("Welcome to the riskyrApp!"))),
+                               "Hover over the image to find your way.",
                       br(),
-                      fluidRow(column(12, offset = 0,
-                                      includeHTML("www/imageMap.html")
-                                      )
-                               )
+                      fluidRow(column(12, offset = 0, includeHTML("www/imageMap.html")))
                       ),
              tabPanel("1: About", 
                       icon = icon("home", lib = "glyphicon"),
@@ -81,20 +111,12 @@ shinyUI(
                         #####
                         # Sidebar panel for inputs:
                         sidebarPanel(
-                          radioButtons("checkpop2", label = "Population", 
-                                       choiceNames = list("Slider", "Field"),
-                                       choiceValues = c(0, 1), inline = TRUE
-                          ),
-                          conditionalPanel(condition = "input.checkpop2 == 0",
-                                           sliderInput("N2", label = NULL, value = 1000,
-                                                       min = 1, max = 10^6, step = 10
-                                           )
-                          ),
-                          conditionalPanel(condition = "input.checkpop2 == 1",
-                                           numericInput("numN2", label = NULL, value = 1000,
-                                                        min = 1, max = 10^6, step = 10
-                                           )
-                          ),
+                          tags$head(tags$script(HTML(JS.logify))),
+                          tags$head(tags$script(HTML(JS.onload))),
+                          
+                          sliderInput("N2", label = "Population (logarithmic scale)",
+                                      min = 1, max = 5,
+                                      value = 2, round = FALSE),
                           br(),
                           radioButtons("checkprev2", label = "Prevalence", 
                                        choiceNames = list("Slider", "Field"),
@@ -228,20 +250,12 @@ shinyUI(
                         #####
                         # Sidebar panel for inputs:
                         sidebarPanel(
-                          radioButtons("checkpop", label = "Population", 
-                                       choiceNames = list("Slider", "Field"),
-                                       choiceValues = c(0, 1), inline = TRUE
-                                       ),
-                          conditionalPanel(condition = "input.checkpop == 0",
-                                           sliderInput("N", label = NULL, value = 100,
-                                                       min = 1, max = 10^6, step = 10
-                                                       )
-                                           ),
-                          conditionalPanel(condition = "input.checkpop == 1",
-                                           numericInput("numN", label = NULL, value = 100,
-                                                        min = 1, max = 10^6, step = 10
-                                                        )
-                                           ),
+                          tags$head(tags$script(HTML(JS.logify))),
+                          tags$head(tags$script(HTML(JS.onload))),
+                          
+                          sliderInput("N", label = "Population (logarithmic scale)",
+                                      min = 1, max = 5,
+                                      value = 2, round = FALSE),
                           br(),
                           radioButtons("checkprev", label = "Prevalence", 
                                        choiceNames = list("Slider", "Field"),
