@@ -101,27 +101,12 @@ shinyUI(
                                    #####
                                    # Sidebar panel for inputs:
                                    sidebarPanel(
-                                     # radioButtons("checkpop", label = "Population", 
-                                     #              choiceNames = list("Slider (logarithmic)", "Field"),
-                                     #              choiceValues = c(0, 1), inline = TRUE
-                                     # ),
-                                     # conditionalPanel(condition = "input.checkpop == 0",
-                                     #                  sliderInput("N", label = NULL, value = 100,
-                                     #                              min = 1, max = 10^6, step = 10
-                                     #                              )
-                                     #                  #tests
                                      tags$head(tags$script(HTML(JS.logify))),
                                      tags$head(tags$script(HTML(JS.onload))),
                                      
                                      sliderInput("N", label = "Population (logarithmic scale)",
                                                  min = 1, max = 5,
                                                  value = 2, round = FALSE
-                                                 #                  )
-                                                 # ),
-                                                 # conditionalPanel(condition = "input.checkpop == 1",
-                                                 #                  numericInput("numN", label = NULL, value = 100,
-                                                 #                               min = 1, max = 10^6, step = 1
-                                                 #                  )
                                      ),
                                      br(),
                                      radioButtons("checkprev", label = "Prevalence (in Percent)", 
@@ -314,21 +299,7 @@ shinyUI(
                                                  # Table
                                                  #####
                                                  tabPanel("Cross-Tabulation", 
-                                                          br(), 
-                                                          # paste0("Aggregated cases:"), 
-                                                          # br(), br(),  
-                                                          # tableOutput("confusiontable"),
-                                                          # br(),
-                                                          # paste0("The following mosaic plot shows the cell frequencies as area sizes:"), 
-                                                          # br(),  br(), 
-                                                          # plotOutput("mosaicplot", height = "400px", width = "400px"),
-                                                          # br(),
-                                                          # wellPanel(
-                                                          #   fluidRow(
-                                                          #     column(2, downloadButton("mosaicplotdl", label = "Save Mosaic Plot")),
-                                                          #     column(2, downloadButton("confusiontabledl", label = "Save Confusion Table"))
-                                                          #   ))
-                                                          
+                                                          br(),
                                                           fluidRow(
                                                             column(6, offset = 0, paste0("Aggregated cases:"), br(), br(),br(), br()),
                                                             column(6, offset = 0, paste0("The following mosaic plot shows the cell frequencies as area sizes:"),
@@ -392,7 +363,7 @@ shinyUI(
                                                  ),
                                                  #####
                                                  # contrast representations
-                                                 tabPanel("Under dev: Contrasts", 
+                                                 tabPanel("Compare", 
                                                           br(),
                                                           paste0("Compare two representations:"), br(), br(),
                                                           fluidRow(
@@ -591,47 +562,48 @@ shinyUI(
                                       min = 1, max = 5,
                                       value = 2, round = FALSE),
                           br(),
-                          radioButtons("checkprev2", label = "Prevalence", 
+                          radioButtons("checkprev2", label = "Prevalence (in Percent)",
                                        choiceNames = list("Slider", "Field"),
                                        choiceValues = c(0, 1), inline = TRUE
                           ),
                           conditionalPanel(condition = "input.checkprev2 == 0",
                                            sliderInput("prev2",  label = NULL, sep = "",
-                                                       value = 0.15, min = 0, max = 1, step = 10^-6
+                                                       value = 15, min = 0.00, max = 100.00, step = 1,
+                                                       pre=NULL, post="%"
                                            )
                           ),
-                          conditionalPanel(condition = "input.checkprev2 == 1", 
-                                           numericInput("numprev2", label = NULL, value = 0.15,
-                                                        min = 0, max = 1, step = 10^-6
+                          conditionalPanel(condition = "input.checkprev2 == 1",
+                                           numericInput("numprev2", label = NULL, value = 15,
+                                                        min = 0, max = 100, step = 10^-2
                                            )
                           ),
                           br(),
-                          radioButtons("checksens2", label = "Sensitivity", 
+                          radioButtons("checksens2", label = "Sensitivity",
                                        choiceNames = list("Slider", "Field"),
                                        choiceValues = c(0, 1), inline = TRUE
                           ),
                           conditionalPanel(condition = "input.checksens2 == 0",
-                                           sliderInput("sens2", label = NULL, sep = "", value = 0.85,
-                                                       min = 0, max = 1, step = 10^-6
+                                           sliderInput("sens2", label = NULL, sep = "", value = 85,
+                                                       min = 0, max = 100, step = 1
                                            )
                           ),
-                          conditionalPanel(condition = "input.checksens2 == 1", 
-                                           numericInput("numsens2", label = NULL, value = 0.85,
-                                                        min = 0, max = 1, step = 10^-6
+                          conditionalPanel(condition = "input.checksens2 == 1",
+                                           numericInput("numsens2", label = NULL, value = 85,
+                                                        min = 0, max = 100, step = 10^-2
                                            )
                           ),
-                          radioButtons("checkspec2", label = "Specificity", 
+                          radioButtons("checkspec2", label = "Specificity",
                                        choiceNames = list("Slider", "Field"),
                                        choiceValues = c(0, 1), inline = TRUE
                           ),
                           conditionalPanel(condition = "input.checkspec2 == 0",
-                                           sliderInput("spec2", label = NULL, sep = "", value = 0.75,
-                                                       min = 0, max = 1, step = 10^-6
+                                           sliderInput("spec2", label = NULL, sep = "", value = 75,
+                                                       min = 0, max = 100, step = 1
                                            )
                           ),
-                          conditionalPanel(condition = "input.checkspec2 == 1", 
-                                           numericInput("numspec2", label = NULL, value = 0.75,
-                                                        min = 0, max = 1, step = 10^-6
+                          conditionalPanel(condition = "input.checkspec2 == 1",
+                                           numericInput("numspec2", label = NULL, value = 75,
+                                                        min = 0, max = 100, step = 10^-2
                                            )
                           ),
                           br(), 
