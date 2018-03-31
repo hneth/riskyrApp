@@ -21,7 +21,7 @@ library("riskyr")
 # sessionInfo()
 
 ## Import ready-made and worked out example data: ------
-datasets <- read.csv2("./www/examples_riskyrApp_2018-02-15.csv", stringsAsFactors = FALSE)
+datasets <- read.csv2("./www/examples_riskyrApp_2018-03-30.csv", stringsAsFactors = FALSE)
 
 default.colors <- c(color.hi =  rgb(128, 177,  57, max = 255),  # col.green.2
                     color.mi =  rgb(210,  52,  48, max = 255),  # col.red.2
@@ -584,7 +584,8 @@ shinyUI(
                           ),
                           conditionalPanel(condition = "input.checksens2 == 0",
                                            sliderInput("sens2", label = NULL, sep = "", value = 85,
-                                                       min = 0, max = 100, step = 1
+                                                       min = 0, max = 100, step = 1,
+                                                       pre=NULL, post="%"
                                            )
                           ),
                           conditionalPanel(condition = "input.checksens2 == 1",
@@ -598,7 +599,8 @@ shinyUI(
                           ),
                           conditionalPanel(condition = "input.checkspec2 == 0",
                                            sliderInput("spec2", label = NULL, sep = "", value = 75,
-                                                       min = 0, max = 100, step = 1
+                                                       min = 0, max = 100, step = 1,
+                                                       pre=NULL, post="%"
                                            )
                           ),
                           conditionalPanel(condition = "input.checkspec2 == 1",
