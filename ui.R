@@ -578,7 +578,7 @@ shinyUI(
                                            )
                           ),
                           br(),
-                          radioButtons("checksens2", label = "Sensitivity",
+                          radioButtons("checksens2", label = "Sensitivity (in Percent)",
                                        choiceNames = list("Slider", "Field"),
                                        choiceValues = c(0, 1), inline = TRUE
                           ),
@@ -592,7 +592,7 @@ shinyUI(
                                                         min = 0, max = 100, step = 10^-2
                                            )
                           ),
-                          radioButtons("checkspec2", label = "Specificity",
+                          radioButtons("checkspec2", label = "Specificity (in Percent)",
                                        choiceNames = list("Slider", "Field"),
                                        choiceValues = c(0, 1), inline = TRUE
                           ),
