@@ -85,22 +85,6 @@ shinyUI(
                       br(),
                       fluidRow(column(12, offset = 0, includeHTML("www/imageMap.html")))
                       ),
-             tabPanel("1: About", 
-                      icon = icon("home", lib = "glyphicon"),
-                      value = "about",
-                      fluidRow(column(4, 
-                                      h1("The riskyrApp"),
-                                      
-                                      h2("About"),
-                                      "The ", code("riskyrApp"), " is an R Shiny application that complements the ", code("riskyr"),
-                                      "toolbox for rendering risk literacy more transparent.",
-                                      br()
-                                      ),
-                               column(6, HTML(' <a href="https://CRAN.R-project.org/package=riskyr">
-                                                 <img src="riskyr_cube_s.png" align = "right" alt="riskyr@CRAN">
-                                                 </a>'))),
-                      includeMarkdown("about.md")
-             ),
              
              #####
              tabPanel("2: Statistics",
@@ -739,46 +723,43 @@ shinyUI(
                         ),
              
              #####
-             navbarMenu("Further information",
-
+             navbarMenu("About",  icon = icon("info-sign", lib = "glyphicon"),
+                        
                         # spacer
                         "----",
-
+                        
                         # 1st screen in dropdown navigation:
                         tabPanel("References & Readings",
                                  icon = icon("book", lib = "glyphicon"),
                                  value = "references",
                                  h1("References and recommended readings"),
                                  fluidRow(
-                                   column(5, offset = 0,
-                                          includeMarkdown("www/recommended_readings.md")),
-                                   column(5, offset = 1,
-                                          includeMarkdown("www/references.md"))
+                                   column(5, offset = 0, includeMarkdown("www/recommended_readings.md")),
+                                   column(5, offset = 1, includeMarkdown("www/references.md"))
                                  )
-                                 # includeMarkdown("www/recommended_readings.md")
                         ),
-
+                        
                         # spacer
                         "----",
-
+                        
                         # 2nd screen in dropdown navigation:
-                        tabPanel("Imprint",
-                                 icon = icon("info-sign", lib = "glyphicon"),
+                        tabPanel("Imprint", value = "about",
+                                 icon = icon("pushpin", lib = "glyphicon"),
                                  h2("Imprint"),
                                  fluidRow(
-                                 HTML('<a href="https://CRAN.R-project.org/package=riskyr"> 
+                                   HTML('<a href="https://CRAN.R-project.org/package=riskyr"> 
                                         <img src="riskyr_cube_s.png" alt="riskyr@CRAN"
-                                      align = "left">
+                                        align = "left">
                                         </a>'),
-                                 HTML('<a href="https://www.spds.uni-konstanz.de"> 
+                                   HTML('<a href="https://www.spds.uni-konstanz.de"> 
                                         <img src="uniKn_logo_s.png" alt="SPDS@uni.KN"
                                         align = "left">
-                                      </a>')
-                                 ),
+                                        </a>')
+                                   ),
                                  br(),
                                  includeMarkdown("www/imprint.md")
-                        ),
-
+                                 ),
+                        
                         # spacer
                         "----"
              ),
