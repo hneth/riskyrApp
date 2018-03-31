@@ -47,27 +47,13 @@ shinyUI(
                       icon = icon("flag", lib = "glyphicon"),
                       value = "welcome",
                       fluidRow(column(4, offset = 0, 
-                                      h1("Welcome to the riskyrApp!"))),
+                                      h1("Welcome to the riskyrApp!")),
+                               "Hover over the image to find your way."),
                       br(),
-                      fluidRow(column(2, offset = 0, img(src = "bulb_64.png"),
-                                      " Learn more ", actionLink("link_to_about", "about"), "the riskyrApp"),
-                               column(2, img(src = "calculator_64.png"), 
-                                      " Calculate ", actionLink("link_to_statistics", "risk statistics")),
-                               column(2, img(src = "represent_64.png"), 
-                                      " Check out ", actionLink("link_to_representations", "risk representations")),
-                               column(2, img(src = "help_64.png"), 
-                                      " Take the ", actionLink("link_to_tutorial", "guided tour")),
-                               column(2, img(src = "customize_64.png"), 
-                                                  " Customize ", actionLink("link_to_custom_labels", "labels"), " or ",
-                                                  actionLink("link_to_custom_colors", "colors")),
-                               column(2, img(src = "library_64.png"),
-                                      " ", actionLink("link_to_references", "Read up"), " on risk research")
-                                           
-                                  ),
-                      fluidRow(column(12, offset = 0, 
-                                      HTML('<p style="text-align:center;"><img src="riskyr_start.png" alt="riskyr"></p>')
-                      )
-                      )
+                      fluidRow(column(12, offset = 0,
+                                      includeHTML("www/imageMap.html")
+                                      )
+                               )
                       ),
              tabPanel("1: About", 
                       icon = icon("home", lib = "glyphicon"),

@@ -88,10 +88,22 @@ shinyServer(function(input, output, session){
   observeEvent(input$link_to_about, { updateTabsetPanel(session, "tabs", "about") })
   observeEvent(input$link_to_statistics, { updateTabsetPanel(session, "tabs", "stats") })
   observeEvent(input$link_to_representations, { updateTabsetPanel(session, "tabs", "represent") })
-  observeEvent(input$link_to_representations, { updateTabsetPanel(session, "tabs", "represent") })
   observeEvent(input$link_to_custom_labels, { updateTabsetPanel(session, "tabs", "custom_labels") })
   observeEvent(input$link_to_custom_colors, { updateTabsetPanel(session, "tabs", "custom_colors") })
   observeEvent(input$link_to_references, { updateTabsetPanel(session, "tabs", "references") })
+  
+  addTooltip(session, id = "link_to_about", title = "Learn more about the riskyrApp!", placement = "top",
+             trigger = "hover", options = NULL)
+  addTooltip(session, id = "link_to_representations", title = "Visualize risks!", placement = "left",
+             trigger = "hover", options = NULL)
+  addTooltip(session, id = "link_to_custom_colors", title = "Customize colors and labels of risk visualizations", placement = "right",
+             trigger = "hover", options = NULL)
+  addTooltip(session, id = "link_to_tutorial", title = "Take the tutorial on the riskyrApp (coming soon)!", placement = "bottom",
+             trigger = "hover", options = NULL)
+  addTooltip(session, id = "link_to_statistics", title = "Compute risk metrics!", placement = "left",
+             trigger = "hover", options = NULL)
+  addTooltip(session, id = "link_to_references", title = "Read up on risk research", placement = "right",
+             trigger = "hover", options = NULL)
   
 #####
   # Tutorial elements (under development)
