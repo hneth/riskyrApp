@@ -85,146 +85,6 @@ shinyUI(
                       br(),
                       fluidRow(column(12, offset = 0, includeHTML("www/imageMap.html")))
                       ),
-             
-             #####
-             tabPanel("2: Statistics",
-                      icon = icon("equalizer", lib = "glyphicon"), value = "stats",
-                      
-                      #####
-                      sidebarLayout(
-                        #####
-                        # Sidebar panel for inputs:
-                        sidebarPanel(
-                          tags$head(tags$script(HTML(JS.logify))),
-                          tags$head(tags$script(HTML(JS.onload))),
-                          
-                          sliderInput("N2", label = "Population (logarithmic scale)",
-                                      min = 1, max = 5,
-                                      value = 2, round = FALSE),
-                          br(),
-                          radioButtons("checkprev2", label = "Prevalence", 
-                                       choiceNames = list("Slider", "Field"),
-                                       choiceValues = c(0, 1), inline = TRUE
-                          ),
-                          conditionalPanel(condition = "input.checkprev2 == 0",
-                                           sliderInput("prev2",  label = NULL, sep = "",
-                                                       value = 0.15, min = 0, max = 1, step = 10^-6
-                                           )
-                          ),
-                          conditionalPanel(condition = "input.checkprev2 == 1", 
-                                           numericInput("numprev2", label = NULL, value = 0.15,
-                                                        min = 0, max = 1, step = 10^-6
-                                           )
-                          ),
-                          br(),
-                          radioButtons("checksens2", label = "Sensitivity", 
-                                       choiceNames = list("Slider", "Field"),
-                                       choiceValues = c(0, 1), inline = TRUE
-                          ),
-                          conditionalPanel(condition = "input.checksens2 == 0",
-                                           sliderInput("sens2", label = NULL, sep = "", value = 0.85,
-                                                       min = 0, max = 1, step = 10^-6
-                                           )
-                          ),
-                          conditionalPanel(condition = "input.checksens2 == 1", 
-                                           numericInput("numsens2", label = NULL, value = 0.85,
-                                                        min = 0, max = 1, step = 10^-6
-                                           )
-                          ),
-                          radioButtons("checkspec2", label = "Specificity", 
-                                       choiceNames = list("Slider", "Field"),
-                                       choiceValues = c(0, 1), inline = TRUE
-                          ),
-                          conditionalPanel(condition = "input.checkspec2 == 0",
-                                           sliderInput("spec2", label = NULL, sep = "", value = 0.75,
-                                                       min = 0, max = 1, step = 10^-6
-                                           )
-                          ),
-                          conditionalPanel(condition = "input.checkspec2 == 1", 
-                                           numericInput("numspec2", label = NULL, value = 0.75,
-                                                        min = 0, max = 1, step = 10^-6
-                                           )
-                          ),
-                          br(), 
-                          
-                          # Provide existing data sets as drop-down list:
-                          selectInput("dataselection2", label = "Or view an example:",
-                                      choices = setNames(as.list(1:nrow(datasets)), # create choices from datasets
-                                                         datasets$dataset),
-                                      selected = 1),
-                          
-                          bsButton("help_stats", label = "Help",
-                                   icon = icon("question-sign", lib = "glyphicon"),
-                                   style = "default", type = "action")
-                          ),
-                        
-                        #####
-                        # Main panel for different statistics
-                        mainPanel(
-                          tabsetPanel(type = "tabs",
-                                      #####
-                                      # # Info
-                                      # tabPanel("Info",
-                                      #          br(),
-                                      #          withMathJax(includeMarkdown("www/statstab_riskyr.md"))
-                                      #          ),
-                                      #####
-                                      #  ACC
-                                      tabPanel("Accuracy",
-                                               br(),
-                                               tableOutput("confusiontable1"),
-                                               br(),
-                                               withMathJax(includeMarkdown("www/statstab_riskyr_ACC.md")),
-                                               uiOutput("ACC")
-                                               ),
-                                      #####
-                                      # PPV
-                                      tabPanel("Positive Predictive Value",
-                                               br(),
-                                               tableOutput("confusiontable2"),
-                                               br(),
-                                               withMathJax(includeMarkdown("www/statstab_riskyr_PPV1.md")),
-                                               uiOutput("PPV1"),
-                                               br(),
-                                               withMathJax(includeMarkdown("www/statstab_riskyr_PPV2.md")),
-                                               uiOutput("PPV2")
-                                               ),
-                                      #####
-                                      # NPV
-                                      tabPanel("Negative Predictive Value",
-                                               br(),
-                                               tableOutput("confusiontable3"),
-                                               br(),
-                                               withMathJax(includeMarkdown("www/statstab_riskyr_NPV1.md")),
-                                               uiOutput("NPV1"),
-                                               br(),
-                                               withMathJax(includeMarkdown("www/statstab_riskyr_NPV2.md")),
-                                               uiOutput("NPV2")
-                                               ),
-                                      # FDR
-                                      tabPanel("False Discovery Rate",
-                                               br(),
-                                               tableOutput("confusiontable4"),
-                                               br(),
-                                               withMathJax(includeMarkdown("www/statstab_riskyr_FDR.md")),
-                                               uiOutput("FDR")
-                                               ),
-                                      # FOR
-                                      tabPanel("False Omission Rate",
-                                               br(),
-                                               tableOutput("confusiontable5"),
-                                               br(),
-                                               withMathJax(includeMarkdown("www/statstab_riskyr_FOR.md")),
-                                               uiOutput("FOR")
-                                               )
-                                      )
-                        )
-                        
-                        )
-                      
-                
-             ),
-             
              #####               
              tabPanel("3: Representations",
                       icon = icon("tree-deciduous", lib = "glyphicon"), value = "represent",
@@ -509,73 +369,210 @@ shinyUI(
                         )
                       ),
              
-             #####        
-             tabPanel("Under Dev: Quiz",
-                      icon = icon("education", lib = "glyphicon"), value = "quiz",
+             #####
+             tabPanel("Statistics",
+                      icon = icon("equalizer", lib = "glyphicon"), value = "stats",
                       
+                      #####
                       sidebarLayout(
                         #####
-                        # Sidebar panel for feedback:
+                        # Sidebar panel for inputs:
                         sidebarPanel(
-                          h2("Question 1:"), br(),
-                          bsAlert("alert_question1"),
-                          h2("Question 2:"), br(),
-                          bsAlert("alert_question2"),
-                          h2("Question 3:"), br(),
-                          bsAlert("alert_question3"),
-                          h2("Question 4:"), br(),
-                          bsAlert("alert_question4")
-                        ),
-                        #####
-                        # Sidebar panel for questions:
-                        mainPanel(
+                          tags$head(tags$script(HTML(JS.logify))),
+                          tags$head(tags$script(HTML(JS.onload))),
                           
+                          sliderInput("N2", label = "Population (logarithmic scale)",
+                                      min = 1, max = 5,
+                                      value = 2, round = FALSE),
+                          br(),
+                          radioButtons("checkprev2", label = "Prevalence", 
+                                       choiceNames = list("Slider", "Field"),
+                                       choiceValues = c(0, 1), inline = TRUE
+                          ),
+                          conditionalPanel(condition = "input.checkprev2 == 0",
+                                           sliderInput("prev2",  label = NULL, sep = "",
+                                                       value = 0.15, min = 0, max = 1, step = 10^-6
+                                           )
+                          ),
+                          conditionalPanel(condition = "input.checkprev2 == 1", 
+                                           numericInput("numprev2", label = NULL, value = 0.15,
+                                                        min = 0, max = 1, step = 10^-6
+                                           )
+                          ),
+                          br(),
+                          radioButtons("checksens2", label = "Sensitivity", 
+                                       choiceNames = list("Slider", "Field"),
+                                       choiceValues = c(0, 1), inline = TRUE
+                          ),
+                          conditionalPanel(condition = "input.checksens2 == 0",
+                                           sliderInput("sens2", label = NULL, sep = "", value = 0.85,
+                                                       min = 0, max = 1, step = 10^-6
+                                           )
+                          ),
+                          conditionalPanel(condition = "input.checksens2 == 1", 
+                                           numericInput("numsens2", label = NULL, value = 0.85,
+                                                        min = 0, max = 1, step = 10^-6
+                                           )
+                          ),
+                          radioButtons("checkspec2", label = "Specificity", 
+                                       choiceNames = list("Slider", "Field"),
+                                       choiceValues = c(0, 1), inline = TRUE
+                          ),
+                          conditionalPanel(condition = "input.checkspec2 == 0",
+                                           sliderInput("spec2", label = NULL, sep = "", value = 0.75,
+                                                       min = 0, max = 1, step = 10^-6
+                                           )
+                          ),
+                          conditionalPanel(condition = "input.checkspec2 == 1", 
+                                           numericInput("numspec2", label = NULL, value = 0.75,
+                                                        min = 0, max = 1, step = 10^-6
+                                           )
+                          ),
+                          br(), 
+                          
+                          # Provide existing data sets as drop-down list:
+                          selectInput("dataselection2", label = "Or view an example:",
+                                      choices = setNames(as.list(1:nrow(datasets)), # create choices from datasets
+                                                         datasets$dataset),
+                                      selected = 1),
+                          
+                          bsButton("help_stats", label = "Help",
+                                   icon = icon("question-sign", lib = "glyphicon"),
+                                   style = "default", type = "action")
+                        ),
+                        
+                        #####
+                        # Main panel for different statistics
+                        mainPanel(
                           tabsetPanel(type = "tabs",
-                                      tabPanel("Question 1",
-                                               h2("Question 1"),
-                                               "This is a sample multiple choice question. Options 1 and 3 are correct.",
-                                               checkboxGroupInput("question1", label = h3("Sample item"), 
-                                                                  choices = list("Choice 1" = 1, "Choice 2" = 2, "Choice 3" = 3, "Choice 4" = 4),
-                                                                  selected = NULL),
-                                               bsButton("submit_question1", label = "Submit answer", type = "action")
-                                              ),
-                                      tabPanel("Question 2",
-                                               h2("Question 2"),
-                                               "This is a sample forced choice question. Option 2 is correct.",
-                                               radioButtons("question2", label = h3("Sample item"),
-                                                            choices = list("Choice 1" = 1, "Choice 2" = 2, "Choice 3" = 3, "Choice 4" = 4), 
-                                                            selected = character(0)),
-                                               bsButton("submit_question2", label = "Submit answer", type = "action")
-                                               ),
-                                      tabPanel("Question 3",
-                                               h2("Question 3"),
-                                               "This is a sample calculation question. The correct answer is '0.95'.",
-                                               numericInput("question3", label = h3("Sample Item"), min = 0, max = 1, value = NULL),
-                                               bsButton("submit_question3", label = "Submit answer", type = "action")
-                                               
-                                               ),
-                                      
-                                      tabPanel("Question 4",
-                                               h2("Question 4"),
-                                               "This is a sample item for graph literacy. The left option is correct.",
-                                               h3("Which graph is a tree diagram by condition?"),
-                                               fluidRow(
-                                                 column(5, offset = 0, img(src = "optionA.png")),
-                                                 column(5, offset = 1, img(src = "optionB.png"))
-                                               ),
-                                               radioButtons("question4", label = "Sample Item",
-                                                            choices = list("Option A" = 1, "Option B" = 2),
-                                                            inline = TRUE, selected = character(0)),
-                                               bsButton("submit_question4", label = "Submit answer", type = "action")
-                                               )
+                                      #####
+                                      # # Info
+                                      # tabPanel("Info",
+                                      #          br(),
+                                      #          withMathJax(includeMarkdown("www/statstab_riskyr.md"))
+                                      #          ),
+                                      #####
+                                      #  ACC
+                                      tabPanel("Accuracy",
+                                               br(),
+                                               tableOutput("confusiontable1"),
+                                               br(),
+                                               withMathJax(includeMarkdown("www/statstab_riskyr_ACC.md")),
+                                               uiOutput("ACC")
+                                      ),
+                                      #####
+                                      # PPV
+                                      tabPanel("Positive Predictive Value",
+                                               br(),
+                                               tableOutput("confusiontable2"),
+                                               br(),
+                                               withMathJax(includeMarkdown("www/statstab_riskyr_PPV1.md")),
+                                               uiOutput("PPV1"),
+                                               br(),
+                                               withMathJax(includeMarkdown("www/statstab_riskyr_PPV2.md")),
+                                               uiOutput("PPV2")
+                                      ),
+                                      #####
+                                      # NPV
+                                      tabPanel("Negative Predictive Value",
+                                               br(),
+                                               tableOutput("confusiontable3"),
+                                               br(),
+                                               withMathJax(includeMarkdown("www/statstab_riskyr_NPV1.md")),
+                                               uiOutput("NPV1"),
+                                               br(),
+                                               withMathJax(includeMarkdown("www/statstab_riskyr_NPV2.md")),
+                                               uiOutput("NPV2")
+                                      ),
+                                      # FDR
+                                      tabPanel("False Discovery Rate",
+                                               br(),
+                                               tableOutput("confusiontable4"),
+                                               br(),
+                                               withMathJax(includeMarkdown("www/statstab_riskyr_FDR.md")),
+                                               uiOutput("FDR")
+                                      ),
+                                      # FOR
+                                      tabPanel("False Omission Rate",
+                                               br(),
+                                               tableOutput("confusiontable5"),
+                                               br(),
+                                               withMathJax(includeMarkdown("www/statstab_riskyr_FOR.md")),
+                                               uiOutput("FOR")
                                       )
                           )
                         )
                         
-                      
-
+                      )
              ),
              
+             # #####        
+             # tabPanel("Under Dev: Quiz",
+             #          icon = icon("education", lib = "glyphicon"), value = "quiz",
+             #          
+             #          sidebarLayout(
+             #            #####
+             #            # Sidebar panel for feedback:
+             #            sidebarPanel(
+             #              h2("Question 1:"), br(),
+             #              bsAlert("alert_question1"),
+             #              h2("Question 2:"), br(),
+             #              bsAlert("alert_question2"),
+             #              h2("Question 3:"), br(),
+             #              bsAlert("alert_question3"),
+             #              h2("Question 4:"), br(),
+             #              bsAlert("alert_question4")
+             #            ),
+             #            #####
+             #            # Sidebar panel for questions:
+             #            mainPanel(
+             #              
+             #              tabsetPanel(type = "tabs",
+             #                          tabPanel("Question 1",
+             #                                   h2("Question 1"),
+             #                                   "This is a sample multiple choice question. Options 1 and 3 are correct.",
+             #                                   checkboxGroupInput("question1", label = h3("Sample item"), 
+             #                                                      choices = list("Choice 1" = 1, "Choice 2" = 2, "Choice 3" = 3, "Choice 4" = 4),
+             #                                                      selected = NULL),
+             #                                   bsButton("submit_question1", label = "Submit answer", type = "action")
+             #                                  ),
+             #                          tabPanel("Question 2",
+             #                                   h2("Question 2"),
+             #                                   "This is a sample forced choice question. Option 2 is correct.",
+             #                                   radioButtons("question2", label = h3("Sample item"),
+             #                                                choices = list("Choice 1" = 1, "Choice 2" = 2, "Choice 3" = 3, "Choice 4" = 4), 
+             #                                                selected = character(0)),
+             #                                   bsButton("submit_question2", label = "Submit answer", type = "action")
+             #                                   ),
+             #                          tabPanel("Question 3",
+             #                                   h2("Question 3"),
+             #                                   "This is a sample calculation question. The correct answer is '0.95'.",
+             #                                   numericInput("question3", label = h3("Sample Item"), min = 0, max = 1, value = NULL),
+             #                                   bsButton("submit_question3", label = "Submit answer", type = "action")
+             #                                   
+             #                                   ),
+             #                          
+             #                          tabPanel("Question 4",
+             #                                   h2("Question 4"),
+             #                                   "This is a sample item for graph literacy. The left option is correct.",
+             #                                   h3("Which graph is a tree diagram by condition?"),
+             #                                   fluidRow(
+             #                                     column(5, offset = 0, img(src = "optionA.png")),
+             #                                     column(5, offset = 1, img(src = "optionB.png"))
+             #                                   ),
+             #                                   radioButtons("question4", label = "Sample Item",
+             #                                                choices = list("Option A" = 1, "Option B" = 2),
+             #                                                inline = TRUE, selected = character(0)),
+             #                                   bsButton("submit_question4", label = "Submit answer", type = "action")
+             #                                   )
+             #                          )
+             #              )
+             #            )
+             #            
+             #          
+             # 
+             # ),
+             # 
              #####
              navbarMenu("4: Customize",
                         icon = icon("wrench", lib = "glyphicon"), 
