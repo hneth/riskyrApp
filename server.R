@@ -809,6 +809,62 @@ shinyServer(function(input, output, session){
       dev.off()}
   )
   
+  ## (h) Contrasting two freely selectable representations
+  
+  output$represent1 <- renderPlot({
+    switch(input$represent1,
+           fnet = fnet(),
+           # rawdatatable
+           iconarray = icons(),
+           tree = nftree(),
+           mosaic = mosaicplot()
+           
+    )
+  })
+  
+  output$represent1dl <- downloadHandler(
+    filename = function() {paste0("riskyrApp_representation1_", gsub(":", "-", Sys.time()), ".png")},
+    content =  function(file){
+      png(file, width = 550, height = 550)
+      switch(input$represent1,
+             fnet = fnet(),
+             # rawdatatable
+             iconarray = icons(),
+             tree = nftree(),
+             mosaic = mosaicplot()
+             
+      )
+      dev.off()}
+  )
+  
+  
+  output$represent2 <- renderPlot({
+    switch(input$represent2,
+           fnet = fnet(),
+           # rawdatatable
+           iconarray = icons(),
+           tree = nftree(),
+           mosaic = mosaicplot()
+           
+    )
+  })
+  
+  
+  output$represent2dl <- downloadHandler(
+    filename = function() {paste0("riskyrApp_representation2_", gsub(":", "-", Sys.time()), ".png")},
+    content =  function(file){
+      png(file, width = 550, height = 550)
+      switch(input$represent2,
+             fnet = fnet(),
+             # rawdatatable
+             iconarray = icons(),
+             tree = nftree(),
+             mosaic = mosaicplot()
+             
+      )
+      dev.off()}
+  )
+  
   ####
   ## Quiz tab (under dev)
   
