@@ -24,7 +24,7 @@ library("riskyr")
 # sessionInfo()
 
 ## Import ready-made and worked out example data: ------
-datasets <- read.csv2("./www/examples_riskyrApp_2018-02-15.csv", stringsAsFactors = FALSE)
+datasets <- read.csv2("./www/examples_riskyrApp_2018-03-30.csv", stringsAsFactors = FALSE)
 
 ##### 
 ## Define defaults: ------
@@ -88,10 +88,22 @@ shinyServer(function(input, output, session){
   observeEvent(input$link_to_about, { updateTabsetPanel(session, "tabs", "about") })
   observeEvent(input$link_to_statistics, { updateTabsetPanel(session, "tabs", "stats") })
   observeEvent(input$link_to_representations, { updateTabsetPanel(session, "tabs", "represent") })
-  observeEvent(input$link_to_representations, { updateTabsetPanel(session, "tabs", "represent") })
   observeEvent(input$link_to_custom_labels, { updateTabsetPanel(session, "tabs", "custom_labels") })
   observeEvent(input$link_to_custom_colors, { updateTabsetPanel(session, "tabs", "custom_colors") })
   observeEvent(input$link_to_references, { updateTabsetPanel(session, "tabs", "references") })
+  
+  addTooltip(session, id = "link_to_about", title = "Learn more about the riskyrApp!", placement = "top",
+             trigger = "hover", options = NULL)
+  addTooltip(session, id = "link_to_representations", title = "Visualize risks!", placement = "left",
+             trigger = "hover", options = NULL)
+  addTooltip(session, id = "link_to_custom_colors", title = "Customize colors and labels of risk visualizations", placement = "right",
+             trigger = "hover", options = NULL)
+  addTooltip(session, id = "link_to_tutorial", title = "Take the tutorial on the riskyrApp (coming soon)!", placement = "bottom",
+             trigger = "hover", options = NULL)
+  addTooltip(session, id = "link_to_statistics", title = "Compute risk metrics!", placement = "left",
+             trigger = "hover", options = NULL)
+  addTooltip(session, id = "link_to_references", title = "Read up on risk research", placement = "right",
+             trigger = "hover", options = NULL)
   
 #####
   # Tutorial elements (under development)
@@ -239,73 +251,61 @@ shinyServer(function(input, output, session){
   # Couple numeric and slider inputs, connect both stats and representations:
   
   #####
-  ## population
+  ## population (logified version)
   
   observeEvent({
-    input$N }, {
-      env$N <- input$N
-      updateNumericInput(session, "numN2", value = env$N)
-      updateNumericInput(session, "numN", value = env$N)
-      updateSliderInput(session, "N2", value = env$N)
+    input$N
+  }, {
+    env$N <- 10**input$N
+    env$recalc.N <- input$N
+    updateSliderInput(session, "N2", value = env$recalc.N)
   })
   
   observeEvent({
-    input$N2 }, {
-      env$N <- input$N2
-      updateNumericInput(session, "numN2", value = env$N)
-      updateNumericInput(session, "numN", value = env$N)
-      updateSliderInput(session, "N", value = env$N)
-    })
-  
-  observeEvent({
-    input$numN }, {
-      env$N <- input$numN
-      updateNumericInput(session, "numN2", value = env$N)
-      updateNumericInput(session, "N2", value = env$N)
-      updateSliderInput(session, "N", value = env$N)
-    })
-  
-  observeEvent({
-    input$numN2 }, {
-      env$N <- input$numN2
-      updateNumericInput(session, "numN", value = env$N)
-      updateNumericInput(session, "N2", value = env$N)
-      updateSliderInput(session, "N", value = env$N)
-    })
+    input$N2
+  }, {
+    env$N <- 10**input$N2
+    env$recalc.N <- input$N2
+    updateSliderInput(session, "N", value =  env$recalc.N)
+  })
   
   #####
   ## prevalence
   
   observeEvent({
     input$prev }, {
-      env$prev <- input$prev
-      updateNumericInput(session, "numprev", value = env$prev)
-      updateNumericInput(session, "numprev2", value = env$prev)
-      updateSliderInput(session, "prev2", value = env$prev)
+      env$prev <- input$prev/100
+      env$recalc.prev <- input$prev
+      updateNumericInput(session, "numprev", value = env$recalc.prev)
+      updateNumericInput(session, "numprev2", value = env$recalc.prev)
+      updateSliderInput(session, "prev2", value = env$recalc.prev)
     })
   
   observeEvent({
     input$prev2 }, {
-      env$prev <- input$prev2
-      updateNumericInput(session, "numprev", value = env$prev)
-      updateNumericInput(session, "numprev2", value = env$prev)
-      updateSliderInput(session, "prev", value = env$prev)
+      env$prev <- input$prev2/100
+      env$recalc.prev <- input$prev2
+      updateNumericInput(session, "numprev", value = env$recalc.prev)
+      updateNumericInput(session, "numprev2", value = env$recalc.prev)
+      updateSliderInput(session, "prev", value = env$recalc.prev)
     })
   
   observeEvent({
     input$numprev }, {
-      env$prev <- input$numprev
-      updateNumericInput(session, "numprev2", value = env$prev)
-      updateSliderInput(session, "prev", value = env$prev)
-      updateSliderInput(session, "prev2", value = env$prev)
+      env$prev <- input$numprev/100
+      env$recalc.prev <- input$numprev
+      updateNumericInput(session, "numprev2", value = env$recalc.prev)
+      updateSliderInput(session, "prev", value = env$recalc.prev)
+      updateSliderInput(session, "prev2", value = env$recalc.prev)
     })
   
   observeEvent({
     input$numprev2 }, {
-      env$prev <- input$numprev2
-      updateNumericInput(session, "numprev", value = env$prev)
-      updateSliderInput(session, "prev", value = env$prev)
-      updateSliderInput(session, "prev2", value = env$prev)
+      env$prev <- input$numprev2/100
+      env$recalc.prev <- input$numprev2
+      updateNumericInput(session, "numprev", value = env$recalc.prev)
+      updateSliderInput(session, "prev", value = env$recalc.prev)
+      updateSliderInput(session, "prev2", value = env$recalc.prev)
     })
   
   #####
@@ -313,34 +313,38 @@ shinyServer(function(input, output, session){
   
   observeEvent({
     input$sens }, {
-      env$sens <- input$sens
-      updateNumericInput(session, "numsens", value = env$sens)
-      updateNumericInput(session, "numsens2", value = env$sens)
-      updateSliderInput(session, "sens2", value = env$sens)
+      env$sens <- input$sens/100
+      env$recalc.sens <- input$sens
+      updateNumericInput(session, "numsens", value = env$recalc.sens)
+      updateNumericInput(session, "numsens2", value = env$recalc.sens)
+      updateSliderInput(session, "sens2", value = env$recalc.sens)
     })
   
   observeEvent({
     input$sens2 }, {
-      env$sens <- input$sens2
-      updateNumericInput(session, "numsens", value = env$sens)
-      updateNumericInput(session, "numsens2", value = env$sens)
-      updateSliderInput(session, "sens", value = env$sens)
+      env$sens <- input$sens2/100
+      env$recalc.sens <- input$sens2
+      updateNumericInput(session, "numsens", value = env$recalc.sens)
+      updateNumericInput(session, "numsens2", value = env$recalc.sens)
+      updateSliderInput(session, "sens", value = env$recalc.sens)
     })
   
   observeEvent({
     input$numsens }, {
-      env$sens <- input$numsens
-      updateNumericInput(session, "numsens2", value = env$sens)
-      updateSliderInput(session, "sens", value = env$sens)
-      updateSliderInput(session, "sens2", value = env$sens)
+      env$sens <- input$numsens/100
+      env$recalc.sens <- input$numsens
+      updateNumericInput(session, "numsens2", value = env$recalc.sens)
+      updateSliderInput(session, "sens", value = env$recalc.sens)
+      updateSliderInput(session, "sens2", value = env$recalc.sens)
     })
   
   observeEvent({
     input$numsens2 }, {
-      env$sens <- input$numsens2
-      updateNumericInput(session, "numsens", value = env$sens)
-      updateSliderInput(session, "sens", value = env$sens)
-      updateSliderInput(session, "sens2", value = env$sens)
+      env$sens <- input$numsens2/100
+      env$recalc.sens <- input$numsens2
+      updateNumericInput(session, "numsens", value = env$recalc.sens)
+      updateSliderInput(session, "sens", value = env$recalc.sens)
+      updateSliderInput(session, "sens2", value = env$recalc.sens)
     })
   
   #####
@@ -348,34 +352,38 @@ shinyServer(function(input, output, session){
   
   observeEvent({
     input$spec }, {
-      env$spec <- input$spec
-      updateNumericInput(session, "numspec", value = env$spec)
-      updateNumericInput(session, "numspec2", value = env$spec)
-      updateSliderInput(session, "spec2", value = env$spec)
+      env$spec <- input$spec/100
+      env$recalc.spec <- input$spec
+      updateNumericInput(session, "numspec", value = env$recalc.spec)
+      updateNumericInput(session, "numspec2", value = env$recalc.spec)
+      updateSliderInput(session, "spec2", value = env$recalc.spec)
     })
   
   observeEvent({
     input$spec2 }, {
-      env$spec <- input$spec2
-      updateNumericInput(session, "numspec", value = env$spec)
-      updateNumericInput(session, "numspec2", value = env$spec)
-      updateSliderInput(session, "spec", value = env$spec)
+      env$spec <- input$spec2/100
+      env$recalc.spec <- input$spec2
+      updateNumericInput(session, "numspec", value = env$recalc.spec)
+      updateNumericInput(session, "numspec2", value = env$recalc.spec)
+      updateSliderInput(session, "spec", value = env$recalc.spec)
     })
   
   observeEvent({
     input$numspec }, {
-      env$spec <- input$numspec
-      updateNumericInput(session, "numspec2", value = env$spec)
-      updateSliderInput(session, "spec", value = env$spec)
-      updateSliderInput(session, "spec2", value = env$spec)
+      env$spec <- input$numspec/100
+      env$recalc.spec <- input$numspec
+      updateNumericInput(session, "numspec2", value = env$recalc.spec)
+      updateSliderInput(session, "spec", value = env$recalc.spec)
+      updateSliderInput(session, "spec2", value = env$recalc.spec)
     })
   
   observeEvent({
     input$numspec2 }, {
-      env$spec <- input$numspec2
-      updateNumericInput(session, "numspec", value = env$spec)
-      updateSliderInput(session, "spec", value = env$spec)
-      updateSliderInput(session, "spec2", value = env$spec)
+      env$spec <- input$numspec2/100
+      env$recalc.spec <- input$numspec2
+      updateNumericInput(session, "numspec", value = env$recalc.spec)
+      updateSliderInput(session, "spec", value = env$recalc.spec)
+      updateSliderInput(session, "spec2", value = env$recalc.spec)
     })
   
   #####
@@ -447,10 +455,8 @@ shinyServer(function(input, output, session){
       }
       if (input$dataselection != 1 | input$dataselection2 != 1) { # if 1st option is not ("---")
         # update all sliders
-        updateSliderInput(session, "N", value = datasets[input$dataselection, "N" ])
-        updateNumericInput(session, "numN", value = datasets[input$dataselection, "N" ])
-        updateSliderInput(session, "N2", value = datasets[input$dataselection, "N" ])
-        updateNumericInput(session, "numN2", value = datasets[input$dataselection, "N" ])
+        updateSliderInput(session, "N", value = round(log10(datasets[input$dataselection, "N" ]), 0))
+        updateSliderInput(session, "N2", value = round(log10(datasets[input$dataselection, "N" ]), 0))
         updateSliderInput(session, "sens", value = datasets[input$dataselection, "sens" ])
         updateNumericInput(session, "numsens", value = datasets[input$dataselection, "sens"])
         updateSliderInput(session, "sens2", value = datasets[input$dataselection, "sens" ])
@@ -800,6 +806,62 @@ shinyServer(function(input, output, session){
     content =  function(file){
       png(file, width = 610, height = 400)
       PV3dNPV()
+      dev.off()}
+  )
+  
+  ## (h) Contrasting two freely selectable representations
+  
+  output$represent1 <- renderPlot({
+    switch(input$represent1,
+           fnet = fnet(),
+           # rawdatatable
+           iconarray = icons(),
+           tree = nftree(),
+           mosaic = mosaicplot()
+           
+    )
+  })
+  
+  output$represent1dl <- downloadHandler(
+    filename = function() {paste0("riskyrApp_representation1_", gsub(":", "-", Sys.time()), ".png")},
+    content =  function(file){
+      png(file, width = 550, height = 550)
+      switch(input$represent1,
+             fnet = fnet(),
+             # rawdatatable
+             iconarray = icons(),
+             tree = nftree(),
+             mosaic = mosaicplot()
+             
+      )
+      dev.off()}
+  )
+  
+  
+  output$represent2 <- renderPlot({
+    switch(input$represent2,
+           fnet = fnet(),
+           # rawdatatable
+           iconarray = icons(),
+           tree = nftree(),
+           mosaic = mosaicplot()
+           
+    )
+  })
+  
+  
+  output$represent2dl <- downloadHandler(
+    filename = function() {paste0("riskyrApp_representation2_", gsub(":", "-", Sys.time()), ".png")},
+    content =  function(file){
+      png(file, width = 550, height = 550)
+      switch(input$represent2,
+             fnet = fnet(),
+             # rawdatatable
+             iconarray = icons(),
+             tree = nftree(),
+             mosaic = mosaicplot()
+             
+      )
       dev.off()}
   )
   

@@ -24,5 +24,5 @@ We gratefully acknowlegde the following references for building `riskyr` and/or 
 - Stefano, C. (2013). *Heroku buildpack: R.* Buildpack version for Heroku-16 Stack and R 3.4.3 as at 2018-01-08. https://github.com/virtualstaticvoid/heroku-buildpack-r/tree/heroku-16
 
 
-All icons designed by [Flat Icons](https://www.flaticon.com/authors/flat-icons-com), [Freepik](https://www.flaticon.com/authors/freepik), [Icon Pond](https://www.flaticon.com/authors/popcorns-arts), and [Prosymbols](https://www.flaticon.com/authors/prosymbols) from [Flaticon](https://www.flaticon.com), except for the `riskyr` logo designed by [Hansjörg Neth](https://www.spds.uni-konstanz.de/hans-neth) from [SPDS](https://www.spds.uni-konstanz.de/).
+All icons designed by [Flat Icons](https://www.flaticon.com/authors/flat-icons-com), [Freepik](https://www.flaticon.com/authors/freepik), [Icon Pond](https://www.flaticon.com/authors/popcorns-arts), and [Prosymbols](https://www.flaticon.com/authors/prosymbols) from [Flaticon](https://www.flaticon.com), except for the `riskyr` logo designed by [SPDS](https://www.spds.uni-konstanz.de/).
 
