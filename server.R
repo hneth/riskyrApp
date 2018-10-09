@@ -1,6 +1,6 @@
 ## server.R
-## riskyrApp | R Shiny | spds, uni.kn | 2018 03 07
-## riskyr package version 0.1.0: ------
+## riskyrApp | R Shiny | spds, uni.kn | 2018 10 09
+## riskyr package version > 0.1.0 (under development) ------
 
 ##### Preparing the ground: ------
 
