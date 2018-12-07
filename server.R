@@ -287,26 +287,8 @@ shinyServer(function(input, output, session){
       env$recalc.spec <- input$numspec
       updateSliderInput(session, "spec", value = env$recalc.spec)
     })
-  
-  #####
-  # input formats
-  
-  observeEvent({
-    input$tabs }, {
-      if(input$tabs == "stats"){ # if tab "stats" is selected
-        updateRadioButtons(session, "checkpop2", selected = input$checkpop)
-        updateRadioButtons(session, "checkprev2", selected = input$checkprev)
-        updateRadioButtons(session, "checksens2", selected = input$checksens)
-        updateRadioButtons(session, "checkspec2", selected = input$checkspec)
-      } else {
-        updateRadioButtons(session, "checkpop", selected = input$checkpop2)
-        updateRadioButtons(session, "checkprev", selected = input$checkprev2)
-        updateRadioButtons(session, "checksens", selected = input$checksens2)
-        updateRadioButtons(session, "checkspec", selected = input$checkspec2)
-      }
-  })
- 
-  
+
+
   #####
   # Calculate freq and prob objects
   observeEvent({
@@ -408,68 +390,11 @@ shinyServer(function(input, output, session){
         cus$sdt.cr.lbl <- datasets[input$dataselection, "sdt.cr.lbl"]
         }
   }, ignoreInit = TRUE)
-  
-  # # OLD:
-  # observeEvent(input$dataselection, {
-  #   if (input$dataselection != 1) { # if 1st option is not ("---")
-  #     updateSliderInput(session, "N", value = datasets[input$dataselection, "N" ])
-  #     updateNumericInput(session, "numN", value = datasets[input$dataselection, "N" ])
-  #     updateSliderInput(session, "sens", value = datasets[input$dataselection, "sens" ])
-  #     updateNumericInput(session, "numsens", value = datasets[input$dataselection, "sens"])
-  #     updateSliderInput(session, "prev", value = datasets[input$dataselection, "prev"])
-  #     updateNumericInput(session, "numprev",value = datasets[input$dataselection, "prev"])
-  #     updateSliderInput(session, "spec", value = datasets[input$dataselection, "spec" ])
-  #     updateNumericInput(session, "numspec", value = datasets[input$dataselection, "spec" ])
-  #     output$sourceOutput <- renderText(datasets[input$dataselection, "source"]) }
-  # }, ignoreInit = TRUE)
 
 
   #####
   ## Outputs:
-  ## (1) Intro tab:
-  ## get all current inputs within text statements as outputs
-  output$N <- renderText({ paste0("1. Population size: We are considering a population of ", env$N, " individuals. ") })
-  output$prev <- renderText({ paste0("2. Prevalence describes the probability of being affected: p(true).  The current prevalence is ", input$prev, ". ")})
-  output$sens <- renderText({ paste0("3. Sensitivity describes the probability of correctly detecting an affected individual: p(decision positive | condition true).  The current sensitivity is ", input$sens, ". ") })
-  output$spec <- renderText({ paste0("4. Specificity describes the probability of correctly rejecting an unaffected individual: p(decision negative | condition false) = 1 - FA.  The current specificity is ", input$spec, ". ") })
-  
-  
-  ## (2) Stats tab:
-  output$ACC <- renderUI({
-    withMathJax(paste0("$$ ACC = \\frac{", freq$hi, " + ", freq$cr, "}{", env$N, "} = ", round((freq$hi + freq$cr)/env$N, 4), "$$"))
-  })
-  
-  output$PPV1 <- renderUI({
-    withMathJax(paste0("$$ PPV = \\frac{", freq$hi, "}{", freq$dec.pos, "} = \\frac{", freq$hi, "}{", freq$hi, " + ", freq$fa, "}= ", 
-                       round(prob$PPV, 4), "$$"))
-  })
-
-  output$PPV2 <- renderUI({
-    withMathJax(paste0("$$PPV = \\frac{", env$sens, " \\times ", env$prev,"}{", env$sens, " \\times ", 
-                       env$prev," + (1 - ", env$spec,") \\times (1 - ", env$prev,")} = ", round(prob$PPV, 4), "$$"))
-  })
-  
-  output$NPV1 <- renderUI({
-    withMathJax(paste0("$$ NPV = \\frac{", freq$cr, "}{", freq$dec.neg, "} = \\frac{", freq$cr, "}{", freq$cr, " + ", freq$mi, "}= ", 
-                       round(prob$NPV, 4), "$$"))
-  })
-  
-  output$NPV2 <- renderUI({
-    withMathJax(paste0("$$NPV = \\frac{", env$spec, " \\times (1 - ", env$prev,")}{(1 - ", env$sens, ") \\times ", 
-                       env$prev," + ", env$spec," \\times (1 - ", env$prev,")} = ", round(prob$NPV, 4), "$$"))
-  })
-  
-  output$FDR <- renderUI({
-    withMathJax(paste0("$$ FDR = 1 - ", round(prob$PPV, 4), " = \\frac{", freq$fa, "}{", freq$dec.pos, "} = \\frac{", freq$fa, "}{", freq$hi, " + ", freq$fa, "}= ", 
-                       round(prob$FOR, 4), "$$"))
-  })
-  
-  output$FOR <- renderUI({
-    withMathJax(paste0("$$ FOR = 1 - ", round(prob$NPV, 4), " = \\frac{", freq$mi, "}{", freq$dec.neg, "} = \\frac{", freq$mi, "}{", freq$cr, " + ", freq$mi, "}= ", 
-                       round(prob$FOR, 4), "$$"))
-  })
-  
-  
+ 
   ## (0) Overview:
 
   fnet <- function(){
@@ -766,147 +691,7 @@ shinyServer(function(input, output, session){
       )
       dev.off()}
   )
-  
-  ####
-  ## Quiz tab (under dev)
-  
-  createAlert(session, anchorId = "alert_question1",
-              title = "Not yet answered.",
-              content = NULL,
-              style = "info", append = FALSE,
-              dismiss = FALSE)
-  
-  observeEvent(input$submit_question1, {
-    answer <- input$question1
 
-    if(is.null(answer)) {
-      
-      createAlert(session, anchorId = "alert_question1",
-                  title = "Not yet answered.",
-                  content = NULL,
-                  style = "info", append = FALSE,
-                  dismiss = FALSE)
-      
-    } else if(length(answer) == 2 & all(answer %in% c("1", "3"))) {
-      createAlert(session, anchorId = "alert_question1",
-                  title = "That's right!",
-                  content = NULL,
-                  style = "success", append = FALSE,
-                  dismiss = FALSE) 
-    } else if(length(answer) %in% c(1,2) & any(answer %in% c("1", "3")) == TRUE) {
-      createAlert(session, anchorId = "alert_question1",
-                  title = "That's not (yet) completely right!",
-                  content = NULL,
-                  style = "warning", append = FALSE,
-                  dismiss = FALSE) 
-      } else {
-
-              createAlert(session, anchorId = "alert_question1",
-                  title = "That's wrong!",
-                  content = NULL,
-                  style = "danger", append = FALSE,
-                  dismiss = FALSE)
-    }
-
-  }, ignoreInit = TRUE)
-  
-  createAlert(session, anchorId = "alert_question2",
-              title = "Not yet answered.",
-              content = NULL,
-              style = "info", append = FALSE,
-              dismiss = FALSE)
-  
-  
-  observeEvent(input$submit_question2, {
-    answer <- input$question2
-
-    if(is.null(answer)){  createAlert(session, anchorId = "alert_question2",
-                                      title = "Not yet answered.",
-                                      content = NULL,
-                                      style = "info", append = FALSE,
-                                      dismiss = FALSE)
-      } else if(answer == 2) {
-      createAlert(session, anchorId = "alert_question2",
-                  title = "That's right!",
-                  content = NULL,
-                  style = "success", append = FALSE,
-                  dismiss = FALSE) 
-      } else {
-      createAlert(session, anchorId = "alert_question2",
-                  title = "That's wrong!",
-                  content = NULL,
-                  style = "danger", append = FALSE,
-                  dismiss = FALSE)
-    }
-    
-  }, ignoreInit = TRUE)
-  
-  createAlert(session, anchorId = "alert_question3",
-              title = "Not yet answered.",
-              content = NULL,
-              style = "info", append = FALSE,
-              dismiss = FALSE)
-  
-  observeEvent(input$submit_question3, {
-    
-    answer <- input$question3
-    
-    if(is.na(answer)) {
-      createAlert(session, anchorId = "alert_question3",
-                  title = "Not yet answered.",
-                  content = NULL,
-                  style = "info", append = FALSE,
-                  dismiss = FALSE)
-      } else if (answer == 0.95) {
-      createAlert(session, anchorId = "alert_question3",
-                  title = "That's right!",
-                  content = NULL,
-                  style = "success", append = FALSE,
-                  dismiss = FALSE) 
-    } else  {
-      createAlert(session, anchorId = "alert_question3",
-                  title = "That's wrong!",
-                  content = NULL,
-                  style = "danger", append = FALSE,
-                  dismiss = FALSE)
-    } 
-    
-  }, ignoreInit = FALSE)
-  
-  # question 4
-  
-  createAlert(session, anchorId = "alert_question4",
-              title = "Not yet answered.",
-              content = NULL,
-              style = "info", append = FALSE,
-              dismiss = FALSE)
-  
-  
-  observeEvent(input$submit_question4, {
-    answer <- input$question4
-
-    if(is.null(answer)){  createAlert(session, anchorId = "alert_question4",
-                                      title = "Not yet answered.",
-                                      content = NULL,
-                                      style = "info", append = FALSE,
-                                      dismiss = FALSE)
-    } else if(answer == 1) {
-      createAlert(session, anchorId = "alert_question4",
-                  title = "That's right!",
-                  content = NULL,
-                  style = "success", append = FALSE,
-                  dismiss = FALSE) 
-    } else {
-      createAlert(session, anchorId = "alert_question4",
-                  title = "That's wrong!",
-                  content = NULL,
-                  style = "danger", append = FALSE,
-                  dismiss = FALSE)
-    }
-    
-  }, ignoreInit = TRUE)
-  
- 
   
   #####
   ## Customization tab
@@ -966,19 +751,6 @@ shinyServer(function(input, output, session){
     
   })
 
-  # output$labeltable <- renderTable({ matrix(data = c(cus$dec.true.lbl,cus$sdt.hi.lbl, cus$sdt.fa.lbl,  
-  #                                                    cus$dec.false.lbl, cus$sdt.mi.lbl, cus$sdt.cr.lbl),
-  #                                             nrow = 2, byrow = TRUE,
-  #                                           dimnames = list(rep(NA, 2),  c(cus$decision.lbl, cus$cond.true.lbl, cus$cond.false.lbl))
-  #                                ) }, 
-  #                           bordered = TRUE, hover = TRUE, align = 'r', digits = 0, rownames = FALSE, na = 'missing'
-  #   )
-  # 
-  # output$labeltext <- renderText({paste0("The current population is called '", cus$target.population.lbl,
-  #                                        "', the current scenario is called '", cus$scenario.txt,
-  #                                        "', and the condition is currently called '", cus$condition.lbl, "'.")
-  #   })
-  
   output$previewlabels <- renderPlot({
     
     M <- matrix(nrow = 10, ncol = 11, byrow = TRUE, data = 0)
@@ -1072,6 +844,3 @@ shinyServer(function(input, output, session){
   
 }
 )
-
-## ------
-## eof. #
