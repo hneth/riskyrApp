@@ -547,19 +547,19 @@ shinyUI(
              ## Tooltips
              
              # On inputs
-             bsTooltip(id = list("N", "numN", "N2", "numN2"), 
+             bsTooltip(id = list("N", "numN"), 
                        title = "Number of individuals making up the population",
                        placement = "right", trigger = "hover", options = list(container = "body")),
              
-             bsTooltip(id = list("prev", "numprev", "prev2", "numprev2"),
+             bsTooltip(id = list("prev", "numprev"),
                        title = "Probability of being affected: p(true)",
                        placement = "right", trigger = "hover", options = list(container = "body")),
              
-             bsTooltip(id = list("sens", "numsens", "sens2", "numsens2"),
+             bsTooltip(id = list("sens", "numsens"),
                        title = "Probability of correctly detecting an affected individual: p(decision positive | condition true)",
                        placement = "right", trigger = "hover", options = list(container = "body")),
              
-             bsTooltip(id = list("spec", "numspec", "spec2", "numspec2"),
+             bsTooltip(id = list("spec", "numspec"),
                        title = "Probability of correctly rejecting an unaffected individual: p(decision negative | condition false) = 1 - FA",
                        placement = "right", trigger = "hover", options = list(container = "body")),
              
