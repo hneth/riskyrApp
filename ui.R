@@ -153,8 +153,8 @@ shinyUI(
                          
                          ## Tabset with raw data table, icon array, nf tree, confusion table, and PV graphs: 
                          tabsetPanel(type = "tabs",
-                                     # Overview
-                                     tabPanel("Overview",
+                                     # Prism
+                                     tabPanel("Prism",
                                               br(),
                                               fluidRow(
                                                 column(8, offset = 2, plotOutput("network", width = "550", height = "550"))),
@@ -173,7 +173,7 @@ shinyUI(
                                               )
                                      ),
                                      #####
-                                     # Cases
+                                     # Table
                                      tabPanel("Table", 
                                               br(),
                                               "Individual cases:", 
@@ -195,6 +195,25 @@ shinyUI(
                                                 )
                                               ),
                                               br()
+                                     ),
+                                     # Area
+                                     #####
+                                     tabPanel("Area", 
+                                              br(),
+                                              fluidRow(
+                                                  column(6, offset = 0, paste0("Aggregated cases:"), br(), br(),br(), br()),
+                                                  column(6, offset = 0, paste0("The following mosaic plot shows the cell frequencies as area sizes:"),
+                                                         br(), br())
+                                              ), 
+                                              fluidRow(
+                                                  column(5, offset = 1, tableOutput("confusiontable")),
+                                                  column(5, offset = 1, plotOutput("mosaicplot", height = "400px", width = "400px"))
+                                              ),
+                                              wellPanel(
+                                                  fluidRow(
+                                                      column(2, offset = 2, downloadButton("confusiontabledl", label = "Save Confusion Table")),
+                                                      column(2, offset = 4, downloadButton("mosaicplotdl", label = "Save Mosaic Plot"))
+                                                  ))
                                      ),
                                      #####
                                      # Icons
@@ -238,8 +257,8 @@ shinyUI(
                                               )
                                      ),
                                      #####
-                                     # Tree
-                                     tabPanel("Tree", 
+                                     # Bars
+                                     tabPanel("Bars", 
                                               br(), 
                                               paste0("Tree of natural frequencies:"), 
                                               br(), br(),  
@@ -257,27 +276,9 @@ shinyUI(
                                                 )
                                               )
                                      ),
-                                     # Table
+                                   
                                      #####
-                                     tabPanel("Cross-Tabulation", 
-                                              br(),
-                                              fluidRow(
-                                                column(6, offset = 0, paste0("Aggregated cases:"), br(), br(),br(), br()),
-                                                column(6, offset = 0, paste0("The following mosaic plot shows the cell frequencies as area sizes:"),
-                                                       br(), br())
-                                              ), 
-                                              fluidRow(
-                                                column(5, offset = 1, tableOutput("confusiontable")),
-                                                column(5, offset = 1, plotOutput("mosaicplot", height = "400px", width = "400px"))
-                                              ),
-                                              wellPanel(
-                                                fluidRow(
-                                                  column(2, offset = 2, downloadButton("confusiontabledl", label = "Save Confusion Table")),
-                                                  column(2, offset = 4, downloadButton("mosaicplotdl", label = "Save Mosaic Plot"))
-                                                ))
-                                     ),
-                                     #####
-                                     # PV curves
+                                     # Curves
                                      tabPanel("Curves", 
                                               br(),
                                               paste0("Positive Predictive Value (PPV) and Negative Predictive Value (NPV) by prevalance:"), br(), br(),
@@ -297,8 +298,8 @@ shinyUI(
                                               )
                                      ),
                                      #####
-                                     # PV cubes
-                                     tabPanel("Cubes", 
+                                     # Planes
+                                     tabPanel("Planes", 
                                               br(),
                                               paste0("Predictive values (PPV/NPV) by sensitivity and specificity:"), br(), br(),
                                               fluidRow(
