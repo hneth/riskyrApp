@@ -520,17 +520,7 @@ shinyUI(
                         # 2nd screen in dropdown navigation:
                         tabPanel("Imprint", value = "about",
                                  icon = icon("pushpin", lib = "glyphicon"),
-                                 h2("Imprint"),
-                                 fluidRow(
-                                   HTML('<a href="https://CRAN.R-project.org/package=riskyr"> 
-                                        <img src="riskyr_cube_s.png" alt="riskyr@CRAN"
-                                        align = "left">
-                                        </a>'),
-                                   HTML('<a href="https://www.spds.uni-konstanz.de"> 
-                                        <img src="uniKn_logo_s.png" alt="SPDS@uni.KN"
-                                        align = "left">
-                                        </a>')
-                                   ),
+                                 h1("Imprint"),
                                  br(),
                                  includeMarkdown("www/imprint.md")
                                  ),

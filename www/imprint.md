@@ -1,4 +1,2 @@
 
-## Imprint
-
 Coming soon...
