@@ -1,7 +1,5 @@
 # ui.R
-## riskyrApp | R Shiny | spds, uni.kn | 2018 12 07
-
-##### Preparing the ground: ------
+# riskyrApp | R Shiny | spds, uni.kn | 2018 12 07
 
 ## Dependencies: ------
 library("shiny")
@@ -9,13 +7,12 @@ library("shinyBS")
 library("markdown")
 library("DT")
 library("colourpicker")
-library("vcd")
+
 
 ## Install the currently included version of riskyr: ------
 # detach("package:riskyr", unload = TRUE)
 # from CRAN: <https://CRAN.R-project.org/package=riskyr>
 # devtools::install_github("hneth/riskyr")
-# install.packages("./riskyr_0.1.0.tar.gz", repos = NULL, type = "source")
 library("riskyr")
 # sessionInfo()
 
@@ -528,20 +525,7 @@ shinyUI(
                         # spacer
                         "----"
              ),
-             
-             ### TUTORIAL ELEMENTS (under development)
-             # bsModal(id = "tutstart", 
-             #         title = "So you want to take the guided tour (aka tutorial)...", 
-             #         br(),
-             #         "First of all, please note that the riskyrApp comprises several tabs.",
-             #         br(),
-             #         "The tab menu is visible at all times in the upper left corner of the screen and looks like this:",
-             #         br(),
-             #         img(src = "riskyr_header_menu.png"),
-             #         footer = list(modalButton("OK"), bsButton("tut1", "Continue Tutorial")),
-             #         trigger = "link_to_tutorial", size = "large"),
-             
-            
+
              
              ######
              ## Tooltips
@@ -577,5 +561,3 @@ shinyUI(
   )
 )
 
-## ------
-## eof. #
