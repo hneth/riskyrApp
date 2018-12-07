@@ -69,7 +69,6 @@ shinyUI(
   navbarPage(title = "riskyrApp",
              theme = "bootstrap.sandstone.css",
              id = "tabs",
-             selected = "welcome", # start screen
 
             #####               
             tabPanel("Visualize risks",
