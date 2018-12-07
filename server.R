@@ -231,17 +231,9 @@ shinyServer(function(input, output, session){
   }, {
     env$N <- 10**input$N
     env$recalc.N <- input$N
-    updateSliderInput(session, "N2", value = env$recalc.N)
   })
   
-  observeEvent({
-    input$N2
-  }, {
-    env$N <- 10**input$N2
-    env$recalc.N <- input$N2
-    updateSliderInput(session, "N", value =  env$recalc.N)
-  })
-  
+
   #####
   ## prevalence
   
@@ -250,37 +242,17 @@ shinyServer(function(input, output, session){
       env$prev <- input$prev/100
       env$recalc.prev <- input$prev
       updateNumericInput(session, "numprev", value = env$recalc.prev)
-      updateNumericInput(session, "numprev2", value = env$recalc.prev)
-      updateSliderInput(session, "prev2", value = env$recalc.prev)
     })
   
-  observeEvent({
-    input$prev2 }, {
-      env$prev <- input$prev2/100
-      env$recalc.prev <- input$prev2
-      updateNumericInput(session, "numprev", value = env$recalc.prev)
-      updateNumericInput(session, "numprev2", value = env$recalc.prev)
-      updateSliderInput(session, "prev", value = env$recalc.prev)
-    })
-  
+
   observeEvent({
     input$numprev }, {
       env$prev <- input$numprev/100
       env$recalc.prev <- input$numprev
-      updateNumericInput(session, "numprev2", value = env$recalc.prev)
       updateSliderInput(session, "prev", value = env$recalc.prev)
-      updateSliderInput(session, "prev2", value = env$recalc.prev)
     })
   
-  observeEvent({
-    input$numprev2 }, {
-      env$prev <- input$numprev2/100
-      env$recalc.prev <- input$numprev2
-      updateNumericInput(session, "numprev", value = env$recalc.prev)
-      updateSliderInput(session, "prev", value = env$recalc.prev)
-      updateSliderInput(session, "prev2", value = env$recalc.prev)
-    })
-  
+
   #####
   ## sensitivity
   
@@ -289,35 +261,14 @@ shinyServer(function(input, output, session){
       env$sens <- input$sens/100
       env$recalc.sens <- input$sens
       updateNumericInput(session, "numsens", value = env$recalc.sens)
-      updateNumericInput(session, "numsens2", value = env$recalc.sens)
-      updateSliderInput(session, "sens2", value = env$recalc.sens)
     })
   
-  observeEvent({
-    input$sens2 }, {
-      env$sens <- input$sens2/100
-      env$recalc.sens <- input$sens2
-      updateNumericInput(session, "numsens", value = env$recalc.sens)
-      updateNumericInput(session, "numsens2", value = env$recalc.sens)
-      updateSliderInput(session, "sens", value = env$recalc.sens)
-    })
-  
+
   observeEvent({
     input$numsens }, {
       env$sens <- input$numsens/100
       env$recalc.sens <- input$numsens
-      updateNumericInput(session, "numsens2", value = env$recalc.sens)
       updateSliderInput(session, "sens", value = env$recalc.sens)
-      updateSliderInput(session, "sens2", value = env$recalc.sens)
-    })
-  
-  observeEvent({
-    input$numsens2 }, {
-      env$sens <- input$numsens2/100
-      env$recalc.sens <- input$numsens2
-      updateNumericInput(session, "numsens", value = env$recalc.sens)
-      updateSliderInput(session, "sens", value = env$recalc.sens)
-      updateSliderInput(session, "sens2", value = env$recalc.sens)
     })
   
   #####
@@ -328,35 +279,13 @@ shinyServer(function(input, output, session){
       env$spec <- input$spec/100
       env$recalc.spec <- input$spec
       updateNumericInput(session, "numspec", value = env$recalc.spec)
-      updateNumericInput(session, "numspec2", value = env$recalc.spec)
-      updateSliderInput(session, "spec2", value = env$recalc.spec)
-    })
-  
-  observeEvent({
-    input$spec2 }, {
-      env$spec <- input$spec2/100
-      env$recalc.spec <- input$spec2
-      updateNumericInput(session, "numspec", value = env$recalc.spec)
-      updateNumericInput(session, "numspec2", value = env$recalc.spec)
-      updateSliderInput(session, "spec", value = env$recalc.spec)
     })
   
   observeEvent({
     input$numspec }, {
       env$spec <- input$numspec/100
       env$recalc.spec <- input$numspec
-      updateNumericInput(session, "numspec2", value = env$recalc.spec)
       updateSliderInput(session, "spec", value = env$recalc.spec)
-      updateSliderInput(session, "spec2", value = env$recalc.spec)
-    })
-  
-  observeEvent({
-    input$numspec2 }, {
-      env$spec <- input$numspec2/100
-      env$recalc.spec <- input$numspec2
-      updateNumericInput(session, "numspec", value = env$recalc.spec)
-      updateSliderInput(session, "spec", value = env$recalc.spec)
-      updateSliderInput(session, "spec2", value = env$recalc.spec)
     })
   
   #####
