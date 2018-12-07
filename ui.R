@@ -1,6 +1,5 @@
-## ui.R
-## riskyrApp | R Shiny | spds, uni.kn | 2018 10 09
-## riskyr package version > 0.1.0 (under development) ------
+# ui.R
+## riskyrApp | R Shiny | spds, uni.kn | 2018 12 07
 
 ##### Preparing the ground: ------
 
@@ -74,686 +73,430 @@ shinyUI(
              theme = "bootstrap.sandstone.css",
              id = "tabs",
              selected = "welcome", # start screen
-             
-             
-             #####
-             tabPanel("Welcome!",
-                      icon = icon("flag", lib = "glyphicon"),
-                      value = "welcome",
-                      fluidRow(column(4, offset = 0, h1("Welcome to the riskyrApp!"))),
-                               "Hover over the image to find your way.",
-                      br(),
-                      fluidRow(column(12, offset = 0, includeHTML("www/imageMap.html")))
-                      ),
-             #####
-             navbarMenu("Visualize",
-                        icon = icon("adjust", lib = "glyphicon"), 
-                        
-                        # spacer
-                        "----",
-                        
-                        #####               
-                        tabPanel("Visualize risks",
-                                 icon = icon("blackboard", lib = "glyphicon"), value = "represent",
-                                 
-                                 #####
-                                 sidebarLayout(
-                                   #####
-                                   # Sidebar panel for inputs:
-                                   sidebarPanel(
-                                     tags$head(tags$script(HTML(JS.logify))),
-                                     tags$head(tags$script(HTML(JS.onload))),
-                                     
-                                     sliderInput("N", label = "Population (logarithmic scale)",
-                                                 min = 1, max = 5,
-                                                 value = 2, round = FALSE
+
+            #####               
+            tabPanel("Visualize risks",
+                     icon = icon("blackboard", lib = "glyphicon"), value = "represent",
+                     
+                     #####
+                     sidebarLayout(
+                       #####
+                       # Sidebar panel for inputs:
+                       sidebarPanel(
+                         tags$head(tags$script(HTML(JS.logify))),
+                         tags$head(tags$script(HTML(JS.onload))),
+                         
+                         sliderInput("N", label = "Population (logarithmic scale)",
+                                     min = 1, max = 5,
+                                     value = 2, round = FALSE
+                         ),
+                         br(),
+                         radioButtons("checkprev", label = "Prevalence (in Percent)", 
+                                      choiceNames = list("Slider", "Field"),
+                                      choiceValues = c(0, 1), inline = TRUE
+                         ),
+                         conditionalPanel(condition = "input.checkprev == 0",
+                                          sliderInput("prev",  label = NULL, sep = "",
+                                                      value = 15, min = 0, max = 100, step = 1,
+                                                      pre=NULL, post="%"
+                                          )
+                         ),
+                         conditionalPanel(condition = "input.checkprev == 1", 
+                                          numericInput("numprev", label = NULL, value = 15,
+                                                       min = 0, max = 100, step = 10^-2
+                                          )
+                         ),
+                         br(),
+                         radioButtons("checksens", label = "Sensitivity (in Percent)", 
+                                      choiceNames = list("Slider", "Field"),
+                                      choiceValues = c(0, 1), inline = TRUE
+                         ),
+                         conditionalPanel(condition = "input.checksens == 0",
+                                          sliderInput("sens", label = NULL, sep = "", value = 85.00,
+                                                      min = 0, max = 100, step = 1,
+                                                      pre=NULL, post="%"
+                                          )
+                         ),
+                         conditionalPanel(condition = "input.checksens == 1", 
+                                          numericInput("numsens", label = NULL, value = 85.00,
+                                                       min = 0, max = 100, step = 10^-2
+                                          )
+                         ),
+                         radioButtons("checkspec", label = "Specificity (in Percent)", 
+                                      choiceNames = list("Slider", "Field"),
+                                      choiceValues = c(0, 1), inline = TRUE
+                         ),
+                         conditionalPanel(condition = "input.checkspec == 0",
+                                          sliderInput("spec", label = NULL, sep = "", value = 75,
+                                                      min = 0, max = 100, step = 1,
+                                                      pre=NULL, post="%"
+                                          )
+                         ),
+                         conditionalPanel(condition = "input.checkspec == 1", 
+                                          numericInput("numspec", label = NULL, value = 75,
+                                                       min = 0, max = 100, step = 10^-2
+                                          )
+                         ),
+                         br(), 
+                         
+                         ## Provide existing data sets as drop-down list:
+                         selectInput("dataselection", label = "Or view an example:", 
+                                     choices = setNames(as.list(1:nrow(datasets)), # create choices from datasets
+                                                        datasets$dataset), 
+                                     selected = 1),
+                         
+                         bsButton("help_represent", label = "Help",
+                                  icon = icon("question-sign", lib = "glyphicon"),
+                                  style = "default", type = "action")
+                         
+                       ),
+                       #####
+                       ## Main panel for displaying different aspects about risk:
+                       mainPanel(
+                         
+                         ## Tabset with raw data table, icon array, nf tree, confusion table, and PV graphs: 
+                         tabsetPanel(type = "tabs",
+                                     # Overview
+                                     tabPanel("Overview",
+                                              br(),
+                                              fluidRow(
+                                                column(8, offset = 2, plotOutput("network", width = "550", height = "550"))),
+                                              # plotOutput("network", width = "550", height = "550"),
+                                              # br(),
+                                              wellPanel(
+                                                fluidRow(
+                                                  column(3, offset = 0,
+                                                         radioButtons("netby", "Build Network by", c("Condition first" = "cddc",
+                                                                                                     "Decision first" = "dccd"), inline = TRUE)),
+                                                  column(6, 
+                                                         radioButtons("nettype", "Type of Boxes", c("Default boxes" = "no", "Squares" = "sq", 
+                                                                                                    "Horizontal rectangles" = "hr", "Vertical rectangles" = "vr"), inline = TRUE)),
+                                                  column(2, downloadButton("fnetdl", label = "Save Network"))
+                                                )
+                                              )
                                      ),
-                                     br(),
-                                     radioButtons("checkprev", label = "Prevalence (in Percent)", 
-                                                  choiceNames = list("Slider", "Field"),
-                                                  choiceValues = c(0, 1), inline = TRUE
+                                     #####
+                                     # Cases
+                                     tabPanel("Table", 
+                                              br(),
+                                              "Individual cases:", 
+                                              br(), br(),
+                                              
+                                              conditionalPanel(condition = "input.dataselection != 1",
+                                                               "Source:",
+                                                               verbatimTextOutput("sourceOutput")),
+                                              DT::dataTableOutput("rawdatatable"),
+                                              br(), br(),
+                                              wellPanel(
+                                                fluidRow(
+                                                  column(2, offset = 2,
+                                                         bsButton("sort", label = "Sort/Shuffle", value = TRUE, 
+                                                                  icon = icon("random", lib = "glyphicon"),
+                                                                  style = "default", type = "toggle")),
+                                                  column(2, offset = 2,
+                                                         downloadButton("rawdatadl", label = "Save Raw Data"))
+                                                )
+                                              ),
+                                              br()
                                      ),
-                                     conditionalPanel(condition = "input.checkprev == 0",
-                                                      sliderInput("prev",  label = NULL, sep = "",
-                                                                  value = 15, min = 0, max = 100, step = 1,
-                                                                  pre=NULL, post="%"
-                                                      )
+                                     #####
+                                     # Icons
+                                     tabPanel("Icons", 
+                                              br(), 
+                                              fluidRow(
+                                                column(8, offset = 2, plotOutput("iconarray", width = "650", height = "500"))),
+                                              # plotOutput("iconarray", width = "550", height = "550"), 
+                                              # br(), 
+                                              wellPanel(
+                                                fluidRow(
+                                                  column(4, offset = 2,
+                                                         radioButtons("arraytype", "Display:",
+                                                                      choices = list("Array" = "array", "Shuffled" = "shuffledarray",
+                                                                                     "Scattered" = "scatter", "Mosaic" = "mosaic"), inline = TRUE)),
+                                                  column(2, downloadButton("iconarraydl", label = "Save Icon Array"))
+                                                ), 
+                                                br(),
+                                                fluidRow(
+                                                  column(3,
+                                                         selectInput("symbol.hi", label = "Symbol of hits (hi):", 
+                                                                     choices = list("Circle" = 21, "Square" = 22, "Rhombus" = 23, "Triangle" = 24),
+                                                                     selected = "22")
+                                                  ),
+                                                  column(3,
+                                                         selectInput("symbol.mi", label = "Symbol of miss (mi):", 
+                                                                     choices = list("Circle" = 21, "Square" = 22, "Rhombus" = 23, "Triangle" = 24),
+                                                                     selected = "22")
+                                                  ),
+                                                  column(3,
+                                                         selectInput("symbol.cr", label = "Symbol of correct rejections (cr):", 
+                                                                     choices = list("Circle" = 21, "Square" = 22, "Rhombus" = 23, "Triangle" = 24),
+                                                                     selected = "22")
+                                                  ),
+                                                  column(3,
+                                                         selectInput("symbol.fa", label = "Symbol of false alarms (fa):", 
+                                                                     choices = list("Circle" = 21, "Square" = 22, "Rhombus" = 23, "Triangle" = 24),
+                                                                     selected = "22")
+                                                  )
+                                                )
+                                              )
                                      ),
-                                     conditionalPanel(condition = "input.checkprev == 1", 
-                                                      numericInput("numprev", label = NULL, value = 15,
-                                                                   min = 0, max = 100, step = 10^-2
-                                                      )
+                                     #####
+                                     # Tree
+                                     tabPanel("Tree", 
+                                              br(), 
+                                              paste0("Tree of natural frequencies:"), 
+                                              br(), br(),  
+                                              fluidRow(
+                                                column(8, offset = 2, plotOutput("nftree", width = "550", height = "550"))),
+                                              # br(),
+                                              wellPanel(
+                                                fluidRow(
+                                                  column(3, offset = 0,
+                                                         radioButtons("treeby", "Build Tree by", c("Condition" = "cd", "Decision" = "dc"), inline = TRUE)),
+                                                  column(6, 
+                                                         radioButtons("treetype","Type of Boxes", c("Default boxes" = "no", "Squares" = "sq", 
+                                                                                                    "Horizontal rectangles" = "hr", "Vertical rectangles" = "vr"), inline = TRUE)),
+                                                  column(2, downloadButton("nftreedl", label = "Save Frequency Tree"))
+                                                )
+                                              )
                                      ),
-                                     br(),
-                                     radioButtons("checksens", label = "Sensitivity (in Percent)", 
-                                                  choiceNames = list("Slider", "Field"),
-                                                  choiceValues = c(0, 1), inline = TRUE
+                                     # Table
+                                     #####
+                                     tabPanel("Cross-Tabulation", 
+                                              br(),
+                                              fluidRow(
+                                                column(6, offset = 0, paste0("Aggregated cases:"), br(), br(),br(), br()),
+                                                column(6, offset = 0, paste0("The following mosaic plot shows the cell frequencies as area sizes:"),
+                                                       br(), br())
+                                              ), 
+                                              fluidRow(
+                                                column(5, offset = 1, tableOutput("confusiontable")),
+                                                column(5, offset = 1, plotOutput("mosaicplot", height = "400px", width = "400px"))
+                                              ),
+                                              wellPanel(
+                                                fluidRow(
+                                                  column(2, offset = 2, downloadButton("confusiontabledl", label = "Save Confusion Table")),
+                                                  column(2, offset = 4, downloadButton("mosaicplotdl", label = "Save Mosaic Plot"))
+                                                ))
                                      ),
-                                     conditionalPanel(condition = "input.checksens == 0",
-                                                      sliderInput("sens", label = NULL, sep = "", value = 85.00,
-                                                                  min = 0, max = 100, step = 1,
-                                                                  pre=NULL, post="%"
-                                                      )
+                                     #####
+                                     # PV curves
+                                     tabPanel("Curves", 
+                                              br(),
+                                              paste0("Positive Predictive Value (PPV) and Negative Predictive Value (NPV) by prevalance:"), br(), br(),
+                                              fluidRow(
+                                                column(8, offset = 2, plotOutput("PVs"))),
+                                              br(),
+                                              wellPanel(
+                                                fluidRow(
+                                                  # column(4, checkboxInput("boxPVprev", label = "Show current prevalence in plot", value = TRUE)),
+                                                  column(2, offset = 2, checkboxInput("boxPVpoints1", label = "Show point values", value = TRUE)),
+                                                  column(3, checkboxInput("boxPVlog", label = "Scale prevalence on logarithmic scale", value = FALSE))),
+                                                fluidRow(
+                                                  column(2, offset = 2, checkboxInput("boxPVacc", label = "Show accuracy (acc)", value = FALSE)),
+                                                  column(4, checkboxInput("boxPVppod", label = "Show proportion of positive decisions (ppod)", value = FALSE)),
+                                                  column(1, downloadButton("PVsdl", label = "Save Curves"))
+                                                )
+                                              )
                                      ),
-                                     conditionalPanel(condition = "input.checksens == 1", 
-                                                      numericInput("numsens", label = NULL, value = 85.00,
-                                                                   min = 0, max = 100, step = 10^-2
-                                                      )
+                                     #####
+                                     # PV cubes
+                                     tabPanel("Cubes", 
+                                              br(),
+                                              paste0("Predictive values (PPV/NPV) by sensitivity and specificity:"), br(), br(),
+                                              fluidRow(
+                                                column(6, plotOutput("PV3dPPV")),
+                                                column(6, plotOutput("PV3dNPV"))
+                                              ),
+                                              br(),
+                                              br(),
+                                              wellPanel(
+                                                fluidRow(
+                                                  column(3, checkboxInput("boxPVpoints2", label = "Show current PPV/NPV in plots", value = TRUE)), 
+                                                  column(2, offset = 1, downloadButton("PV3dPPVdl", label = "Save PPV Cube")),
+                                                  column(2, offset = 4,
+                                                         downloadButton("PV3dNPVdl", label = "Save NPV Cube"))
+                                                ),
+                                                br(),
+                                                fluidRow(
+                                                  column(6, sliderInput("theta", "Horizontal viewing angle:", value = -45, min = -90, max = +90)),
+                                                  column(6, sliderInput("phi", "Vertical viewing angle:", value = 0, min = 0, max =  90))
+                                                ),
+                                                br()
+                                              )
                                      ),
-                                     radioButtons("checkspec", label = "Specificity (in Percent)", 
-                                                  choiceNames = list("Slider", "Field"),
-                                                  choiceValues = c(0, 1), inline = TRUE
-                                     ),
-                                     conditionalPanel(condition = "input.checkspec == 0",
-                                                      sliderInput("spec", label = NULL, sep = "", value = 75,
-                                                                  min = 0, max = 100, step = 1,
-                                                                  pre=NULL, post="%"
-                                                      )
-                                     ),
-                                     conditionalPanel(condition = "input.checkspec == 1", 
-                                                      numericInput("numspec", label = NULL, value = 75,
-                                                                   min = 0, max = 100, step = 10^-2
-                                                      )
-                                     ),
-                                     br(), 
-                                     
-                                     ## Provide existing data sets as drop-down list:
-                                     selectInput("dataselection", label = "Or view an example:", 
-                                                 choices = setNames(as.list(1:nrow(datasets)), # create choices from datasets
-                                                                    datasets$dataset), 
-                                                 selected = 1),
-                                     
-                                     bsButton("help_represent", label = "Help",
-                                              icon = icon("question-sign", lib = "glyphicon"),
-                                              style = "default", type = "action")
-                                     
-                                   ),
-                                   #####
-                                   ## Main panel for displaying different aspects about risk:
-                                   mainPanel(
-                                     
-                                     ## Tabset with raw data table, icon array, nf tree, confusion table, and PV graphs: 
-                                     tabsetPanel(type = "tabs",
-                                                 #####
-                                                 # # Intro
-                                                 # tabPanel("Intro",
-                                                 #          br(),
-                                                 #          "This is just a quick page for displaying rendered text based on inputs. ",
-                                                 #          "Spacing doesn't work yet, but that's only formatting... ",
-                                                 #          br(), br(),
-                                                 #          "The current set of parameters are as follows:",
-                                                 #          br(), br(),
-                                                 #          textOutput("N"),
-                                                 #          br(), br(),
-                                                 #          textOutput("prev"),
-                                                 #          br(), br(),
-                                                 #          textOutput("sens"),
-                                                 #          br(), br(),
-                                                 #          textOutput("spec")
-                                                 #          ),
-                                                 #####
-                                                 # Overview
-                                                 tabPanel("Overview",
-                                                          br(),
-                                                          fluidRow(
-                                                            column(8, offset = 2, plotOutput("network", width = "550", height = "550"))),
-                                                          # plotOutput("network", width = "550", height = "550"),
-                                                          # br(),
-                                                          wellPanel(
-                                                            fluidRow(
-                                                              column(3, offset = 0,
-                                                                     radioButtons("netby", "Build Network by", c("Condition first" = "cddc",
-                                                                                                                 "Decision first" = "dccd"), inline = TRUE)),
-                                                              column(6, 
-                                                                     radioButtons("nettype", "Type of Boxes", c("Default boxes" = "no", "Squares" = "sq", 
-                                                                                                                "Horizontal rectangles" = "hr", "Vertical rectangles" = "vr"), inline = TRUE)),
-                                                              column(2, downloadButton("fnetdl", label = "Save Network"))
-                                                            )
-                                                          )
-                                                 ),
-                                                 #####
-                                                 # Cases
-                                                 tabPanel("Table", 
-                                                          br(),
-                                                          "Individual cases:", 
-                                                          br(), br(),
-                                                          
-                                                          conditionalPanel(condition = "input.dataselection != 1",
-                                                                           "Source:",
-                                                                           verbatimTextOutput("sourceOutput")),
-                                                          DT::dataTableOutput("rawdatatable"),
-                                                          br(), br(),
-                                                          wellPanel(
-                                                            fluidRow(
-                                                              column(2, offset = 2,
-                                                                     bsButton("sort", label = "Sort/Shuffle", value = TRUE, 
-                                                                              icon = icon("random", lib = "glyphicon"),
-                                                                              style = "default", type = "toggle")),
-                                                              column(2, offset = 2,
-                                                                     downloadButton("rawdatadl", label = "Save Raw Data"))
-                                                            )
-                                                          ),
-                                                          br()
-                                                 ),
-                                                 #####
-                                                 # Icons
-                                                 tabPanel("Icons", 
-                                                          br(), 
-                                                          fluidRow(
-                                                            column(8, offset = 2, plotOutput("iconarray", width = "650", height = "500"))),
-                                                          # plotOutput("iconarray", width = "550", height = "550"), 
-                                                          # br(), 
-                                                          wellPanel(
-                                                            fluidRow(
-                                                              column(4, offset = 2,
-                                                                     radioButtons("arraytype", "Display:",
-                                                                                  choices = list("Array" = "array", "Shuffled" = "shuffledarray",
-                                                                                                 "Scattered" = "scatter", "Mosaic" = "mosaic"), inline = TRUE)),
-                                                              column(2, downloadButton("iconarraydl", label = "Save Icon Array"))
-                                                            ), 
-                                                            br(),
-                                                            fluidRow(
-                                                              column(3,
-                                                                     selectInput("symbol.hi", label = "Symbol of hits (hi):", 
-                                                                                 choices = list("Circle" = 21, "Square" = 22, "Rhombus" = 23, "Triangle" = 24),
-                                                                                 selected = "22")
-                                                              ),
-                                                              column(3,
-                                                                     selectInput("symbol.mi", label = "Symbol of miss (mi):", 
-                                                                                 choices = list("Circle" = 21, "Square" = 22, "Rhombus" = 23, "Triangle" = 24),
-                                                                                 selected = "22")
-                                                              ),
-                                                              column(3,
-                                                                     selectInput("symbol.cr", label = "Symbol of correct rejections (cr):", 
-                                                                                 choices = list("Circle" = 21, "Square" = 22, "Rhombus" = 23, "Triangle" = 24),
-                                                                                 selected = "22")
-                                                              ),
-                                                              column(3,
-                                                                     selectInput("symbol.fa", label = "Symbol of false alarms (fa):", 
-                                                                                 choices = list("Circle" = 21, "Square" = 22, "Rhombus" = 23, "Triangle" = 24),
-                                                                                 selected = "22")
-                                                              )
-                                                            )
-                                                          )
-                                                 ),
-                                                 #####
-                                                 # Tree
-                                                 tabPanel("Tree", 
-                                                          br(), 
-                                                          paste0("Tree of natural frequencies:"), 
-                                                          br(), br(),  
-                                                          fluidRow(
-                                                            column(8, offset = 2, plotOutput("nftree", width = "550", height = "550"))),
-                                                          # br(),
-                                                          wellPanel(
-                                                            fluidRow(
-                                                              column(3, offset = 0,
-                                                                     radioButtons("treeby", "Build Tree by", c("Condition" = "cd", "Decision" = "dc"), inline = TRUE)),
-                                                              column(6, 
-                                                                     radioButtons("treetype","Type of Boxes", c("Default boxes" = "no", "Squares" = "sq", 
-                                                                                                                "Horizontal rectangles" = "hr", "Vertical rectangles" = "vr"), inline = TRUE)),
-                                                              column(2, downloadButton("nftreedl", label = "Save Frequency Tree"))
-                                                            )
-                                                          )
-                                                 ),
-                                                 # Table
-                                                 #####
-                                                 tabPanel("Cross-Tabulation", 
-                                                          br(),
-                                                          fluidRow(
-                                                            column(6, offset = 0, paste0("Aggregated cases:"), br(), br(),br(), br()),
-                                                            column(6, offset = 0, paste0("The following mosaic plot shows the cell frequencies as area sizes:"),
-                                                                   br(), br())
-                                                          ), 
-                                                          fluidRow(
-                                                            column(5, offset = 1, tableOutput("confusiontable")),
-                                                            column(5, offset = 1, plotOutput("mosaicplot", height = "400px", width = "400px"))
-                                                          ),
-                                                          wellPanel(
-                                                            fluidRow(
-                                                              column(2, offset = 2, downloadButton("confusiontabledl", label = "Save Confusion Table")),
-                                                              column(2, offset = 4, downloadButton("mosaicplotdl", label = "Save Mosaic Plot"))
-                                                            ))
-                                                 ),
-                                                 #####
-                                                 # PV curves
-                                                 tabPanel("Curves", 
-                                                          br(),
-                                                          paste0("Positive Predictive Value (PPV) and Negative Predictive Value (NPV) by prevalance:"), br(), br(),
-                                                          fluidRow(
-                                                            column(8, offset = 2, plotOutput("PVs"))),
-                                                          br(),
-                                                          wellPanel(
-                                                            fluidRow(
-                                                              # column(4, checkboxInput("boxPVprev", label = "Show current prevalence in plot", value = TRUE)),
-                                                              column(2, offset = 2, checkboxInput("boxPVpoints1", label = "Show point values", value = TRUE)),
-                                                              column(3, checkboxInput("boxPVlog", label = "Scale prevalence on logarithmic scale", value = FALSE))),
-                                                            fluidRow(
-                                                              column(2, offset = 2, checkboxInput("boxPVacc", label = "Show accuracy (acc)", value = FALSE)),
-                                                              column(4, checkboxInput("boxPVppod", label = "Show proportion of positive decisions (ppod)", value = FALSE)),
-                                                              column(1, downloadButton("PVsdl", label = "Save Curves"))
-                                                            )
-                                                          )
-                                                 ),
-                                                 #####
-                                                 # PV cubes
-                                                 tabPanel("Cubes", 
-                                                          br(),
-                                                          paste0("Predictive values (PPV/NPV) by sensitivity and specificity:"), br(), br(),
-                                                          fluidRow(
-                                                            column(6, plotOutput("PV3dPPV")),
-                                                            column(6, plotOutput("PV3dNPV"))
-                                                          ),
-                                                          br(),
-                                                          br(),
-                                                          wellPanel(
-                                                            fluidRow(
-                                                              column(3, checkboxInput("boxPVpoints2", label = "Show current PPV/NPV in plots", value = TRUE)), 
-                                                              column(2, offset = 1, downloadButton("PV3dPPVdl", label = "Save PPV Cube")),
-                                                              column(2, offset = 4,
-                                                                     downloadButton("PV3dNPVdl", label = "Save NPV Cube"))
-                                                            ),
-                                                            br(),
-                                                            fluidRow(
-                                                              column(6, sliderInput("theta", "Horizontal viewing angle:", value = -45, min = -90, max = +90)),
-                                                              column(6, sliderInput("phi", "Vertical viewing angle:", value = 0, min = 0, max =  90))
-                                                            ),
-                                                            br()
-                                                          )
-                                                 ),
-                                                 #####
-                                                 # contrast representations
-                                                 tabPanel("Compare", 
-                                                          br(),
-                                                          paste0("Compare two representations:"), br(), br(),
-                                                          fluidRow(
-                                                            column(6, plotOutput("represent1", width = "550", height = "550")),
-                                                            column(6, plotOutput("represent2", width = "550", height = "550"))
-                                                          ),
-                                                          br(),
-                                                          br(),
-                                                          wellPanel(
-                                                            fluidRow(
-                                                              column(3,
-                                                                     selectInput("represent1", label = "Selection representation 1:", 
-                                                                                 choices = list("Network" = "fnet", "Icon array" = "iconarray",
-                                                                                                "Frequency tree" = "tree", "Mosaic plot" = "mosaic"))
-                                                              ),
-                                                              column(3, offset = 3,
-                                                                     selectInput("represent2", label = "Selection representation 2:", 
-                                                                                 choices = list("Network" = "fnet", "Icon array" = "iconarray",
-                                                                                                "Frequency tree" = "tree", "Mosaic plot" = "mosaic"))
-                                                                     # maybe a download button here
-                                                              )
-                                                            ),
-                                                            fluidRow(
-                                                              column(2, offset = 0, downloadButton("represent1dl", label = "Save representation")),
-                                                              column(2, offset = 4, downloadButton("represent2dl", label = "Save representation"))
-                                                            )
-                                                          ),
-                                                          br()
-                                                 )
-                                                 
-                                                 
+                                     #####
+                                     # contrast representations
+                                     tabPanel("Compare", 
+                                              br(),
+                                              paste0("Compare two representations:"), br(), br(),
+                                              fluidRow(
+                                                column(6, plotOutput("represent1", width = "550", height = "550")),
+                                                column(6, plotOutput("represent2", width = "550", height = "550"))
+                                              ),
+                                              br(),
+                                              br(),
+                                              wellPanel(
+                                                fluidRow(
+                                                  column(3,
+                                                         selectInput("represent1", label = "Selection representation 1:", 
+                                                                     choices = list("Network" = "fnet", "Icon array" = "iconarray",
+                                                                                    "Frequency tree" = "tree", "Mosaic plot" = "mosaic"))
+                                                  ),
+                                                  column(3, offset = 3,
+                                                         selectInput("represent2", label = "Selection representation 2:", 
+                                                                     choices = list("Network" = "fnet", "Icon array" = "iconarray",
+                                                                                    "Frequency tree" = "tree", "Mosaic plot" = "mosaic"))
+                                                         # maybe a download button here
+                                                  )
+                                                ),
+                                                fluidRow(
+                                                  column(2, offset = 0, downloadButton("represent1dl", label = "Save representation")),
+                                                  column(2, offset = 4, downloadButton("represent2dl", label = "Save representation"))
+                                                )
+                                              ),
+                                              br()
                                      )
-                                   )
-                                 )
-                        ),
-                        
-                        
-                        
-                        # spacer
-                        "----",
-                        
-                        #####
-                        # Customize labels:
-                        tabPanel("Customize labels",
-                                 icon = icon("pencil", lib = "glyphicon"), value = "custom_labels",
-                                 
-                                 sidebarLayout(
-                                   #####
-                                   # Sidebar panel for inputs:
-                                   sidebarPanel(
-                                     # Inputs for label customization:
-                                     h3("Use your own labels!"),
-                                     br(),
-                                     fluidRow(
-                                       column(6, textInput("target.population.lbl",
-                                                           label = "Description of population:",
-                                                           value = "Population description")),
-                                       column(6, textInput("scenario.txt",
-                                                           label = "Description of scenario:",
-                                                           value = "Generic Example"))
-                                     ),
-                                     br(),
-                                     textInput("condition.lbl",
-                                               label = "Condition name:",
-                                               value = "Current condition"),
-                                     fluidRow(
-                                       column(6, textInput("cond.true.lbl",
-                                                           label = "Condition true",
-                                                           value = "Condition true")),
-                                       column(6, textInput("cond.false.lbl",
-                                                           label = "Condition false",
-                                                           value = "Condition false"))
-                                     ),
-                                     br(),
-                                     textInput("decision.lbl",
-                                               label = "Decision",
-                                               value = "Diagnostic decision"),
-                                     fluidRow(
-                                       column(6, textInput("dec.true.lbl",
-                                                           label = "Decision positive",
-                                                           value = "Decision positive")),
-                                       column(6, textInput("dec.false.lbl",
-                                                           label = "Decision negative",
-                                                           value = "Decision negative"))
-                                     ),
-                                     br(),
-                                     fluidRow(
-                                       column(6, textInput("sdt.hi.lbl", label = "Hit", value = "hit")),
-                                       column(6, textInput("sdt.mi.lbl", label = "Miss", value = "miss"))
-                                     ),
-                                     fluidRow(
-                                       column(6, textInput("sdt.fa.lbl", label = "False alarm", value = "false alarm")),
-                                       column(6, textInput("sdt.cr.lbl", label = "Correct rejection", value = "correct rejection"))
-                                     ),
-                                     br(),
-                                     bsButton("applycustomlabel", label = "Customize!",
-                                              icon = icon("wrench", lib = "glyphicon"),
-                                              style = "default", type = "action"),
-                                     bsButton("resetcustomlabel", label = "Reset default",
-                                              icon = icon("refresh", lib = "glyphicon"),
-                                              style = "default", type = "action"),
-                                     bsButton("help_custom_labels", label = "Help",
-                                              icon = icon("question-sign", lib = "glyphicon"),
-                                              style = "default", type = "action")
-                                   ),
-                                   
-                                   #####
-                                   ## Main panel for displaying preview of labels:
-                                   mainPanel(h3("Here is a simplified preview of your labels:"),
-                                             "Click the 'Customize' button to update your selection of labels to build your own case study.",
-                                             br(),
-                                             # br(),
-                                             # textOutput("labeltext"),
-                                             # br(),
-                                             # tableOutput("labeltable"),
-                                             # br(),
-                                             plotOutput("previewlabels", width = "800", height = "750")
-                                   )
-                                 )
-                        ),
-                        
-                        # spacer
-                        "----",
-                        # Customize colors:
-                        #####
-                        tabPanel("Customize colors",
-                                 icon = icon("wrench", lib = "glyphicon"),
-                                 value = "custom_colors",
-                                 sidebarLayout(
-                                   #####
-                                   sidebarPanel(
-                                     # Inputs for color customization:
-                                     h3("Choose your own colors!"),
-                                     br(),
-                                     colourInput("color.hi", label = "Choose the color for hits",
-                                                 value = default.colors["color.hi"], showColour = "background",
-                                                 palette = "square", allowedCols = NULL),
-                                     colourInput("color.mi", label = "Choose the color for miss",
-                                                 value = default.colors["color.mi"], showColour = "background",
-                                                 palette = "square", allowedCols = NULL),
-                                     colourInput("color.fa", label = "Choose the color for false alarm",
-                                                 value = default.colors["color.fa"], showColour = "background",
-                                                 palette = "square", allowedCols = NULL),
-                                     colourInput("color.cr", label = "Choose the color for correct rejection",
-                                                 value = default.colors["color.cr"], showColour = "background",
-                                                 palette = "square", allowedCols = NULL),
-                                     br(),
-                                     colourInput("color.ppv", label = "Color for the positive predictive value (PPV)",
-                                                 value = default.colors["color.ppv"], showColour = "background",
-                                                 palette = "square", allowedCols = NULL),
-                                     colourInput("color.npv", label = "Color for the negative predictive value (NPV)",
-                                                 value = default.colors["color.npv"], showColour = "background",
-                                                 palette = "square", allowedCols = NULL),
-                                     br(),
-                                     bsButton("applycustomcolor", label = "Customize!",
-                                              icon = icon("wrench", lib = "glyphicon"),
-                                              style = "default", type = "action"),
-                                     bsButton("resetcustomcolor", label = "Reset default",
-                                              icon = icon("refresh", lib = "glyphicon"),
-                                              style = "default", type = "action"),
-                                     bsButton("help_custom_colors", label = "Help",
-                                              icon = icon("question-sign", lib = "glyphicon"),
-                                              style = "default", type = "action")
-                                   ),
-                                   
-                                   #####
-                                   ## Main panel for displaying preview plots with colors:
-                                   mainPanel(h3("Here are simplified preview plots of your colors:"),
-                                             "Click the 'Customize' button to update your color selection.",
-                                             fluidRow(column(3, plotOutput("sampleplot")),
-                                                      column(3, plotOutput("sampleplotcurves"))
-                                             )
-                                   )
-                                 )
-                        ),
-                        
-                        # spacer
-                        "----"
-             ),
-             
-             
-             
-             #####
-             tabPanel("Statistics",
-                      icon = icon("equalizer", lib = "glyphicon"), value = "stats",
-                      
-                      #####
-                      sidebarLayout(
-                        #####
-                        # Sidebar panel for inputs:
-                        sidebarPanel(
-                          tags$head(tags$script(HTML(JS.logify))),
-                          tags$head(tags$script(HTML(JS.onload))),
-                          
-                          sliderInput("N2", label = "Population (logarithmic scale)",
-                                      min = 1, max = 5,
-                                      value = 2, round = FALSE),
-                          br(),
-                          radioButtons("checkprev2", label = "Prevalence (in Percent)",
-                                       choiceNames = list("Slider", "Field"),
-                                       choiceValues = c(0, 1), inline = TRUE
-                          ),
-                          conditionalPanel(condition = "input.checkprev2 == 0",
-                                           sliderInput("prev2",  label = NULL, sep = "",
-                                                       value = 15, min = 0.00, max = 100.00, step = 1,
-                                                       pre=NULL, post="%"
-                                           )
-                          ),
-                          conditionalPanel(condition = "input.checkprev2 == 1",
-                                           numericInput("numprev2", label = NULL, value = 15,
-                                                        min = 0, max = 100, step = 10^-2
-                                           )
-                          ),
-                          br(),
-                          radioButtons("checksens2", label = "Sensitivity (in Percent)",
-                                       choiceNames = list("Slider", "Field"),
-                                       choiceValues = c(0, 1), inline = TRUE
-                          ),
-                          conditionalPanel(condition = "input.checksens2 == 0",
-                                           sliderInput("sens2", label = NULL, sep = "", value = 85,
-                                                       min = 0, max = 100, step = 1,
-                                                       pre=NULL, post="%"
-                                           )
-                          ),
-                          conditionalPanel(condition = "input.checksens2 == 1",
-                                           numericInput("numsens2", label = NULL, value = 85,
-                                                        min = 0, max = 100, step = 10^-2
-                                           )
-                          ),
-                          radioButtons("checkspec2", label = "Specificity (in Percent)",
-                                       choiceNames = list("Slider", "Field"),
-                                       choiceValues = c(0, 1), inline = TRUE
-                          ),
-                          conditionalPanel(condition = "input.checkspec2 == 0",
-                                           sliderInput("spec2", label = NULL, sep = "", value = 75,
-                                                       min = 0, max = 100, step = 1,
-                                                       pre=NULL, post="%"
-                                           )
-                          ),
-                          conditionalPanel(condition = "input.checkspec2 == 1",
-                                           numericInput("numspec2", label = NULL, value = 75,
-                                                        min = 0, max = 100, step = 10^-2
-                                           )
-                          ),
-                          br(), 
-                          
-                          # Provide existing data sets as drop-down list:
-                          selectInput("dataselection2", label = "Or view an example:",
-                                      choices = setNames(as.list(1:nrow(datasets)), # create choices from datasets
-                                                         datasets$dataset),
-                                      selected = 1),
-                          
-                          bsButton("help_stats", label = "Help",
-                                   icon = icon("question-sign", lib = "glyphicon"),
-                                   style = "default", type = "action")
-                        ),
-                        
-                        #####
-                        # Main panel for different statistics
-                        mainPanel(
-                          tabsetPanel(type = "tabs",
-                                      #####
-                                      # # Info
-                                      # tabPanel("Info",
-                                      #          br(),
-                                      #          withMathJax(includeMarkdown("www/statstab_riskyr.md"))
-                                      #          ),
-                                      #####
-                                      #  ACC
-                                      tabPanel("Accuracy",
-                                               br(),
-                                               tableOutput("confusiontable1"),
-                                               br(),
-                                               withMathJax(includeMarkdown("www/statstab_riskyr_ACC.md")),
-                                               uiOutput("ACC")
-                                      ),
-                                      #####
-                                      # PPV
-                                      tabPanel("Positive Predictive Value",
-                                               br(),
-                                               tableOutput("confusiontable2"),
-                                               br(),
-                                               withMathJax(includeMarkdown("www/statstab_riskyr_PPV1.md")),
-                                               uiOutput("PPV1"),
-                                               br(),
-                                               withMathJax(includeMarkdown("www/statstab_riskyr_PPV2.md")),
-                                               uiOutput("PPV2")
-                                      ),
-                                      #####
-                                      # NPV
-                                      tabPanel("Negative Predictive Value",
-                                               br(),
-                                               tableOutput("confusiontable3"),
-                                               br(),
-                                               withMathJax(includeMarkdown("www/statstab_riskyr_NPV1.md")),
-                                               uiOutput("NPV1"),
-                                               br(),
-                                               withMathJax(includeMarkdown("www/statstab_riskyr_NPV2.md")),
-                                               uiOutput("NPV2")
-                                      ),
-                                      # FDR
-                                      tabPanel("False Discovery Rate",
-                                               br(),
-                                               tableOutput("confusiontable4"),
-                                               br(),
-                                               withMathJax(includeMarkdown("www/statstab_riskyr_FDR.md")),
-                                               uiOutput("FDR")
-                                      ),
-                                      # FOR
-                                      tabPanel("False Omission Rate",
-                                               br(),
-                                               tableOutput("confusiontable5"),
-                                               br(),
-                                               withMathJax(includeMarkdown("www/statstab_riskyr_FOR.md")),
-                                               uiOutput("FOR")
-                                      )
-                          )
-                        )
-                        
-                      )
-             ),
-             
-             # #####        
-             # tabPanel("Under Dev: Quiz",
-             #          icon = icon("education", lib = "glyphicon"), value = "quiz",
-             #          
-             #          sidebarLayout(
-             #            #####
-             #            # Sidebar panel for feedback:
-             #            sidebarPanel(
-             #              h2("Question 1:"), br(),
-             #              bsAlert("alert_question1"),
-             #              h2("Question 2:"), br(),
-             #              bsAlert("alert_question2"),
-             #              h2("Question 3:"), br(),
-             #              bsAlert("alert_question3"),
-             #              h2("Question 4:"), br(),
-             #              bsAlert("alert_question4")
-             #            ),
-             #            #####
-             #            # Sidebar panel for questions:
-             #            mainPanel(
-             #              
-             #              tabsetPanel(type = "tabs",
-             #                          tabPanel("Question 1",
-             #                                   h2("Question 1"),
-             #                                   "This is a sample multiple choice question. Options 1 and 3 are correct.",
-             #                                   checkboxGroupInput("question1", label = h3("Sample item"), 
-             #                                                      choices = list("Choice 1" = 1, "Choice 2" = 2, "Choice 3" = 3, "Choice 4" = 4),
-             #                                                      selected = NULL),
-             #                                   bsButton("submit_question1", label = "Submit answer", type = "action")
-             #                                  ),
-             #                          tabPanel("Question 2",
-             #                                   h2("Question 2"),
-             #                                   "This is a sample forced choice question. Option 2 is correct.",
-             #                                   radioButtons("question2", label = h3("Sample item"),
-             #                                                choices = list("Choice 1" = 1, "Choice 2" = 2, "Choice 3" = 3, "Choice 4" = 4), 
-             #                                                selected = character(0)),
-             #                                   bsButton("submit_question2", label = "Submit answer", type = "action")
-             #                                   ),
-             #                          tabPanel("Question 3",
-             #                                   h2("Question 3"),
-             #                                   "This is a sample calculation question. The correct answer is '0.95'.",
-             #                                   numericInput("question3", label = h3("Sample Item"), min = 0, max = 1, value = NULL),
-             #                                   bsButton("submit_question3", label = "Submit answer", type = "action")
-             #                                   
-             #                                   ),
-             #                          
-             #                          tabPanel("Question 4",
-             #                                   h2("Question 4"),
-             #                                   "This is a sample item for graph literacy. The left option is correct.",
-             #                                   h3("Which graph is a tree diagram by condition?"),
-             #                                   fluidRow(
-             #                                     column(5, offset = 0, img(src = "optionA.png")),
-             #                                     column(5, offset = 1, img(src = "optionB.png"))
-             #                                   ),
-             #                                   radioButtons("question4", label = "Sample Item",
-             #                                                choices = list("Option A" = 1, "Option B" = 2),
-             #                                                inline = TRUE, selected = character(0)),
-             #                                   bsButton("submit_question4", label = "Submit answer", type = "action")
-             #                                   )
-             #                          )
-             #              )
-             #            )
-             #            
-             #          
-             # 
-             # ),
-             # 
+                                     
+                                     
+                         )
+                       )
+                     )
+            ),
+
+            #####
+            # Customize labels:
+            tabPanel("Customize labels",
+                     icon = icon("pencil", lib = "glyphicon"), value = "custom_labels",
+                     
+                     sidebarLayout(
+                       #####
+                       # Sidebar panel for inputs:
+                       sidebarPanel(
+                         # Inputs for label customization:
+                         h3("Use your own labels!"),
+                         br(),
+                         fluidRow(
+                           column(6, textInput("target.population.lbl",
+                                               label = "Description of population:",
+                                               value = "Population description")),
+                           column(6, textInput("scenario.txt",
+                                               label = "Description of scenario:",
+                                               value = "Generic Example"))
+                         ),
+                         br(),
+                         textInput("condition.lbl",
+                                   label = "Condition name:",
+                                   value = "Current condition"),
+                         fluidRow(
+                           column(6, textInput("cond.true.lbl",
+                                               label = "Condition true",
+                                               value = "Condition true")),
+                           column(6, textInput("cond.false.lbl",
+                                               label = "Condition false",
+                                               value = "Condition false"))
+                         ),
+                         br(),
+                         textInput("decision.lbl",
+                                   label = "Decision",
+                                   value = "Diagnostic decision"),
+                         fluidRow(
+                           column(6, textInput("dec.true.lbl",
+                                               label = "Decision positive",
+                                               value = "Decision positive")),
+                           column(6, textInput("dec.false.lbl",
+                                               label = "Decision negative",
+                                               value = "Decision negative"))
+                         ),
+                         br(),
+                         fluidRow(
+                           column(6, textInput("sdt.hi.lbl", label = "Hit", value = "hit")),
+                           column(6, textInput("sdt.mi.lbl", label = "Miss", value = "miss"))
+                         ),
+                         fluidRow(
+                           column(6, textInput("sdt.fa.lbl", label = "False alarm", value = "false alarm")),
+                           column(6, textInput("sdt.cr.lbl", label = "Correct rejection", value = "correct rejection"))
+                         ),
+                         br(),
+                         bsButton("applycustomlabel", label = "Customize!",
+                                  icon = icon("wrench", lib = "glyphicon"),
+                                  style = "default", type = "action"),
+                         bsButton("resetcustomlabel", label = "Reset default",
+                                  icon = icon("refresh", lib = "glyphicon"),
+                                  style = "default", type = "action"),
+                         bsButton("help_custom_labels", label = "Help",
+                                  icon = icon("question-sign", lib = "glyphicon"),
+                                  style = "default", type = "action")
+                       ),
+                       
+                       #####
+                       ## Main panel for displaying preview of labels:
+                       mainPanel(h3("Here is a simplified preview of your labels:"),
+                                 "Click the 'Customize' button to update your selection of labels to build your own case study.",
+                                 br(),
+                                 # br(),
+                                 # textOutput("labeltext"),
+                                 # br(),
+                                 # tableOutput("labeltable"),
+                                 # br(),
+                                 plotOutput("previewlabels", width = "800", height = "750")
+                       )
+                     )
+            ),
             
+            # Customize colors:
+            #####
+            tabPanel("Customize colors",
+                     icon = icon("wrench", lib = "glyphicon"),
+                     value = "custom_colors",
+                     sidebarLayout(
+                       #####
+                       sidebarPanel(
+                         # Inputs for color customization:
+                         h3("Choose your own colors!"),
+                         br(),
+                         colourInput("color.hi", label = "Choose the color for hits",
+                                     value = default.colors["color.hi"], showColour = "background",
+                                     palette = "square", allowedCols = NULL),
+                         colourInput("color.mi", label = "Choose the color for miss",
+                                     value = default.colors["color.mi"], showColour = "background",
+                                     palette = "square", allowedCols = NULL),
+                         colourInput("color.fa", label = "Choose the color for false alarm",
+                                     value = default.colors["color.fa"], showColour = "background",
+                                     palette = "square", allowedCols = NULL),
+                         colourInput("color.cr", label = "Choose the color for correct rejection",
+                                     value = default.colors["color.cr"], showColour = "background",
+                                     palette = "square", allowedCols = NULL),
+                         br(),
+                         colourInput("color.ppv", label = "Color for the positive predictive value (PPV)",
+                                     value = default.colors["color.ppv"], showColour = "background",
+                                     palette = "square", allowedCols = NULL),
+                         colourInput("color.npv", label = "Color for the negative predictive value (NPV)",
+                                     value = default.colors["color.npv"], showColour = "background",
+                                     palette = "square", allowedCols = NULL),
+                         br(),
+                         bsButton("applycustomcolor", label = "Customize!",
+                                  icon = icon("wrench", lib = "glyphicon"),
+                                  style = "default", type = "action"),
+                         bsButton("resetcustomcolor", label = "Reset default",
+                                  icon = icon("refresh", lib = "glyphicon"),
+                                  style = "default", type = "action"),
+                         bsButton("help_custom_colors", label = "Help",
+                                  icon = icon("question-sign", lib = "glyphicon"),
+                                  style = "default", type = "action")
+                       ),
+                       
+                       #####
+                       ## Main panel for displaying preview plots with colors:
+                       mainPanel(h3("Here are simplified preview plots of your colors:"),
+                                 "Click the 'Customize' button to update your color selection.",
+                                 fluidRow(column(3, plotOutput("sampleplot")),
+                                          column(3, plotOutput("sampleplotcurves"))
+                                 )
+                       )
+                     )
+            ),
+
              #####
              navbarMenu("About",  icon = icon("info-sign", lib = "glyphicon"),
                         
