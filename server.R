@@ -16,7 +16,6 @@ library("colourpicker")
 ## Install the currently included version of riskyr: ------
 # detach("package:riskyr", unload = TRUE)
 # devtools::install_github("hneth/riskyr")
-# install.packages("./riskyr_0.1.0.tar.gz", repos = NULL, type = "source")
 library("riskyr")
 # sessionInfo()
 
@@ -46,6 +45,7 @@ shinyServer(function(input, output, session){
   
   #####
   # define common data scructure
+    # riskyr.scenario <- reactiveValues(riskyr.scenario = NULL)
   ## Generate 4 data structures as lists of reactive elements:
   env <- reactiveValues(env = NULL) # Current ENVironment parameters
   freq <- reactiveValues(freq = NULL) # Calculated FREQuencies, based on parameters
@@ -221,7 +221,7 @@ shinyServer(function(input, output, session){
   
   
   ##### 
-  # Couple numeric and slider inputs, connect both stats and representations:
+  # Couple numeric and slider inputs:
   
   #####
   ## population (logified version)
@@ -288,7 +288,23 @@ shinyServer(function(input, output, session){
       updateSliderInput(session, "spec", value = env$recalc.spec)
     })
 
+  
+  ##### 
+  # Create reactive riskyr.scenario object from inputs
+  riskyr.scenario <- reactive({
+      riskyr(scen_lbl = "Example", 
+             cond_lbl = "Hustosis",
+             dec_lbl = "Screening test",
+             popu_lbl = "Sample", 
+             N = env$N,  # population size (log scale)
+             prev = env$prev, 
+             sens = env$sens, 
+             spec = env$spec
+          )
+      })
 
+  
+  
   #####
   # Calculate freq and prob objects
   observeEvent({
@@ -340,19 +356,12 @@ shinyServer(function(input, output, session){
       if (input$dataselection != 1 | input$dataselection2 != 1) { # if 1st option is not ("---")
         # update all sliders
         updateSliderInput(session, "N", value = round(log10(datasets[input$dataselection, "N" ]), 0))
-        updateSliderInput(session, "N2", value = round(log10(datasets[input$dataselection, "N" ]), 0))
         updateSliderInput(session, "sens", value = datasets[input$dataselection, "sens" ])
         updateNumericInput(session, "numsens", value = datasets[input$dataselection, "sens"])
-        updateSliderInput(session, "sens2", value = datasets[input$dataselection, "sens" ])
-        updateNumericInput(session, "numsens2", value = datasets[input$dataselection, "sens"])
         updateSliderInput(session, "prev", value = datasets[input$dataselection, "prev"])
         updateNumericInput(session, "numprev",value = datasets[input$dataselection, "prev"])
-        updateSliderInput(session, "prev2", value = datasets[input$dataselection, "prev"])
-        updateNumericInput(session, "numprev2",value = datasets[input$dataselection, "prev"])
         updateSliderInput(session, "spec", value = datasets[input$dataselection, "spec" ])
         updateNumericInput(session, "numspec", value = datasets[input$dataselection, "spec" ])
-        updateSliderInput(session, "spec2", value = datasets[input$dataselection, "spec" ])
-        updateNumericInput(session, "numspec2", value = datasets[input$dataselection, "spec" ])
         # display source
         output$sourceOutput <- renderText(datasets[input$dataselection, "source"]) 
         # set labels
@@ -395,36 +404,22 @@ shinyServer(function(input, output, session){
   #####
   ## Outputs:
  
-  ## (0) Overview:
-
-  fnet <- function(){
-    riskyr::plot_fnet(prev = env$prev, sens = env$sens, spec = env$spec, N = env$N,
-                      # user inputs: 
-                      area = input$nettype, 
-                      by = input$netby,
-                      title.lbl = cus$scenario.txt,
-                      popu.lbl = cus$target.population.lbl, 
-                      # cond.lbl = cus$condition.lbl, seemingly deprecated
-                      cond.true.lbl = cus$cond.true.lbl, cond.false.lbl = cus$cond.false.lbl,
-                      # dec.lbl = cus$decision.lbl, seemingly deprecated
-                      dec.pos.lbl = cus$dec.true.lbl, 
-                      dec.neg.lbl = cus$dec.false.lbl, 
-                      hi.lbl = cus$sdt.hi.lbl, mi.lbl = cus$sdt.mi.lbl, 
-                      fa.lbl = cus$sdt.fa.lbl, cr.lbl = cus$sdt.cr.lbl, 
-                      col.boxes = c("#F2F2F2FC", "lightgoldenrod1", "lightskyblue2", 
-                                    cus$color.hi, cus$color.mi, cus$color.fa, cus$color.cr,
-                                    "rosybrown3", "lightsteelblue3", "#F2F2F2FC"),
-                      col.txt = grey(0.01, alpha = 0.99), 
-                      col.border = "grey10", col.shadow = rgb(62, 63, 58, max = 255))
+  ## (1) Prism:
+  
+  prism <- function(){
+      plot_prism(riskyr.scenario(),
+                 by = input$prism.by,
+                 area = input$prism.area,
+                 f_lbl = input$prism.f_lbl)
   }
+
+  output$prism <- renderPlot({ prism() }) 
   
-  output$network <- renderPlot({ fnet() }) 
-  
-  output$fnetdl <- downloadHandler(
-    filename = function() {paste0("riskyrApp_fnet_", gsub(":", "-", Sys.time()), ".png")},
+  output$prism.dl <- downloadHandler(
+    filename = function() {paste0("riskyrApp_prism_", gsub(":", "-", Sys.time()), ".png")},
     content =  function(file){
       png(file, width = 550, height = 550)
-      fnet()
+      prism()
       dev.off()}
     )
 

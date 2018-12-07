@@ -156,18 +156,39 @@ shinyUI(
                                      tabPanel("Prism",
                                               br(),
                                               fluidRow(
-                                                column(8, offset = 2, plotOutput("network", width = "550", height = "550"))),
-                                              # plotOutput("network", width = "550", height = "550"),
-                                              # br(),
+                                                column(8, offset = 2, plotOutput("prism", width = "550", height = "550"))),
                                               wellPanel(
                                                 fluidRow(
                                                   column(3, offset = 0,
-                                                         radioButtons("netby", "Build Network by", c("Condition first" = "cddc",
-                                                                                                     "Decision first" = "dccd"), inline = TRUE)),
-                                                  column(6, 
-                                                         radioButtons("nettype", "Type of Boxes", c("Default boxes" = "no", "Squares" = "sq", 
-                                                                                                    "Horizontal rectangles" = "hr", "Vertical rectangles" = "vr"), inline = TRUE)),
-                                                  column(2, downloadButton("fnetdl", label = "Save Network"))
+                                                         selectInput("prism.by", label = "Build prism by:", 
+                                                                     choices = list("condition only" = "cd", 
+                                                                                    "decision only" = "dc", 
+                                                                                    "accuracy only" = "ac",
+                                                                                    "condition and decision" = "cddc",
+                                                                                    "condition and accuracy" = "cdac",
+                                                                                    "decision and condition" = "dccd",
+                                                                                    "decision and accuracy" = "dcac",
+                                                                                    "accuracy and condition" = "accd",
+                                                                                    "accuracy and decision" = "acdc"),
+                                                                     selected = "cddc")
+                                                         ),
+                                                  column(3, 
+                                                         selectInput("prism.area", label = "Type of Boxes", 
+                                                                     choices = list("default boxes" = "no", 
+                                                                                    "horizontal rectangles" = "hr",
+                                                                                    "squares" = "sq"), 
+                                                                      selected = "no")),
+                                                  column(3, 
+                                                         selectInput("prism.f_lbl", label = "Labels:", 
+                                                                     choices = list("abbrev. names & values" = "def", 
+                                                                                    "abbrev. names" = "abbr",
+                                                                                    "names only" = "nam",
+                                                                                    "values only" = "num",
+                                                                                    "names & values" = "namnum",
+                                                                                    "no labels" = "no"
+                                                                                    ), 
+                                                                      selected = "num")),
+                                                  column(2, offset = 1, downloadButton("prism.dl", label = "Save Prism"))
                                                 )
                                               )
                                      ),
