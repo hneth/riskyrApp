@@ -521,7 +521,7 @@ shinyServer(function(input, output, session){
   )
   
   
-  ## (6): Curves
+  ## (6) Curves:
   
   curve <- function(){
       plot(riskyr.scenario(), 
@@ -546,103 +546,103 @@ shinyServer(function(input, output, session){
   )
   
 
-  ## (g) 3D plots of PPV and NPV planes as functions of sens and spec:
+  ## (7) Planes:
   
-  PV3dPPV <- function(){    
-    riskyr::plot_plane(prev = env$prev, sens = env$sens, spec = env$spec,
-                                               what = "PPV",
-                                               what.col = cus$color.ppv,
-                                               show.point = input$boxPVpoints2,
-                                               theta = input$theta, phi = input$phi,
-                                               title.lbl = cus$scenario.txt) 
+  plane.ppv <- function(){
+      plot(riskyr.scenario(),
+           type = "plane",
+           what = "PPV",
+           show_point = input$plane.show_point,
+           theta = input$theta, 
+           phi = input$phi
+           ) 
     }
   
-  output$PV3dPPV <- renderPlot({ PV3dPPV() })
+  output$plane.ppv <- renderPlot({ plane.ppv() })
   
-  output$PV3dPPVdl <- downloadHandler(
-    filename = function() {paste0("riskyrApp_PPV-cube_", gsub(":", "-", Sys.time()), ".png")},
+  output$plane.ppv.dl <- downloadHandler(
+    filename = function() {paste0("riskyrApp_PPV-plane_", gsub(":", "-", Sys.time()), ".png")},
     content =  function(file){
       png(file, width = 610, height = 400)
-      PV3dPPV()
+      plane.ppv()
       dev.off()}
   )
   
-  PV3dNPV <- function(){
-    riskyr::plot_plane(prev = env$prev, sens = env$sens, spec = env$spec,
-                       what = "NPV",
-                       what.col = cus$color.npv,
-                       show.point = input$boxPVpoints2,
-                       theta = input$theta, phi = input$phi,
-                       title.lbl = cus$scenario.txt)
-    
+  plane.npv <- function(){
+      plot(riskyr.scenario(),
+           type = "plane",
+           what = "NPV",
+           show_point = input$plane.show_point,
+           theta = input$theta, 
+           phi = input$phi
+      ) 
   }
   
-  output$PV3dNPV <- renderPlot({ PV3dNPV() })
+  output$plane.npv <- renderPlot({ plane.npv() })
   
-  output$PV3dNPVdl <- downloadHandler(
-    filename = function() {paste0("riskyrApp_NPV-cube_", gsub(":", "-", Sys.time()), ".png")},
-    content =  function(file){
-      png(file, width = 610, height = 400)
-      PV3dNPV()
-      dev.off()}
+  output$plane.npv.dl <- downloadHandler(
+      filename = function() {paste0("riskyrApp_NPV-plane_", gsub(":", "-", Sys.time()), ".png")},
+      content =  function(file){
+          png(file, width = 610, height = 400)
+          plane.npv()
+          dev.off()}
   )
+
   
   ## (h) Contrasting two freely selectable representations
   
   output$represent1 <- renderPlot({
     switch(input$represent1,
-           fnet = fnet(),
-           # rawdatatable
-           iconarray = icons(),
-           tree = nftree(),
-           mosaic = mosaicplot()
-           
+           prism = prism(),
+           table = table(),
+           area = area(),
+           icons = icons(),
+           bar = bar(),
+           curve = curve(),
+           plane.ppv = plane.ppv(),
+           plane.npv = plane.npv()
     )
   })
-  
-  output$represent1dl <- downloadHandler(
-    filename = function() {paste0("riskyrApp_representation1_", gsub(":", "-", Sys.time()), ".png")},
-    content =  function(file){
-      png(file, width = 550, height = 550)
-      switch(input$represent1,
-             fnet = fnet(),
-             # rawdatatable
-             iconarray = icons(),
-             tree = nftree(),
-             mosaic = mosaicplot()
-             
-      )
-      dev.off()}
-  )
-  
   
   output$represent2 <- renderPlot({
-    switch(input$represent2,
-           fnet = fnet(),
-           # rawdatatable
-           iconarray = icons(),
-           tree = nftree(),
-           mosaic = mosaicplot()
-           
-    )
+      switch(input$represent2,
+             prism = prism(),
+             table = table(),
+             area = area(),
+             icons = icons(),
+             bar = bar(),
+             curve = curve(),
+             plane.ppv = plane.ppv(),
+             plane.npv = plane.npv()
+      )
   })
   
-  
-  output$represent2dl <- downloadHandler(
-    filename = function() {paste0("riskyrApp_representation2_", gsub(":", "-", Sys.time()), ".png")},
-    content =  function(file){
-      png(file, width = 550, height = 550)
-      switch(input$represent2,
-             fnet = fnet(),
-             # rawdatatable
-             iconarray = icons(),
-             tree = nftree(),
-             mosaic = mosaicplot()
-             
+  output$represent3 <- renderPlot({
+      switch(input$represent3,
+             prism = prism(),
+             table = table(),
+             area = area(),
+             icons = icons(),
+             bar = bar(),
+             curve = curve(),
+             plane.ppv = plane.ppv(),
+             plane.npv = plane.npv()
       )
-      dev.off()}
-  )
-
+  })
+  
+  output$represent4 <- renderPlot({
+      switch(input$represent4,
+             prism = prism(),
+             table = table(),
+             area = area(),
+             icons = icons(),
+             bar = bar(),
+             curve = curve(),
+             plane.ppv = plane.ppv(),
+             plane.npv = plane.npv()
+      )
+  })
+  
   
   #####
   ## Customization tab
