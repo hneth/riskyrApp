@@ -373,17 +373,17 @@ shinyUI(
                                               br(),
                                               paste0("Predictive values (PPV/NPV) by sensitivity and specificity:"), br(), br(),
                                               fluidRow(
-                                                column(6, plotOutput("PV3dPPV")),
-                                                column(6, plotOutput("PV3dNPV"))
+                                                column(6, plotOutput("plane.ppv")),
+                                                column(6, plotOutput("plane.npv"))
                                               ),
                                               br(),
                                               br(),
                                               wellPanel(
                                                 fluidRow(
-                                                  column(3, checkboxInput("boxPVpoints2", label = "Show current PPV/NPV in plots", value = TRUE)), 
-                                                  column(2, offset = 1, downloadButton("PV3dPPVdl", label = "Save PPV Cube")),
+                                                  column(3, checkboxInput("plane.show_point", label = "Show current PPV/NPV in plots", value = TRUE)), 
+                                                  column(2, offset = 1, downloadButton("plane.ppv.dl", label = "Save PPV Plane")),
                                                   column(2, offset = 4,
-                                                         downloadButton("PV3dNPVdl", label = "Save NPV Cube"))
+                                                         downloadButton("plane.npv.dl", label = "Save NPV Plane"))
                                                 ),
                                                 br(),
                                                 fluidRow(
@@ -397,10 +397,11 @@ shinyUI(
                                      # contrast representations
                                      tabPanel("Compare", 
                                               br(),
-                                              paste0("Compare two representations:"), br(), br(),
                                               fluidRow(
-                                                column(6, plotOutput("represent1", width = "550", height = "550")),
-                                                column(6, plotOutput("represent2", width = "550", height = "550"))
+                                                column(6, plotOutput("represent1", width = "550", height = "275")),
+                                                column(6, plotOutput("represent2", width = "550", height = "275")),
+                                                column(6, plotOutput("represent3", width = "550", height = "275")),
+                                                column(6, plotOutput("represent4", width = "550", height = "275"))
                                               ),
                                               br(),
                                               br(),
@@ -408,22 +409,50 @@ shinyUI(
                                                 fluidRow(
                                                   column(3,
                                                          selectInput("represent1", label = "Selection representation 1:", 
-                                                                     choices = list("Network" = "fnet", "Icon array" = "iconarray",
-                                                                                    "Frequency tree" = "tree", "Mosaic plot" = "mosaic"))
+                                                                     choices = list("Prism" = "prism", 
+                                                                                    "Table" = "table",
+                                                                                    "Area" = "area",
+                                                                                    "Icons" = "icons",
+                                                                                    "Bars" = "bar",
+                                                                                    "Curves" = "curve",
+                                                                                    "Plane PPV" = "plane.ppv",
+                                                                                    "Plane NPV" = "plane.npv"))
                                                   ),
-                                                  column(3, offset = 3,
+                                                  column(3,
                                                          selectInput("represent2", label = "Selection representation 2:", 
-                                                                     choices = list("Network" = "fnet", "Icon array" = "iconarray",
-                                                                                    "Frequency tree" = "tree", "Mosaic plot" = "mosaic"))
-                                                         # maybe a download button here
+                                                                     choices = list("Prism" = "prism", 
+                                                                                    "Table" = "table",
+                                                                                    "Area" = "area",
+                                                                                    "Icons" = "icons",
+                                                                                    "Bars" = "bar",
+                                                                                    "Curves" = "curve",
+                                                                                    "Plane PPV" = "plane.ppv",
+                                                                                    "Plane NPV" = "plane.npv"))
+                                                  ),
+                                                  column(3,
+                                                         selectInput("represent3", label = "Selection representation 3:", 
+                                                                     choices = list("Prism" = "prism", 
+                                                                                    "Table" = "table",
+                                                                                    "Area" = "area",
+                                                                                    "Icons" = "icons",
+                                                                                    "Bars" = "bar",
+                                                                                    "Curves" = "curve",
+                                                                                    "Plane PPV" = "plane.ppv",
+                                                                                    "Plane NPV" = "plane.npv"))
+                                                  ),
+                                                  column(3,
+                                                         selectInput("represent4", label = "Selection representation 4:", 
+                                                                     choices = list("Prism" = "prism", 
+                                                                                    "Table" = "table",
+                                                                                    "Area" = "area",
+                                                                                    "Icons" = "icons",
+                                                                                    "Bars" = "bar",
+                                                                                    "Curves" = "curve",
+                                                                                    "Plane PPV" = "plane.ppv",
+                                                                                    "Plane NPV" = "plane.npv"))
                                                   )
-                                                ),
-                                                fluidRow(
-                                                  column(2, offset = 0, downloadButton("represent1dl", label = "Save representation")),
-                                                  column(2, offset = 4, downloadButton("represent2dl", label = "Save representation"))
                                                 )
-                                              ),
-                                              br()
+                                              )
                                      )
                                      
                                      
