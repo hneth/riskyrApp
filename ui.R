@@ -272,16 +272,20 @@ shinyUI(
                                      tabPanel("Icons", 
                                               br(), 
                                               fluidRow(
-                                                column(8, offset = 2, plotOutput("iconarray", width = "650", height = "500"))),
-                                              # plotOutput("iconarray", width = "550", height = "550"), 
-                                              # br(), 
-                                              wellPanel(
+                                                column(8, offset = 2, plotOutput("icons", width = "650", height = "500"))),
+                                                   wellPanel(
                                                 fluidRow(
-                                                  column(4, offset = 2,
-                                                         radioButtons("arraytype", "Display:",
-                                                                      choices = list("Array" = "array", "Shuffled" = "shuffledarray",
-                                                                                     "Scattered" = "scatter", "Mosaic" = "mosaic"), inline = TRUE)),
-                                                  column(2, downloadButton("iconarraydl", label = "Save Icon Array"))
+                                                  column(4, offset = 0,
+                                                         selectInput("icons.arr_type", "Display:",
+                                                                      choices = list("Array" = "array", 
+                                                                                     "Shuffled" = "shuffledarray",
+                                                                                     "Mosaic" = "mosaic",
+                                                                                     "Fill equal" = "fillequal",
+                                                                                     "Fill left" = "fillleft",
+                                                                                     "Fill top" = "filltop",
+                                                                                     "Scattered" = "scatter"), 
+                                                                     selected = "array")),
+                                                  column(2, offset = 6, downloadButton("icons.dl", label = "Save Icon Array"))
                                                 ), 
                                                 br(),
                                                 fluidRow(
@@ -311,21 +315,36 @@ shinyUI(
                                      #####
                                      # Bars
                                      tabPanel("Bars", 
-                                              br(), 
-                                              paste0("Tree of natural frequencies:"), 
-                                              br(), br(),  
+                                              br(),
                                               fluidRow(
-                                                column(8, offset = 2, plotOutput("nftree", width = "550", height = "550"))),
-                                              # br(),
+                                                  column(8, offset = 2, plotOutput("bar", width = "550", height = "550"))),
                                               wellPanel(
-                                                fluidRow(
-                                                  column(3, offset = 0,
-                                                         radioButtons("treeby", "Build Tree by", c("Condition" = "cd", "Decision" = "dc"), inline = TRUE)),
-                                                  column(6, 
-                                                         radioButtons("treetype","Type of Boxes", c("Default boxes" = "no", "Squares" = "sq", 
-                                                                                                    "Horizontal rectangles" = "hr", "Vertical rectangles" = "vr"), inline = TRUE)),
-                                                  column(2, downloadButton("nftreedl", label = "Save Frequency Tree"))
-                                                )
+                                                  fluidRow(
+                                                      column(3, offset = 0,
+                                                             selectInput("bar.by", label = "Build bars by:", 
+                                                                         choices = list("condition" = "cd",
+                                                                                        "decision" = "dc",
+                                                                                        "accuracy" = "ac",
+                                                                                        "all" = "all"),
+                                                                         selected = "all")
+                                                      ),
+                                                      column(3, 
+                                                             selectInput("bar.dir", label = "Directions", 
+                                                                         choices = list("uni-directional" = 1, 
+                                                                                        "bi-directional" = 2), 
+                                                                         selected = 1)),
+                                                      column(3, 
+                                                             selectInput("bar.f_lbl", label = "Labels:", 
+                                                                         choices = list("abbrev. names & values" = "def", 
+                                                                                        "abbrev. names" = "abbr",
+                                                                                        "names only" = "nam",
+                                                                                        "values only" = "num",
+                                                                                        "names & values" = "namnum",
+                                                                                        "no labels" = "no"
+                                                                         ), 
+                                                                         selected = "num")),
+                                                      column(2, offset = 1, downloadButton("bar.dl", label = "Save Bars"))
+                                                  )
                                               )
                                      ),
                                    

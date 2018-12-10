@@ -475,125 +475,51 @@ shinyServer(function(input, output, session){
   )
   
   
-  ## (b) Icon array:
-  ## ... 
+  ## (4) Icons: 
   
   icons <- function(){
-    plot_icons(prev = env$prev, sens = env$sens, 
-               spec = env$spec, N = env$N, 
-               ident.order = c("hi", "mi", "fa", "cr"), 
-               type = input$arraytype,
-               icon.colors = c(as.character(cus$color.hi), as.character(cus$color.mi), 
-                               as.character(cus$color.fa), as.character(cus$color.cr)),
-               icon.types = c(as.integer(input$symbol.hi), as.integer(input$symbol.mi), 
-                              as.integer(input$symbol.cr), as.integer(input$symbol.fa)), 
-               type.lbls = c(cus$sdt.hi.lbl, cus$sdt.mi.lbl, cus$sdt.fa.lbl, cus$sdt.cr.lbl),
-               title.lbl = cus$scenario.txt)
+      plot(riskyr.scenario(), 
+           type  = "icons",
+           col_pal = riskyr.colors(),
+           arr_type = input$icons.arr_type,
+           icon_types = c(as.integer(input$symbol.hi), as.integer(input$symbol.mi), 
+                          as.integer(input$symbol.cr), as.integer(input$symbol.fa)) 
+      )
   }
   
-  output$iconarray <- renderPlot({ icons() })
+  output$icons <- renderPlot({ icons() }) 
   
-  output$iconarraydl <- downloadHandler(
-    filename = function() {paste0("riskyrApp_icon-array_", gsub(":", "-", Sys.time()), ".png")},
-    content =  function(file){
-      png(file, width = 550, height = 550)
-      icons()
-      dev.off()}
-  )
-  
-  ## (c) 2x2 confusion table (ordered by rows/decisions):
-  # We need two confusion tables (at table and stats tab)
-
-  confustableraw <- reactive({matrix(data = c(freq$hi, freq$fa, freq$dec.pos, 
-                                              freq$mi, freq$cr, freq$dec.neg, 
-                                              freq$cond.true, freq$cond.false, env$N),
-                                     nrow = 3, byrow = TRUE,
-                                     dimnames = list(c(cus$dec.true.lbl,  # "Decision positive:", 
-                                                       cus$dec.false.lbl, # "Decision negative:", 
-                                                       "Truth sums:"), 
-                                                     c(cus$cond.true.lbl,  # "Condition true:", 
-                                                       cus$cond.false.lbl, # "Condition false:", 
-                                                       "Decision sums:")
-                                                     )
-                                     )
-  })
-  
-  output$confusiontable <- renderTable(confustableraw(), bordered = TRUE, hover = TRUE,  
-                                       align = 'r', digits = 0, rownames = TRUE, na = 'missing')
-  
-  output$confusiontable1 <- renderTable(confustableraw(), bordered = TRUE, hover = TRUE,  
-                                        align = 'r', digits = 0, rownames = TRUE, na = 'missing')
-  
-  output$confusiontable2 <- renderTable(confustableraw(), bordered = TRUE, hover = TRUE,  
-                                        align = 'r', digits = 0, rownames = TRUE, na = 'missing')
-  
-  output$confusiontable3 <- renderTable(confustableraw(), bordered = TRUE, hover = TRUE,  
-                                        align = 'r', digits = 0, rownames = TRUE, na = 'missing')
-  
-  output$confusiontable4 <- renderTable(confustableraw(), bordered = TRUE, hover = TRUE,  
-                                        align = 'r', digits = 0, rownames = TRUE, na = 'missing')
-  
-  output$confusiontable5 <- renderTable(confustableraw(), bordered = TRUE, hover = TRUE,  
-                                        align = 'r', digits = 0, rownames = TRUE, na = 'missing')
-  
-  output$confusiontabledl <- downloadHandler(
-    filename = function() {paste0("riskyrApp_confusion-table_", gsub(":", "-", Sys.time()), ".csv")},
-    content = function(file) {
-      write.csv(confustableraw(), file, row.names = TRUE)
-    }
+  output$icons.dl <- downloadHandler(
+      filename = function() {paste0("riskyrApp_icons_", gsub(":", "-", Sys.time()), ".png")},
+      content =  function(file){
+          png(file, width = 550, height = 550)
+          icons()
+          dev.off()}
   )
   
   
-  ## (d) Mosaic plot:
+  ## (5) Bars: 
   
-  mosaicplot <- function(){
-    riskyr::plot_mosaic(prev = env$prev, sens = env$sens, spec = env$spec, N = env$N,
-                        title.lbl = cus$scenario.txt, 
-                        col.sdt = c(cus$color.hi, cus$color.mi, cus$color.fa, cus$color.cr))
+  bar <- function(){
+      plot(riskyr.scenario(), 
+           type  = "bar",
+           col_pal = riskyr.colors(),
+           by = input$bar.by,
+           dir = input$bar.dir,
+           f_lbl = input$bar.f_lbl
+      )
   }
   
-  output$mosaicplot <- renderPlot({ mosaicplot() })
+  output$bar <- renderPlot({ bar() }) 
   
-  output$mosaicplotdl <- downloadHandler(
-    filename = function() {paste0("riskyrApp_mosaic-plot_", gsub(":", "-", Sys.time()), ".png")},
-    content =  function(file){
-      png(file, width = 550, height = 550)
-      mosaicplot()
-      dev.off()}
+  output$bar.dl <- downloadHandler(
+      filename = function() {paste0("riskyrApp_bar_", gsub(":", "-", Sys.time()), ".png")},
+      content =  function(file){
+          png(file, width = 550, height = 550)
+          bar()
+          dev.off()}
   )
-
   
-
-  ## (e) Tree with natural frequencies:
-  
-  nftree <- function(){
-    riskyr:: plot_tree(prev = env$prev, sens = env$sens, spec = env$spec, N = env$N, 
-                       # user inputs
-                       area = input$treetype, by = input$treeby,
-                       title.lbl = cus$scenario.txt,
-                       popu.lbl = cus$target.population.lbl, 
-                       # cond.lbl = cus$condition.lbl, seemingly deprecated
-                       cond.true.lbl = cus$cond.true.lbl, cond.false.lbl = cus$cond.false.lbl,
-                       # dec.lbl = cus$decision.lbl, seemingly deprecated
-                       dec.pos.lbl = cus$dec.true.lbl, 
-                       dec.neg.lbl = cus$dec.false.lbl, 
-                       hi.lbl = cus$sdt.hi.lbl, mi.lbl = cus$sdt.mi.lbl, 
-                       fa.lbl = cus$sdt.fa.lbl, cr.lbl = cus$sdt.cr.lbl, 
-                       col.boxes = c("#F2F2F2FC", "lightgoldenrod1", "lightskyblue2", 
-                                     cus$color.hi, cus$color.mi, cus$color.fa, cus$color.cr),
-                       col.txt = grey(0.01, alpha = 0.99), 
-                       col.border = "grey10", col.shadow = rgb(62, 63, 58, max = 255), cex.shadow = 0)
-  }
-  
-  output$nftree <- renderPlot({ nftree() })
-  
-  output$nftreedl <- downloadHandler(
-    filename = function() {paste0("riskyrApp_frequency-tree_", gsub(":", "-", Sys.time()), ".png")},
-    content =  function(file){
-      png(file, width = 550, height = 550)
-      nftree()
-      dev.off()}
-  )
   
   ## (f) 2D plot of PPV and NPV as a function of prev.range:
   
