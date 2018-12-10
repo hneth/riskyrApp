@@ -212,10 +212,10 @@ shinyUI(
                                                                          selected = "cddc")
                                                       ),
                                                       column(3, 
-                                                             selectInput("table.area", label = "Type of Boxes", 
-                                                                         choices = list("default boxes" = "no", 
-                                                                                        "squares" = "sq"), 
-                                                                         selected = "no")),
+                                                             selectInput("table.p_split", label = "Population split", 
+                                                                         choices = list("vertical" = "v", 
+                                                                                        "horizontal" = "h"), 
+                                                                         selected = "v")),
                                                       column(3, 
                                                              selectInput("table.f_lbl", label = "Labels:", 
                                                                          choices = list("abbrev. names & values" = "def", 
@@ -235,19 +235,37 @@ shinyUI(
                                      tabPanel("Area", 
                                               br(),
                                               fluidRow(
-                                                  column(6, offset = 0, paste0("Aggregated cases:"), br(), br(),br(), br()),
-                                                  column(6, offset = 0, paste0("The following mosaic plot shows the cell frequencies as area sizes:"),
-                                                         br(), br())
-                                              ), 
-                                              fluidRow(
-                                                  column(5, offset = 1, tableOutput("confusiontable")),
-                                                  column(5, offset = 1, plotOutput("mosaicplot", height = "400px", width = "400px"))
-                                              ),
+                                                  column(8, offset = 2, plotOutput("area", width = "550", height = "550"))),
                                               wellPanel(
                                                   fluidRow(
-                                                      column(2, offset = 2, downloadButton("confusiontabledl", label = "Save Confusion Table")),
-                                                      column(2, offset = 4, downloadButton("mosaicplotdl", label = "Save Mosaic Plot"))
-                                                  ))
+                                                      column(3, offset = 0,
+                                                             selectInput("area.by", label = "Build area by:", 
+                                                                         choices = list("condition and decision" = "cddc",
+                                                                                        "condition and accuracy" = "cdac",
+                                                                                        "decision and condition" = "dccd",
+                                                                                        "decision and accuracy" = "dcac",
+                                                                                        "accuracy and condition" = "accd",
+                                                                                        "accuracy and decision" = "acdc"),
+                                                                         selected = "cddc")
+                                                      ),
+                                                      column(3, 
+                                                             selectInput("area.p_split", label = "Population split", 
+                                                                         choices = list("vertical" = "v", 
+                                                                                        "horizontal" = "h"), 
+                                                                         selected = "v")),
+                                                      column(3, 
+                                                             selectInput("area.f_lbl", label = "Labels:", 
+                                                                         choices = list("abbrev. names & values" = "def", 
+                                                                                        "abbrev. names" = "abbr",
+                                                                                        "names only" = "nam",
+                                                                                        "values only" = "num",
+                                                                                        "names & values" = "namnum",
+                                                                                        "no labels" = "no"
+                                                                         ), 
+                                                                         selected = "num")),
+                                                      column(2, offset = 1, downloadButton("area.dl", label = "Save Area"))
+                                                  )
+                                              )
                                      ),
                                      #####
                                      # Icons

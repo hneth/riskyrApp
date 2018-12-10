@@ -436,7 +436,7 @@ shinyServer(function(input, output, session){
            type  = "table",
            col_pal = riskyr.colors(),
            by = input$table.by,
-           area = input$table.area,
+           area = input$table.p_split,
            f_lbl = input$table.f_lbl
       )
   }
@@ -448,6 +448,29 @@ shinyServer(function(input, output, session){
       content =  function(file){
           png(file, width = 550, height = 550)
           table()
+          dev.off()}
+  )
+  
+  
+  ## (3) Area: 
+  
+  area <- function(){
+      plot(riskyr.scenario(), 
+           type  = "area",
+           col_pal = riskyr.colors(),
+           by = input$area.by,
+           p_split = input$area.p_split,
+           f_lbl = input$area.f_lbl
+      )
+  }
+  
+  output$area <- renderPlot({ area() }) 
+  
+  output$area.dl <- downloadHandler(
+      filename = function() {paste0("riskyrApp_area_", gsub(":", "-", Sys.time()), ".png")},
+      content =  function(file){
+          png(file, width = 550, height = 550)
+          area()
           dev.off()}
   )
   
