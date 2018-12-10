@@ -521,25 +521,27 @@ shinyServer(function(input, output, session){
   )
   
   
-  ## (f) 2D plot of PPV and NPV as a function of prev.range:
+  ## (6): Curves
   
-  PVs <- function(){
-    riskyr::plot_curve(prev = env$prev, sens = env$sens, spec = env$spec,
-                       # show.PVprev = input$boxPVprev, 
-                       show.points = input$boxPVpoints1,
-                       log.scale = input$boxPVlog,
-                       what = c("prev", "PPV", "NPV", "acc", "ppod")[c(TRUE, TRUE, TRUE, input$boxPVacc, input$boxPVppod)],
-                       what.col = c(rgb(62, 63, 58, max = 255), cus$color.ppv, 
-                                    cus$color.npv, cus$color.hi, "rosybrown3")[c(TRUE, TRUE, TRUE, input$boxPVacc, input$boxPVppod)],
-                       title.lbl = cus$scenario.txt)}
+  curve <- function(){
+      plot(riskyr.scenario(), 
+           type  = "curve",
+           col_pal = riskyr.colors(),
+           what = c("prev", "PPV", "NPV", "acc", "ppod")[c(TRUE, TRUE, TRUE, input$curve.show_acc, input$curve.show_ppod)],
+           show_points = input$curve.show_points,
+           log_scale = input$curve.log_scale
+           # ,
+           # p_lbl = input$bar.f_lbl
+      )
+  }
   
-  output$PVs <- renderPlot({ PVs() })
+  output$curve <- renderPlot({ curve() })
   
-  output$PVsdl <- downloadHandler(
-    filename = function() {paste0("riskyrApp_predictive-value-curves_", gsub(":", "-", Sys.time()), ".png")},
+  output$curve.dl <- downloadHandler(
+    filename = function() {paste0("riskyrApp_curves_", gsub(":", "-", Sys.time()), ".png")},
     content =  function(file){
       png(file, width = 1250, height = 400)
-      PVs()
+        curve()
       dev.off()}
   )
   

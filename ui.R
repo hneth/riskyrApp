@@ -352,21 +352,20 @@ shinyUI(
                                      # Curves
                                      tabPanel("Curves", 
                                               br(),
-                                              paste0("Positive Predictive Value (PPV) and Negative Predictive Value (NPV) by prevalance:"), br(), br(),
                                               fluidRow(
-                                                column(8, offset = 2, plotOutput("PVs"))),
-                                              br(),
+                                                  column(12, offset = 0, plotOutput("curve"))),
                                               wellPanel(
-                                                fluidRow(
-                                                  # column(4, checkboxInput("boxPVprev", label = "Show current prevalence in plot", value = TRUE)),
-                                                  column(2, offset = 2, checkboxInput("boxPVpoints1", label = "Show point values", value = TRUE)),
-                                                  column(3, checkboxInput("boxPVlog", label = "Scale prevalence on logarithmic scale", value = FALSE))),
-                                                fluidRow(
-                                                  column(2, offset = 2, checkboxInput("boxPVacc", label = "Show accuracy (acc)", value = FALSE)),
-                                                  column(4, checkboxInput("boxPVppod", label = "Show proportion of positive decisions (ppod)", value = FALSE)),
-                                                  column(1, downloadButton("PVsdl", label = "Save Curves"))
-                                                )
-                                              )
+                                                  fluidRow(
+                                                      # column(4, checkboxInput("boxPVprev", label = "Show current prevalence in plot", value = TRUE)),
+                                                      column(2, offset = 2, checkboxInput("curve.show_points", label = "Show point values", value = TRUE)),
+                                                      column(3, checkboxInput("curve.log_scale", label = "Scale prevalence on logarithmic scale", value = FALSE))),
+                                                  fluidRow(
+                                                      column(2, offset = 2, checkboxInput("curve.show_acc", label = "Show accuracy (acc)", value = FALSE)),
+                                                      column(4, checkboxInput("curve.show_ppod", label = "Show proportion of positive decisions (ppod)", value = FALSE)),
+                                                      column(1, downloadButton("curve.dl", label = "Save Curves"))
+                                                  )
+                                                  )
+
                                      ),
                                      #####
                                      # Planes
