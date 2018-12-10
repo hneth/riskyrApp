@@ -27,6 +27,7 @@ default.colors <- c(color.hi =  rgb(128, 177,  57, max = 255),  # col.green.2
                     color.npv = rgb( 29, 149, 198, max = 255)   # col.blue.3
                     )
 
+
 ## logifySlider javascript function
 JS.logify <-
   "

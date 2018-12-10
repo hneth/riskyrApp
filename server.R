@@ -45,7 +45,6 @@ shinyServer(function(input, output, session){
   
   #####
   # define common data scructure
-    # riskyr.scenario <- reactiveValues(riskyr.scenario = NULL)
   ## Generate 4 data structures as lists of reactive elements:
   env <- reactiveValues(env = NULL) # Current ENVironment parameters
   freq <- reactiveValues(freq = NULL) # Calculated FREQuencies, based on parameters
@@ -75,6 +74,8 @@ shinyServer(function(input, output, session){
     color.ppv = default.colors["color.ppv"],
     color.npv = default.colors["color.npv"]
   )
+  
+  
 
 
   
@@ -292,13 +293,13 @@ shinyServer(function(input, output, session){
   ##### 
   # Create reactive riskyr.scenario object from inputs
   riskyr.scenario <- reactive({
-      riskyr(scen_lbl = "Example", 
+      riskyr(scen_lbl = "Example",
              cond_lbl = "Hustosis",
              dec_lbl = "Screening test",
-             popu_lbl = "Sample", 
+             popu_lbl = "Sample",
              N = env$N,  # population size (log scale)
-             prev = env$prev, 
-             sens = env$sens, 
+             prev = env$prev,
+             sens = env$sens,
              spec = env$spec
           )
       })
@@ -407,10 +408,13 @@ shinyServer(function(input, output, session){
   ## (1) Prism:
   
   prism <- function(){
-      plot_prism(riskyr.scenario(),
-                 by = input$prism.by,
-                 area = input$prism.area,
-                 f_lbl = input$prism.f_lbl)
+      plot(riskyr.scenario(), 
+           type  = "prism",
+           col_pal = riskyr.colors(),
+           by = input$prism.by,
+           area = input$prism.area,
+           f_lbl = input$prism.f_lbl
+           )
   }
 
   output$prism <- renderPlot({ prism() }) 
@@ -789,6 +793,7 @@ shinyServer(function(input, output, session){
     cus$color.cr <- input$color.cr
     cus$color.ppv <- input$color.ppv
     cus$color.npv <- input$color.npv
+    print(input$color.hi)
   })
 
   # Simplified display of sdt states
