@@ -37,6 +37,7 @@ default.colors <- c(color.hi  = rgb(128, 177,  57, max = 255),  # col.green.2
                     color.npv = rgb( 29, 149, 198, max = 255)   # col.blue.3
                     )
 
+riskyr.colors <- reactive({ init_pal() })
 
 #####
 ## Define server logic: ------
@@ -428,27 +429,27 @@ shinyServer(function(input, output, session){
     )
 
 
-  ## (a) Raw data table: 
+  ## (2) Table: 
   
-  rawdata <- function(){
-    if(input$sort == FALSE) {display <- popu()[sample(rownames(popu())), ]}
-    else display <- popu()[sort(as.numeric(rownames(popu()))), ]
-    display
+  table <- function(){
+      plot(riskyr.scenario(), 
+           type  = "table",
+           col_pal = riskyr.colors(),
+           by = input$table.by,
+           area = input$table.area,
+           f_lbl = input$table.f_lbl
+      )
   }
-    
-  output$rawdatatable <- DT::renderDataTable(DT::datatable({rawdata() }, options = list(lengthChange = TRUE)) %>%
-      formatStyle("STD", target = "row", backgroundColor = styleEqual(
-        levels = c(cus$sdt.hi.lbl, cus$sdt.mi.lbl, cus$sdt.fa.lbl, cus$sdt.cr.lbl),
-        values = c(cus$color.hi, cus$color.mi, cus$color.fa, cus$color.cr)))
-  )
   
-  output$rawdatadl <- downloadHandler(
-    filename = function() {paste0("riskyrApp_rawdata_", gsub(":", "-", Sys.time()), ".csv")},
-    content = function(file) {
-      write.csv(rawdata(), file, row.names = TRUE)
-    }
-  )
+  output$table <- renderPlot({ table() }) 
   
+  output$table.dl <- downloadHandler(
+      filename = function() {paste0("riskyrApp_table_", gsub(":", "-", Sys.time()), ".png")},
+      content =  function(file){
+          png(file, width = 550, height = 550)
+          table()
+          dev.off()}
+  )
   
   
   ## (b) Icon array:

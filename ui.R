@@ -197,25 +197,38 @@ shinyUI(
                                      # Table
                                      tabPanel("Table", 
                                               br(),
-                                              "Individual cases:", 
-                                              br(), br(),
-                                              
-                                              conditionalPanel(condition = "input.dataselection != 1",
-                                                               "Source:",
-                                                               verbatimTextOutput("sourceOutput")),
-                                              DT::dataTableOutput("rawdatatable"),
-                                              br(), br(),
+                                              fluidRow(
+                                                  column(8, offset = 2, plotOutput("table", width = "550", height = "550"))),
                                               wellPanel(
-                                                fluidRow(
-                                                  column(2, offset = 2,
-                                                         bsButton("sort", label = "Sort/Shuffle", value = TRUE, 
-                                                                  icon = icon("random", lib = "glyphicon"),
-                                                                  style = "default", type = "toggle")),
-                                                  column(2, offset = 2,
-                                                         downloadButton("rawdatadl", label = "Save Raw Data"))
-                                                )
-                                              ),
-                                              br()
+                                                  fluidRow(
+                                                      column(3, offset = 0,
+                                                             selectInput("table.by", label = "Build table by:", 
+                                                                         choices = list("condition and decision" = "cddc",
+                                                                                        "condition and accuracy" = "cdac",
+                                                                                        "decision and condition" = "dccd",
+                                                                                        "decision and accuracy" = "dcac",
+                                                                                        "accuracy and condition" = "accd",
+                                                                                        "accuracy and decision" = "acdc"),
+                                                                         selected = "cddc")
+                                                      ),
+                                                      column(3, 
+                                                             selectInput("table.area", label = "Type of Boxes", 
+                                                                         choices = list("default boxes" = "no", 
+                                                                                        "squares" = "sq"), 
+                                                                         selected = "no")),
+                                                      column(3, 
+                                                             selectInput("table.f_lbl", label = "Labels:", 
+                                                                         choices = list("abbrev. names & values" = "def", 
+                                                                                        "abbrev. names" = "abbr",
+                                                                                        "names only" = "nam",
+                                                                                        "values only" = "num",
+                                                                                        "names & values" = "namnum",
+                                                                                        "no labels" = "no"
+                                                                         ), 
+                                                                         selected = "num")),
+                                                      column(2, offset = 1, downloadButton("table.dl", label = "Save Table"))
+                                                  )
+                                              )
                                      ),
                                      # Area
                                      #####
