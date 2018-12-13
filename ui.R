@@ -614,7 +614,14 @@ shinyUI(
                                   style = "default", type = "action"),
                          bsButton("help_custom_colors", label = "Help",
                                   icon = icon("question-sign", lib = "glyphicon"),
-                                  style = "default", type = "action")
+                                  style = "default", type = "action"),
+                         selectInput("alt.palette", label = "Or select a pre-defined palette:",
+                                     choices = list("---" = "",
+                                                    "Only 4 colours" = "pal_4c",
+                                                    "Black & white" = "pal_bw",
+                                                    "Green, blue, sand" = "pal_gbs",
+                                                    "uni.kn" = "pal_kn",
+                                                    "Viridis" = "pal_vir"), selected = 1)
                        ),
                        
                        #####

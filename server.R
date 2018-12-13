@@ -68,14 +68,15 @@ shinyServer(function(input, output, session){
     sdt.hi.lbl = default.terminology[names(default.terminology) == "sdt.hi.lbl"],
     sdt.mi.lbl = default.terminology[names(default.terminology) == "sdt.mi.lbl"],
     sdt.fa.lbl = default.terminology[names(default.terminology) == "sdt.fa.lbl"],
-    sdt.cr.lbl = default.terminology[names(default.terminology) == "sdt.cr.lbl"],    
+    sdt.cr.lbl = default.terminology[names(default.terminology) == "sdt.cr.lbl"]
+    # ,    
     # colors
-    color.hi = default.colors["color.hi"],
-    color.mi = default.colors["color.mi"],
-    color.fa = default.colors["color.fa"],
-    color.cr = default.colors["color.cr"],
-    color.ppv = default.colors["color.ppv"],
-    color.npv = default.colors["color.npv"]
+    # color.hi = default.colors["color.hi"],
+    # color.mi = default.colors["color.mi"],
+    # color.fa = default.colors["color.fa"],
+    # color.cr = default.colors["color.cr"],
+    # color.ppv = default.colors["color.ppv"],
+    # color.npv = default.colors["color.npv"]
   )
   
   
@@ -849,6 +850,7 @@ shinyServer(function(input, output, session){
   # Reset colors to default: ------
   observeEvent(input$resetcustomcolor, {
 
+    updateSelectInput(session, "alt.palette", selected = 1)
     # reset colors on colorpickers
     updateColourInput(session, "color.N", value = as.character(default.colors["N"]))
     updateColourInput(session, "color.true", value = as.character(default.colors["true"]))
@@ -868,6 +870,35 @@ shinyServer(function(input, output, session){
     
   })
   
+  observeEvent(input$alt.palette,{
+      if (input$alt.palette != 1){ # if other than 1st option is selected
+      new.colors <- switch(input$alt.palette,
+                           pal_4c = pal_4c,
+                           pal_bw = pal_bw,
+                           pal_gbs = pal_gbs,
+                           pal_kn = pal_kn,
+                           pal_org = pal_org,
+                           pal_vir = pal_vir
+                           )
+      
+      updateColourInput(session, "color.N", value = as.character(new.colors["N"]))
+      updateColourInput(session, "color.true", value = as.character(new.colors["true"]))
+      updateColourInput(session, "color.false", value = as.character(new.colors["false"]))
+      updateColourInput(session, "color.pos", value = as.character(new.colors["pos"]))
+      updateColourInput(session, "color.neg", value = as.character(new.colors["neg"]))
+      updateColourInput(session, "color.cor", value = as.character(new.colors["corr"]))
+      updateColourInput(session, "color.err", value = as.character(new.colors["err"]))
+      updateColourInput(session, "color.hi", value = as.character(new.colors["hi"]))
+      updateColourInput(session, "color.mi", value = as.character(new.colors["mi"]))
+      updateColourInput(session, "color.fa", value = as.character(new.colors["fa"]))
+      updateColourInput(session, "color.cr", value = as.character(new.colors["cr"]))
+      updateColourInput(session, "color.ppv", value = as.character(new.colors["ppv"]))
+      updateColourInput(session, "color.npv", value = as.character(new.colors["npv"]))
+      updateColourInput(session, "color.txt", value = as.character(new.colors["txt"]))
+      updateColourInput(session, "color.brd", value = as.character(new.colors["brd"]))
+      }
+  })
+
   
 }
 )
