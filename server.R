@@ -28,17 +28,9 @@ datasets <- read.csv2("./www/examples_riskyrApp_2018-03-30.csv", stringsAsFactor
 # take defaults from example datasets stored in www folder
 default.parameters <- setNames(datasets[1, 2:5], names(datasets)[2:5])
 default.terminology <- setNames(datasets[1, 9:20], names(datasets)[9:20])
-# define default colors: 
-# default.colors <- c(color.hi  = rgb(128, 177,  57, max = 255),  # col.green.2
-#                     color.mi  = rgb(210,  52,  48, max = 255),  # col.red.2
-#                     color.fa  = rgb(230, 142, 140, max = 255),  # col.red.1 
-#                     color.cr  = rgb(184, 217, 137, max = 255),  # col.green.1 
-#                     color.ppv = rgb(242, 100,  24, max = 255),  # col.orange.2
-#                     color.npv = rgb( 29, 149, 198, max = 255)   # col.blue.3
-#                     )
-
 default.colors <- init_pal()
 
+# reactive color palette
 riskyr.colors <- reactive({ init_pal() })
 
 #####
@@ -69,14 +61,7 @@ shinyServer(function(input, output, session){
     sdt.mi.lbl = default.terminology[names(default.terminology) == "sdt.mi.lbl"],
     sdt.fa.lbl = default.terminology[names(default.terminology) == "sdt.fa.lbl"],
     sdt.cr.lbl = default.terminology[names(default.terminology) == "sdt.cr.lbl"]
-    # ,    
-    # colors
-    # color.hi = default.colors["color.hi"],
-    # color.mi = default.colors["color.mi"],
-    # color.fa = default.colors["color.fa"],
-    # color.cr = default.colors["color.cr"],
-    # color.ppv = default.colors["color.ppv"],
-    # color.npv = default.colors["color.npv"]
+
   )
   
   
@@ -594,7 +579,7 @@ shinyServer(function(input, output, session){
   )
 
   
-  ## (h) Contrasting two freely selectable representations
+  ## (h) Contrasting representations
   
   output$represent1 <- renderPlot({
     switch(input$represent1,
@@ -806,30 +791,13 @@ shinyServer(function(input, output, session){
   
   # Reset colors to default: ------
   observeEvent(input$resetcustomcolor, {
-
-    updateSelectInput(session, "alt.palette", selected = 1)
-    # reset colors on colorpickers
-    updateColourInput(session, "color.N", value = as.character(default.colors["N"]))
-    updateColourInput(session, "color.true", value = as.character(default.colors["true"]))
-    updateColourInput(session, "color.false", value = as.character(default.colors["false"]))
-    updateColourInput(session, "color.pos", value = as.character(default.colors["pos"]))
-    updateColourInput(session, "color.neg", value = as.character(default.colors["neg"]))
-    updateColourInput(session, "color.cor", value = as.character(default.colors["corr"]))
-    updateColourInput(session, "color.err", value = as.character(default.colors["err"]))
-    updateColourInput(session, "color.hi", value = as.character(default.colors["hi"]))
-    updateColourInput(session, "color.mi", value = as.character(default.colors["mi"]))
-    updateColourInput(session, "color.fa", value = as.character(default.colors["fa"]))
-    updateColourInput(session, "color.cr", value = as.character(default.colors["cr"]))
-    updateColourInput(session, "color.ppv", value = as.character(default.colors["ppv"]))
-    updateColourInput(session, "color.npv", value = as.character(default.colors["npv"]))
-    updateColourInput(session, "color.txt", value = as.character(default.colors["txt"]))
-    updateColourInput(session, "color.brd", value = as.character(default.colors["brd"]))
-    
+    updateSelectInput(session, "alt.palette", selected = "default")
   })
   
+  
   observeEvent(input$alt.palette,{
-      if (input$alt.palette != 1){ # if other than 1st option is selected
       new.colors <- switch(input$alt.palette,
+                           default = init_pal(),
                            pal_4c = pal_4c,
                            pal_bw = pal_bw,
                            pal_gbs = pal_gbs,
@@ -837,7 +805,6 @@ shinyServer(function(input, output, session){
                            pal_org = pal_org,
                            pal_vir = pal_vir
                            )
-      
       updateColourInput(session, "color.N", value = as.character(new.colors["N"]))
       updateColourInput(session, "color.true", value = as.character(new.colors["true"]))
       updateColourInput(session, "color.false", value = as.character(new.colors["false"]))
@@ -853,7 +820,6 @@ shinyServer(function(input, output, session){
       updateColourInput(session, "color.npv", value = as.character(new.colors["npv"]))
       updateColourInput(session, "color.txt", value = as.character(new.colors["txt"]))
       updateColourInput(session, "color.brd", value = as.character(new.colors["brd"]))
-      }
   })
 
   

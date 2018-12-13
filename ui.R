@@ -19,14 +19,7 @@ library("riskyr")
 ## Import ready-made and worked out example data: ------
 datasets <- read.csv2("./www/examples_riskyrApp_2018-03-30.csv", stringsAsFactors = FALSE)
 
-default.colors <- c(color.hi =  rgb(128, 177,  57, max = 255),  # col.green.2
-                    color.mi =  rgb(210,  52,  48, max = 255),  # col.red.2
-                    color.fa =  rgb(230, 142, 140, max = 255),  # col.red.1
-                    color.cr =  rgb(184, 217, 137, max = 255),  # col.green.1 
-                    color.ppv = rgb(242, 100,  24, max = 255),  # col.orange.2
-                    color.npv = rgb( 29, 149, 198, max = 255)   # col.blue.3
-                    )
-
+default.colors <- init_pal()
 
 ## logifySlider javascript function
 JS.logify <-
@@ -553,72 +546,80 @@ shinyUI(
                          br(),
                          fluidRow(
                              column(4, colourInput("color.hi", label = "Hits",
-                                     value = default.colors["color.hi"], showColour = "background",
+                                     value = default.colors["hi"], showColour = "background",
                                      palette = "square", allowedCols = NULL)),
                              column(4, colourInput("color.mi", label = "Misses",
-                                     value = default.colors["color.mi"], showColour = "background",
+                                     value = default.colors["mi"], showColour = "background",
                                      palette = "square", allowedCols = NULL)),
                              column(4, colourInput("color.pos", label = "Decision positive",
-                                                   value = "black", showColour = "background",
+                                                   value = default.colors["pos"], showColour = "background",
                                                    palette = "square", allowedCols = NULL))
                              ),
                          fluidRow(
                              column(4, colourInput("color.fa", label = "False alarms",
-                                     value = default.colors["color.fa"], showColour = "background",
+                                     value = default.colors["fa"], showColour = "background",
                                      palette = "square", allowedCols = NULL)),
                              column(4, colourInput("color.cr", label = "Correct rejections",
-                                     value = default.colors["color.cr"], showColour = "background",
+                                     value = default.colors["cr"], showColour = "background",
                                      palette = "square", allowedCols = NULL)),
                              column(4, colourInput("color.neg", label = "Decision negative",
-                                                   value = "black", showColour = "background",
+                                                   value = default.colors["neg"], showColour = "background",
                                                    palette = "square", allowedCols = NULL))
                              ),
                          fluidRow(
                              column(4, colourInput("color.true", label = "Condition true",
-                                                   value = "black", showColour = "background",
+                                                   value = default.colors["true"], showColour = "background",
                                                    palette = "square", allowedCols = NULL)),
                              column(4, colourInput("color.false", label = "Condition false",
-                                                   value = "black", showColour = "background",
+                                                   value = default.colors["false"], showColour = "background",
                                                    palette = "square", allowedCols = NULL)),
                              column(4, colourInput("color.N", label = "Population",
-                                                   value = "black", showColour = "background",
+                                                   value = default.colors["N"], showColour = "background",
                                                    palette = "square", allowedCols = NULL))
                          ),
                          br(),
                          br(),
                          fluidRow(
                              column(6, colourInput("color.txt", label = "Text",
-                                                   value = "black", showColour = "background",
+                                                   value = default.colors["txt"], showColour = "background",
                                                    palette = "square", allowedCols = NULL)),
                              column(6, colourInput("color.brd", label = "Lines",
-                                                   value = "black", showColour = "background",
+                                                   value = default.colors["brd"], showColour = "background",
                                                    palette = "square", allowedCols = NULL))
                          ),
                          br(), 
                          br(),
                          fluidRow(
                              column(6, colourInput("color.ppv", label = "Positive predictive value (PPV)",
-                                     value = default.colors["color.ppv"], showColour = "background",
+                                     value = default.colors["ppv"], showColour = "background",
                                      palette = "square", allowedCols = NULL)),
                              column(6, colourInput("color.npv", label = "Negative predictive value (NPV)",
-                                     value = default.colors["color.npv"], showColour = "background",
+                                     value = default.colors["npv"], showColour = "background",
                                      palette = "square", allowedCols = NULL))
                              ),
                          br(),
                          br(),
-                         bsButton("resetcustomcolor", label = "Reset default",
-                                  icon = icon("refresh", lib = "glyphicon"),
-                                  style = "default", type = "action"),
-                         bsButton("help_custom_colors", label = "Help",
-                                  icon = icon("question-sign", lib = "glyphicon"),
-                                  style = "default", type = "action"),
-                         selectInput("alt.palette", label = "Or select a pre-defined palette:",
-                                     choices = list("---" = "",
-                                                    "Only 4 colours" = "pal_4c",
-                                                    "Black & white" = "pal_bw",
-                                                    "Green, blue, sand" = "pal_gbs",
-                                                    "uni.kn" = "pal_kn",
-                                                    "Viridis" = "pal_vir"), selected = 1)
+                         fluidRow(
+                             column(3,                          
+                                    bsButton("resetcustomcolor", label = "Reset default",
+                                             icon = icon("refresh", lib = "glyphicon"),
+                                             style = "default", type = "action")
+                                    ),
+                             column(3,
+                                    bsButton("help_custom_colors", label = "Help",
+                                             icon = icon("question-sign", lib = "glyphicon"),
+                                             style = "default", type = "action")
+                                    ),
+                             column(6,
+                                    selectInput("alt.palette", label = "Or select a pre-defined palette:",
+                                                choices = list("---" = "default",
+                                                               "Only 4 colours" = "pal_4c",
+                                                               "Black & white" = "pal_bw",
+                                                               "Green, blue, sand" = "pal_gbs",
+                                                               "uni.kn" = "pal_kn",
+                                                               "Viridis" = "pal_vir"), selected = 1)
+                                    )
+                         )
                        ),
                        
                        #####
