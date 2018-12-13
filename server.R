@@ -763,49 +763,6 @@ shinyServer(function(input, output, session){
 
   })
 
-  
-  # Apply color selection
-  observeEvent(input$applycustomcolor, {
-    cus$color.hi <- input$color.hi
-    cus$color.mi <- input$color.mi
-    cus$color.fa <- input$color.fa
-    cus$color.cr <- input$color.cr
-    cus$color.ppv <- input$color.ppv
-    cus$color.npv <- input$color.npv
-    
-    riskyr.colors <- init_pal(hi_col = cus$color.hi)
-    
-    print(input$color.hi)
-    
-    # riskyr.colors <- reactive({ init_pal(hi_col = input$color.hi) })
-    # riskyr.colors[8] <- input$color.hi
-    
-    print(isolate(riskyr.colors()))
-    
-    # riskyr.colors()[8] <- input$color.hi
-    # 
-    # riskyr.colors <- reactive({
-    #     init_pal(
-    #         # N_col = ,
-    #         # cond.true_col = ,
-    #         # cond.false_col = ,
-    #         # dec.pos_col = ,
-    #         # dec.neg_col = ,
-    #         # dec.cor_col = ,
-    #         # dec.err_col = ,
-    #         hi_col = input$color.hi,
-    #         mi_col = input$color.mi,
-    #         fa_col = input$color.fa,
-    #         cr_col = input$color.cr,
-    #         PPV_col = input$color.ppv,
-    #         NPV_col = input$color.npv
-    #         # ,
-    #         # txt_col = ,
-    #         # brd_col = ,
-    #     )
-    # 
-    # })
-  })
 
   # Simplified display of sdt states
   output$sample.table <- renderPlot({
