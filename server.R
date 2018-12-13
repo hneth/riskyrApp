@@ -29,13 +29,15 @@ datasets <- read.csv2("./www/examples_riskyrApp_2018-03-30.csv", stringsAsFactor
 default.parameters <- setNames(datasets[1, 2:5], names(datasets)[2:5])
 default.terminology <- setNames(datasets[1, 9:20], names(datasets)[9:20])
 # define default colors: 
-default.colors <- c(color.hi  = rgb(128, 177,  57, max = 255),  # col.green.2
-                    color.mi  = rgb(210,  52,  48, max = 255),  # col.red.2
-                    color.fa  = rgb(230, 142, 140, max = 255),  # col.red.1 
-                    color.cr  = rgb(184, 217, 137, max = 255),  # col.green.1 
-                    color.ppv = rgb(242, 100,  24, max = 255),  # col.orange.2
-                    color.npv = rgb( 29, 149, 198, max = 255)   # col.blue.3
-                    )
+# default.colors <- c(color.hi  = rgb(128, 177,  57, max = 255),  # col.green.2
+#                     color.mi  = rgb(210,  52,  48, max = 255),  # col.red.2
+#                     color.fa  = rgb(230, 142, 140, max = 255),  # col.red.1 
+#                     color.cr  = rgb(184, 217, 137, max = 255),  # col.green.1 
+#                     color.ppv = rgb(242, 100,  24, max = 255),  # col.orange.2
+#                     color.npv = rgb( 29, 149, 198, max = 255)   # col.blue.3
+#                     )
+
+default.colors <- init_pal()
 
 riskyr.colors <- reactive({ init_pal() })
 
@@ -552,6 +554,7 @@ shinyServer(function(input, output, session){
       plot(riskyr.scenario(),
            type = "plane",
            what = "PPV",
+           col_pal = riskyr.colors(),
            show_point = input$plane.show_point,
            theta = input$theta, 
            phi = input$phi
@@ -572,6 +575,7 @@ shinyServer(function(input, output, session){
       plot(riskyr.scenario(),
            type = "plane",
            what = "NPV",
+           col_pal = riskyr.colors(),
            show_point = input$plane.show_point,
            theta = input$theta, 
            phi = input$phi
@@ -737,6 +741,28 @@ shinyServer(function(input, output, session){
 
   ## Customize colors: ------
 
+  riskyr.colors <- reactive({
+      init_pal(
+          N_col = input$color.N,
+          cond.true_col = input$color.true,
+          cond.false_col = input$color.false,
+          dec.pos_col = input$color.pos,
+          dec.neg_col = input$color.neg,
+          # dec.cor_col = input$colo,
+          # dec.err_col = ,
+          hi_col = input$color.hi,
+          mi_col = input$color.mi,
+          fa_col = input$color.fa,
+          cr_col = input$color.cr,
+          PPV_col = input$color.ppv,
+          NPV_col = input$color.npv,
+          txt_col = input$color.txt,
+          brd_col = input$color.brd
+      )
+
+  })
+
+  
   # Apply color selection
   observeEvent(input$applycustomcolor, {
     cus$color.hi <- input$color.hi
@@ -745,52 +771,101 @@ shinyServer(function(input, output, session){
     cus$color.cr <- input$color.cr
     cus$color.ppv <- input$color.ppv
     cus$color.npv <- input$color.npv
+    
+    riskyr.colors <- init_pal(hi_col = cus$color.hi)
+    
     print(input$color.hi)
+    
+    # riskyr.colors <- reactive({ init_pal(hi_col = input$color.hi) })
+    # riskyr.colors[8] <- input$color.hi
+    
+    print(isolate(riskyr.colors()))
+    
+    # riskyr.colors()[8] <- input$color.hi
+    # 
+    # riskyr.colors <- reactive({
+    #     init_pal(
+    #         # N_col = ,
+    #         # cond.true_col = ,
+    #         # cond.false_col = ,
+    #         # dec.pos_col = ,
+    #         # dec.neg_col = ,
+    #         # dec.cor_col = ,
+    #         # dec.err_col = ,
+    #         hi_col = input$color.hi,
+    #         mi_col = input$color.mi,
+    #         fa_col = input$color.fa,
+    #         cr_col = input$color.cr,
+    #         PPV_col = input$color.ppv,
+    #         NPV_col = input$color.npv
+    #         # ,
+    #         # txt_col = ,
+    #         # brd_col = ,
+    #     )
+    # 
+    # })
   })
 
   # Simplified display of sdt states
-  output$sampleplot <- renderPlot({
-    par(pty="s")
-    plot(c(0,2), c(0,2), type="n", xaxt='n', yaxt='n', ann=FALSE)
-    rect(xleft = c(0, 1, 0, 1), ybottom = c(0, 0, 1, 1), 
-         xright = c(1, 2, 1, 2), ytop = c(1, 1, 2, 2),
-         col = c(cus$color.mi, cus$color.cr, cus$color.hi, cus$color.fa))
-    text(x = c(0.5, 1.5, 0.5, 1.5), y = c(1.5, 1.5, 0.5, 0.5), col = "black",
-         labels = c("hit", "false alarm", "miss", "correct\nrejection"), cex = 1.1)
+  output$sample.table <- renderPlot({
+    
+      plot(riskyr.scenario(),
+           col_pal = riskyr.colors(),
+           type = "table",
+           f_lbl = "nam",
+           # title_lbl = NA,
+           mar_notes = FALSE)
+      
+      
   })
   
+  # Simplified display of sdt states
+  output$sample.prism <- renderPlot({
+      
+      plot(riskyr.scenario(),
+           col_pal = riskyr.colors(),
+           type = "prism",
+           f_lbl = "nam",
+           # title_lbl = NA,
+           mar_notes = FALSE)
+      
+      
+  })
+
   # Simplified plot with PPV and NPV curves
-  output$sampleplotcurves <- renderPlot({
-    par(pty="s")
-    plot(c(0,1), c(0,1), type= "n", xaxt='n', yaxt='n', ann=FALSE)
-    # plot  simplified PPV curve
-    curve((x * 0.85)/((x * 0.85) +  (1-x)*0.25), from = 0, to = 1, n = 1000,
-          lwd = 3, col = cus$color.ppv, add = TRUE)
-    # plot simplified NPV curve
-    curve(((1-x)*0.75)/(((1-x)*0.75) + (x * 0.15)), from = 0, to = 1, n = 1000, 
-          add = TRUE, lwd = 3, col = cus$color.npv)
-    # legend
-    legend("bottom", lwd = c(3, 3), bty = "n", legend = c("PPV", "NPV"),
-           col = c(cus$color.ppv, cus$color.npv))
+  output$sample.curves <- renderPlot({
+     
+      plot(riskyr.scenario(),
+           col_pal = riskyr.colors(),
+           type = "curve",
+           f_lbl = "nam",
+           show_points = FALSE,
+           # title_lbl = NA,
+           mar_notes = FALSE)
+      
   })
 
   
   # Reset colors to default: ------
   observeEvent(input$resetcustomcolor, {
-    # reset colors in background
-    cus$color.hi <- default.colors["color.hi"]
-    cus$color.mi <- default.colors["color.mi"]
-    cus$color.fa <- default.colors["color.fa"]
-    cus$color.cr <- default.colors["color.cr"]
-    cus$color.ppv <- default.colors["color.ppv"]
-    cus$color.npv <- default.colors["color.npv"]
+
     # reset colors on colorpickers
-    updateColourInput(session, "color.hi", value = as.character(default.colors["color.hi"]))
-    updateColourInput(session, "color.mi", value = as.character(default.colors["color.mi"]))
-    updateColourInput(session, "color.fa", value = as.character(default.colors["color.fa"]))
-    updateColourInput(session, "color.cr", value = as.character(default.colors["color.cr"]))
-    updateColourInput(session, "color.ppv", value = as.character(default.colors["color.ppv"]))
-    updateColourInput(session, "color.npv", value = as.character(default.colors["color.npv"]))
+    updateColourInput(session, "color.N", value = as.character(default.colors["N"]))
+    updateColourInput(session, "color.true", value = as.character(default.colors["true"]))
+    updateColourInput(session, "color.false", value = as.character(default.colors["false"]))
+    updateColourInput(session, "color.pos", value = as.character(default.colors["pos"]))
+    updateColourInput(session, "color.neg", value = as.character(default.colors["neg"]))
+    updateColourInput(session, "color.cor", value = as.character(default.colors["corr"]))
+    updateColourInput(session, "color.err", value = as.character(default.colors["err"]))
+    updateColourInput(session, "color.hi", value = as.character(default.colors["hi"]))
+    updateColourInput(session, "color.mi", value = as.character(default.colors["mi"]))
+    updateColourInput(session, "color.fa", value = as.character(default.colors["fa"]))
+    updateColourInput(session, "color.cr", value = as.character(default.colors["cr"]))
+    updateColourInput(session, "color.ppv", value = as.character(default.colors["ppv"]))
+    updateColourInput(session, "color.npv", value = as.character(default.colors["npv"]))
+    updateColourInput(session, "color.txt", value = as.character(default.colors["txt"]))
+    updateColourInput(session, "color.brd", value = as.character(default.colors["brd"]))
+    
   })
   
   

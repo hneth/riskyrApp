@@ -371,7 +371,6 @@ shinyUI(
                                      # Planes
                                      tabPanel("Planes", 
                                               br(),
-                                              paste0("Predictive values (PPV/NPV) by sensitivity and specificity:"), br(), br(),
                                               fluidRow(
                                                 column(6, plotOutput("plane.ppv")),
                                                 column(6, plotOutput("plane.npv"))
@@ -552,25 +551,60 @@ shinyUI(
                          # Inputs for color customization:
                          h3("Choose your own colors!"),
                          br(),
-                         colourInput("color.hi", label = "Choose the color for hits",
+                         fluidRow(
+                             column(4, colourInput("color.hi", label = "Hits",
                                      value = default.colors["color.hi"], showColour = "background",
-                                     palette = "square", allowedCols = NULL),
-                         colourInput("color.mi", label = "Choose the color for miss",
+                                     palette = "square", allowedCols = NULL)),
+                             column(4, colourInput("color.mi", label = "Misses",
                                      value = default.colors["color.mi"], showColour = "background",
-                                     palette = "square", allowedCols = NULL),
-                         colourInput("color.fa", label = "Choose the color for false alarm",
+                                     palette = "square", allowedCols = NULL)),
+                             column(4, colourInput("color.pos", label = "Decision positive",
+                                                   value = "black", showColour = "background",
+                                                   palette = "square", allowedCols = NULL))
+                             ),
+                         fluidRow(
+                             column(4, colourInput("color.fa", label = "False alarms",
                                      value = default.colors["color.fa"], showColour = "background",
-                                     palette = "square", allowedCols = NULL),
-                         colourInput("color.cr", label = "Choose the color for correct rejection",
+                                     palette = "square", allowedCols = NULL)),
+                             column(4, colourInput("color.cr", label = "Correct rejections",
                                      value = default.colors["color.cr"], showColour = "background",
-                                     palette = "square", allowedCols = NULL),
+                                     palette = "square", allowedCols = NULL)),
+                             column(4, colourInput("color.neg", label = "Decision negative",
+                                                   value = "black", showColour = "background",
+                                                   palette = "square", allowedCols = NULL))
+                             ),
+                         fluidRow(
+                             column(4, colourInput("color.true", label = "Condition true",
+                                                   value = "black", showColour = "background",
+                                                   palette = "square", allowedCols = NULL)),
+                             column(4, colourInput("color.false", label = "Condition false",
+                                                   value = "black", showColour = "background",
+                                                   palette = "square", allowedCols = NULL)),
+                             column(4, colourInput("color.N", label = "Population",
+                                                   value = "black", showColour = "background",
+                                                   palette = "square", allowedCols = NULL))
+                         ),
                          br(),
-                         colourInput("color.ppv", label = "Color for the positive predictive value (PPV)",
+                         br(),
+                         fluidRow(
+                             column(6, colourInput("color.txt", label = "Text",
+                                                   value = "black", showColour = "background",
+                                                   palette = "square", allowedCols = NULL)),
+                             column(6, colourInput("color.brd", label = "Lines",
+                                                   value = "black", showColour = "background",
+                                                   palette = "square", allowedCols = NULL))
+                         ),
+                         br(), 
+                         br(),
+                         fluidRow(
+                             column(6, colourInput("color.ppv", label = "Positive predictive value (PPV)",
                                      value = default.colors["color.ppv"], showColour = "background",
-                                     palette = "square", allowedCols = NULL),
-                         colourInput("color.npv", label = "Color for the negative predictive value (NPV)",
+                                     palette = "square", allowedCols = NULL)),
+                             column(6, colourInput("color.npv", label = "Negative predictive value (NPV)",
                                      value = default.colors["color.npv"], showColour = "background",
-                                     palette = "square", allowedCols = NULL),
+                                     palette = "square", allowedCols = NULL))
+                             ),
+                         br(),
                          br(),
                          bsButton("applycustomcolor", label = "Customize!",
                                   icon = icon("wrench", lib = "glyphicon"),
@@ -586,9 +620,10 @@ shinyUI(
                        #####
                        ## Main panel for displaying preview plots with colors:
                        mainPanel(h3("Here are simplified preview plots of your colors:"),
-                                 "Click the 'Customize' button to update your color selection.",
-                                 fluidRow(column(3, plotOutput("sampleplot")),
-                                          column(3, plotOutput("sampleplotcurves"))
+                                 fluidRow(offset = 1,
+                                     column(5, plotOutput("sample.table")),
+                                     # column(4, plotOutput("sample.prism")),
+                                     column(5, plotOutput("sample.curves"))
                                  )
                        )
                      )
