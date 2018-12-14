@@ -132,7 +132,7 @@ shinyUI(
                          ## Provide existing data sets as drop-down list:
                          selectInput("dataselection", label = "Or view an example:", 
                                      choices = setNames(as.list(1:nrow(datasets)), # create choices from datasets
-                                                        datasets$dataset), 
+                                                        datasets$scen_lbl), 
                                      selected = 1),
                          
                          bsButton("help_inputs", label = "Help",
