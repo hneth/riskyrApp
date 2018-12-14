@@ -469,43 +469,43 @@ shinyUI(
                          fluidRow(
                            column(6, textInput("popu_lbl",
                                                label = "Description of population:",
-                                               value = "Population description")),
+                                               value = default.labels$popu_lbl)),
                            column(6, textInput("scen_txt",
                                                label = "Description of scenario:",
-                                               value = "Generic Example"))
+                                               value = default.labels$scen_txt))
                          ),
                          br(),
                          textInput("cond_lbl",
                                    label = "Condition name:",
-                                   value = "Current condition"),
+                                   value = default.labels$cond_lbl),
                          fluidRow(
                            column(6, textInput("cond.true_lbl",
                                                label = "Condition true",
-                                               value = "Condition true")),
+                                               value = default.labels$cond.true_lbl)),
                            column(6, textInput("cond.false_lbl",
                                                label = "Condition false",
-                                               value = "Condition false"))
+                                               value = default.labels$cond.false_lbl))
                          ),
                          br(),
                          textInput("dec_lbl",
                                    label = "Decision",
-                                   value = "Diagnostic decision"),
+                                   value = default.labels$dec_lbl),
                          fluidRow(
                            column(6, textInput("dec.pos_lbl",
-                                               label = "Decision positive",
+                                               label = default.labels$dec.pos_lbl,
                                                value = "Decision positive")),
                            column(6, textInput("dec.neg_lbl",
-                                               label = "Decision negative",
+                                               label = default.labels$dec.neg_lbl,
                                                value = "Decision negative"))
                          ),
                          br(),
                          fluidRow(
-                           column(6, textInput("hi_lbl", label = "Hit", value = "hit")),
-                           column(6, textInput("mi_lbl", label = "Miss", value = "miss"))
+                           column(6, textInput("hi_lbl", label = "Hit", value = default.labels$hi_lbl)),
+                           column(6, textInput("mi_lbl", label = "Miss", value = default.labels$mi_lbl))
                          ),
                          fluidRow(
-                           column(6, textInput("fa_lbl", label = "False alarm", value = "false alarm")),
-                           column(6, textInput("cr_lbl", label = "Correct rejection", value = "correct rejection"))
+                           column(6, textInput("fa_lbl", label = "False alarm", value = default.labels$fa_lbl)),
+                           column(6, textInput("cr_lbl", label = "Correct rejection", value = default.labels$cr_lbl))
                          ),
                          br(),
                          bsButton("applycustomlabel", label = "Customize!",
