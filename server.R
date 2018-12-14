@@ -29,9 +29,13 @@ datasets <- read.csv2("./www/examples_riskyrApp_2018-03-30.csv", stringsAsFactor
 default.parameters <- setNames(datasets[1, 2:5], names(datasets)[2:5])
 default.terminology <- setNames(datasets[1, 9:20], names(datasets)[9:20])
 default.colors <- init_pal()
+default.labels <- init_txt()
 
 # reactive color palette
 riskyr.colors <- reactive({ init_pal() })
+
+# reactive labels
+riskyr.labels <- reactive({ init_txt() })
 
 #####
 ## Define server logic: ------
@@ -282,14 +286,31 @@ shinyServer(function(input, output, session){
   ##### 
   # Create reactive riskyr.scenario object from inputs
   riskyr.scenario <- reactive({
-      riskyr(scen_lbl = "Example",
-             cond_lbl = "Hustosis",
-             dec_lbl = "Screening test",
-             popu_lbl = "Sample",
-             N = env$N,  # population size (log scale)
-             prev = env$prev,
-             sens = env$sens,
-             spec = env$spec
+      riskyr(
+          # scen_lbl = input$scen_lbl,
+          scen_txt = input$scenario_txt,
+          # scen_src = input$scen_src,
+          # scen_apa = input$scen_apa,
+          # scen_lng = input$scen_lng,
+          popu_lbl = input$popu_lbl,
+          # N_lbl = input$N_lbl,
+          cond_lbl = input$cond_lbl,
+          cond.true_lbl = input$cond.true_lbl,
+          cond.false_lbl = input$cond.false_lbl,
+          dec_lbl = input$dec_lbl,
+          dec.pos_lbl = input$dec.pos_lbl,
+          dec.neg_lbl = input$dec.neg_lbl,
+          # acc_lbl = input$acc_lbl,
+          # dec.cor_lbl = input$dec.cor_lbl,
+          # dec.err_lbl= input$dec.err_lbl,
+          # sdt_lbl = input$sdt_lbl,
+          hi_lbl = input$hi_lbl,
+          mi_lbl = input$mi_lbl,
+          fa_lbl = input$fa_lbl,
+          cr_lbl = input$cr_lbl,
+          prev = env$prev,
+          sens = env$sens,
+          spec = env$spec
           )
       })
 
@@ -400,6 +421,7 @@ shinyServer(function(input, output, session){
       plot(riskyr.scenario(), 
            type  = "prism",
            col_pal = riskyr.colors(),
+           # lbl_txt = riskyr.labels(),
            by = input$prism.by,
            area = input$prism.area,
            f_lbl = input$prism.f_lbl

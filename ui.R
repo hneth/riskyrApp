@@ -21,6 +21,7 @@ datasets <- read.csv2("./www/examples_riskyrApp_2018-03-30.csv", stringsAsFactor
 
 default.colors <- init_pal()
 
+
 ## logifySlider javascript function
 JS.logify <-
   "
@@ -466,45 +467,45 @@ shinyUI(
                          h3("Use your own labels!"),
                          br(),
                          fluidRow(
-                           column(6, textInput("target.population.lbl",
+                           column(6, textInput("popu_lbl",
                                                label = "Description of population:",
                                                value = "Population description")),
-                           column(6, textInput("scenario.txt",
+                           column(6, textInput("scen_txt",
                                                label = "Description of scenario:",
                                                value = "Generic Example"))
                          ),
                          br(),
-                         textInput("condition.lbl",
+                         textInput("cond_lbl",
                                    label = "Condition name:",
                                    value = "Current condition"),
                          fluidRow(
-                           column(6, textInput("cond.true.lbl",
+                           column(6, textInput("cond.true_lbl",
                                                label = "Condition true",
                                                value = "Condition true")),
-                           column(6, textInput("cond.false.lbl",
+                           column(6, textInput("cond.false_lbl",
                                                label = "Condition false",
                                                value = "Condition false"))
                          ),
                          br(),
-                         textInput("decision.lbl",
+                         textInput("dec_lbl",
                                    label = "Decision",
                                    value = "Diagnostic decision"),
                          fluidRow(
-                           column(6, textInput("dec.true.lbl",
+                           column(6, textInput("dec.pos_lbl",
                                                label = "Decision positive",
                                                value = "Decision positive")),
-                           column(6, textInput("dec.false.lbl",
+                           column(6, textInput("dec.neg_lbl",
                                                label = "Decision negative",
                                                value = "Decision negative"))
                          ),
                          br(),
                          fluidRow(
-                           column(6, textInput("sdt.hi.lbl", label = "Hit", value = "hit")),
-                           column(6, textInput("sdt.mi.lbl", label = "Miss", value = "miss"))
+                           column(6, textInput("hi_lbl", label = "Hit", value = "hit")),
+                           column(6, textInput("mi_lbl", label = "Miss", value = "miss"))
                          ),
                          fluidRow(
-                           column(6, textInput("sdt.fa.lbl", label = "False alarm", value = "false alarm")),
-                           column(6, textInput("sdt.cr.lbl", label = "Correct rejection", value = "correct rejection"))
+                           column(6, textInput("fa_lbl", label = "False alarm", value = "false alarm")),
+                           column(6, textInput("cr_lbl", label = "Correct rejection", value = "correct rejection"))
                          ),
                          br(),
                          bsButton("applycustomlabel", label = "Customize!",
