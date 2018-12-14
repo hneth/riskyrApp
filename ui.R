@@ -1,11 +1,10 @@
 # ui.R
-# riskyrApp | R Shiny | spds, uni.kn | 2018 12 07
+# riskyrApp | R Shiny | spds, uni.kn | 2018 12 14
 
 ## Dependencies: ------
 library("shiny")
 library("shinyBS")
 library("markdown")
-library("DT")
 library("colourpicker")
 
 
@@ -17,7 +16,7 @@ library("riskyr")
 # sessionInfo()
 
 ## Import ready-made and worked out example data: ------
-datasets <- read.csv2("./www/examples_riskyrApp_2018-03-30.csv", stringsAsFactors = FALSE)
+datasets <- read.csv2("./www/df_scenarios_riskyrApp_2018-12-14.csv", stringsAsFactors = FALSE)
 
 default.colors <- init_pal()
 
