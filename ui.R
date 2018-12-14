@@ -136,7 +136,7 @@ shinyUI(
                                                         datasets$dataset), 
                                      selected = 1),
                          
-                         bsButton("help_represent", label = "Help",
+                         bsButton("help_inputs", label = "Help",
                                   icon = icon("question-sign", lib = "glyphicon"),
                                   style = "default", type = "action")
                          
@@ -350,7 +350,6 @@ shinyUI(
                                                   column(12, offset = 0, plotOutput("curve"))),
                                               wellPanel(
                                                   fluidRow(
-                                                      # column(4, checkboxInput("boxPVprev", label = "Show current prevalence in plot", value = TRUE)),
                                                       column(2, offset = 2, checkboxInput("curve.show_points", label = "Show point values", value = TRUE)),
                                                       column(3, checkboxInput("curve.log_scale", label = "Scale prevalence on logarithmic scale", value = FALSE))),
                                                   fluidRow(
@@ -606,7 +605,6 @@ shinyUI(
                                                    palette = "square", allowedCols = NULL))
                          ),
                          br(), br(),
-                         # br(), br(),
                          fluidRow(
                              column(6,
                                     selectInput("alt.palette", label = "Or select a pre-defined palette:",
@@ -619,7 +617,6 @@ shinyUI(
                              )
                          ),
                          br(),
-                         # br(),
                          fluidRow(
                              column(3,                          
                                     bsButton("resetcustomcolor", label = "Reset default",
@@ -706,14 +703,11 @@ shinyUI(
              
              # On Download buttons
              
-             bsTooltip(id = list("fnetdl", "iconarraydl", "nftreedl", "mosaicplotdl", "PVsdl", "PV3dPPVdl", "PV3dNPVdl"),
+             bsTooltip(id = list("prism.dl", "table.dl", "area.dl", "icons.dl", "bar.dl", "curve.dl", 
+                                 "plane.ppv.dl", "plane.npv.dl"),
                        title = "Click this button to download and save the graph as .png file.",
-                       placement = "above", trigger = "hover", options = list(container = "body")),
-             
-             
-             bsTooltip(id = list("rawdatadl", "confusiontabledl"),
-                       title = "Click this button to download and save the table as .csv file.",
-                       placement = "above", trigger = "hover", options = list(container = "body"))
+                       placement = "left", trigger = "hover", options = list(container = "body"))
+
 
   )
 )
