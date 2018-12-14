@@ -544,17 +544,18 @@ shinyUI(
                              column(4, colourInput("color.hi", label = "Hits",
                                      value = default.colors["hi"], showColour = "background",
                                      palette = "square", allowedCols = NULL)),
-                             column(4, colourInput("color.mi", label = "Misses",
-                                     value = default.colors["mi"], showColour = "background",
-                                     palette = "square", allowedCols = NULL)),
+                             column(4, colourInput("color.fa", label = "False alarms",
+                                                   value = default.colors["fa"], showColour = "background",
+                                                   palette = "square", allowedCols = NULL)),
+
                              column(4, colourInput("color.pos", label = "Decision positive",
                                                    value = default.colors["pos"], showColour = "background",
                                                    palette = "square", allowedCols = NULL))
                              ),
                          fluidRow(
-                             column(4, colourInput("color.fa", label = "False alarms",
-                                     value = default.colors["fa"], showColour = "background",
-                                     palette = "square", allowedCols = NULL)),
+                             column(4, colourInput("color.mi", label = "Misses",
+                                                   value = default.colors["mi"], showColour = "background",
+                                                   palette = "square", allowedCols = NULL)),
                              column(4, colourInput("color.cr", label = "Correct rejections",
                                      value = default.colors["cr"], showColour = "background",
                                      palette = "square", allowedCols = NULL)),
@@ -573,18 +574,9 @@ shinyUI(
                                                    value = default.colors["N"], showColour = "background",
                                                    palette = "square", allowedCols = NULL))
                          ),
-                         br(),
-                         br(),
-                         fluidRow(
-                             column(6, colourInput("color.txt", label = "Text",
-                                                   value = default.colors["txt"], showColour = "background",
-                                                   palette = "square", allowedCols = NULL)),
-                             column(6, colourInput("color.brd", label = "Lines",
-                                                   value = default.colors["brd"], showColour = "background",
-                                                   palette = "square", allowedCols = NULL))
-                         ),
-                         br(), 
-                         br(),
+                         br(), br(),
+                         br(), br(),
+                         br(), br(),
                          fluidRow(
                              column(6, colourInput("color.ppv", label = "Positive predictive value (PPV)",
                                      value = default.colors["ppv"], showColour = "background",
@@ -593,8 +585,29 @@ shinyUI(
                                      value = default.colors["npv"], showColour = "background",
                                      palette = "square", allowedCols = NULL))
                              ),
+                         fluidRow(
+                             column(6, colourInput("color.txt", label = "Text",
+                                                   value = default.colors["txt"], showColour = "background",
+                                                   palette = "square", allowedCols = NULL)),
+                             column(6, colourInput("color.brd", label = "Lines",
+                                                   value = default.colors["brd"], showColour = "background",
+                                                   palette = "square", allowedCols = NULL))
+                         ),
+                         br(), br(),
+                         # br(), br(),
+                         fluidRow(
+                             column(6,
+                                    selectInput("alt.palette", label = "Or select a pre-defined palette:",
+                                                choices = list("---" = "default",
+                                                               "Only 4 colours" = "pal_4c",
+                                                               "Black & white" = "pal_bw",
+                                                               "Green, blue, sand" = "pal_gbs",
+                                                               "uni.kn" = "pal_kn",
+                                                               "Viridis" = "pal_vir"), selected = 1)
+                             )
+                         ),
                          br(),
-                         br(),
+                         # br(),
                          fluidRow(
                              column(3,                          
                                     bsButton("resetcustomcolor", label = "Reset default",
@@ -605,27 +618,23 @@ shinyUI(
                                     bsButton("help_custom_colors", label = "Help",
                                              icon = icon("question-sign", lib = "glyphicon"),
                                              style = "default", type = "action")
-                                    ),
-                             column(6,
-                                    selectInput("alt.palette", label = "Or select a pre-defined palette:",
-                                                choices = list("---" = "default",
-                                                               "Only 4 colours" = "pal_4c",
-                                                               "Black & white" = "pal_bw",
-                                                               "Green, blue, sand" = "pal_gbs",
-                                                               "uni.kn" = "pal_kn",
-                                                               "Viridis" = "pal_vir"), selected = 1)
                                     )
+                             
                          )
                        ),
                        
                        #####
                        ## Main panel for displaying preview plots with colors:
-                       mainPanel(h3("Here are simplified preview plots of your colors:"),
-                                 fluidRow(offset = 1,
-                                     column(5, plotOutput("sample.table")),
-                                     # column(4, plotOutput("sample.prism")),
-                                     column(5, plotOutput("sample.curves"))
-                                 )
+                       mainPanel(
+                           br(),
+                           h3("Previews for your color selection:"),
+                           fluidRow(offset = 1,
+                                    column(6, plotOutput("sample.table"))
+                                    ),
+                           br(),
+                           fluidRow(
+                               column(6, plotOutput("sample.curves"))
+                               )
                        )
                      )
             ),

@@ -657,27 +657,8 @@ shinyServer(function(input, output, session){
   
   
   #####
-  ## Customization tab
+  ### Customization tab
   ## Customize labels
-  
-  # Apply label selection
-  observeEvent(input$applycustomlabel, {
-    cus$target.population.lbl <- input$target.population.lbl
-    cus$scenario.txt <- input$scenario.txt
-    # (a) Condition
-    cus$condition.lbl <- input$condition.lbl 
-    cus$cond.true.lbl <- input$cond.true.lbl 
-    cus$cond.false.lbl <- input$cond.false.lbl 
-    # (b) Decisions:
-    cus$decision.lbl <- input$decision.lbl 
-    cus$dec.true.lbl <- input$dec.true.lbl 
-    cus$dec.false.lbl <- input$dec.false.lbl 
-    # (c) sdt cases (combinations):
-    cus$sdt.hi.lbl <- input$sdt.hi.lbl 
-    cus$sdt.mi.lbl <- input$sdt.mi.lbl 
-    cus$sdt.fa.lbl <- input$sdt.fa.lbl 
-    cus$sdt.cr.lbl <- input$sdt.cr.lbl 
-  })
   
   # Reset labels to default
   observeEvent(input$resetcustomlabel, {
@@ -704,7 +685,6 @@ shinyServer(function(input, output, session){
     updateTextInput(session, "cr_lbl", value = default.labels$cr_lbl)
   })
 
-
   output$previewlabels <- renderPlot({
       plot(riskyr.scenario(),
            type = "prism",
@@ -717,7 +697,7 @@ shinyServer(function(input, output, session){
   })
 
 
-  ## Customize colors: ------
+  ## Customize colors
 
   riskyr.colors <- reactive({
       init_pal(
@@ -737,39 +717,31 @@ shinyServer(function(input, output, session){
           txt_col = input$color.txt,
           brd_col = input$color.brd
       )
-
   })
 
 
-  # Simplified display of sdt states
+  # Simplified display of table
   output$sample.table <- renderPlot({
-    
       plot(riskyr.scenario(),
            col_pal = riskyr.colors(),
            type = "table",
            f_lbl = "nam",
            # title_lbl = NA,
            mar_notes = FALSE)
-      
-      
   })
   
-  # Simplified display of sdt states
+  # Simplified display of prism
   output$sample.prism <- renderPlot({
-      
       plot(riskyr.scenario(),
            col_pal = riskyr.colors(),
            type = "prism",
            f_lbl = "nam",
            # title_lbl = NA,
            mar_notes = FALSE)
-      
-      
   })
 
   # Simplified plot with PPV and NPV curves
   output$sample.curves <- renderPlot({
-     
       plot(riskyr.scenario(),
            col_pal = riskyr.colors(),
            type = "curve",
@@ -777,16 +749,15 @@ shinyServer(function(input, output, session){
            show_points = FALSE,
            # title_lbl = NA,
            mar_notes = FALSE)
-      
   })
 
   
-  # Reset colors to default: ------
+  # Reset colors to default
   observeEvent(input$resetcustomcolor, {
     updateSelectInput(session, "alt.palette", selected = "default")
   })
   
-  
+  # Integrated alternative palettes
   observeEvent(input$alt.palette,{
       new.colors <- switch(input$alt.palette,
                            default = init_pal(),
