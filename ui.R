@@ -467,50 +467,57 @@ shinyUI(
                          h3("Use your own labels!"),
                          br(),
                          fluidRow(
-                           column(6, textInput("popu_lbl",
-                                               label = "Description of population:",
-                                               value = default.labels$popu_lbl)),
-                           column(6, textInput("scen_txt",
-                                               label = "Description of scenario:",
-                                               value = default.labels$scen_txt))
+                           column(6, textInput("scen_lbl",
+                                               label = "Label for scenario:",
+                                               value = default.labels$scen_lbl))
+                           # ,
+                           # column(6, textInput("scen_txt",
+                                               # label = "Description of scenario:",
+                                               # value = default.labels$scen_txt))
                          ),
                          br(),
-                         textInput("cond_lbl",
-                                   label = "Condition name:",
-                                   value = default.labels$cond_lbl),
                          fluidRow(
-                           column(6, textInput("cond.true_lbl",
+                             # column(6, textInput("N_lbl",
+                             #                     label = "Label for population:",
+                             #                     value = default.labels$N_lbl))
+                             # ,
+                             column(6, textInput("popu_lbl",
+                                                 label = "Description of population:",
+                                                 value = default.labels$popu_lbl))
+                         ),
+                         br(),
+                         fluidRow(
+                             column(4, textInput("cond_lbl",
+                                                 label = "Condition name:",
+                                                 value = default.labels$cond_lbl)),
+                           column(4, textInput("cond.true_lbl",
                                                label = "Condition true",
                                                value = default.labels$cond.true_lbl)),
-                           column(6, textInput("cond.false_lbl",
+                           column(4, textInput("cond.false_lbl",
                                                label = "Condition false",
                                                value = default.labels$cond.false_lbl))
                          ),
                          br(),
-                         textInput("dec_lbl",
-                                   label = "Decision",
-                                   value = default.labels$dec_lbl),
                          fluidRow(
-                           column(6, textInput("dec.pos_lbl",
-                                               label = default.labels$dec.pos_lbl,
-                                               value = "Decision positive")),
-                           column(6, textInput("dec.neg_lbl",
-                                               label = default.labels$dec.neg_lbl,
-                                               value = "Decision negative"))
+                           column(3, textInput("hi_lbl", label = "Hit", value = default.labels$hi_lbl)),
+                           column(3, textInput("mi_lbl", label = "Miss", value = default.labels$mi_lbl)),
+                           column(3, textInput("fa_lbl", label = "False alarm", value = default.labels$fa_lbl)),
+                           column(3, textInput("cr_lbl", label = "Correct rejection", value = default.labels$cr_lbl))
                          ),
                          br(),
                          fluidRow(
-                           column(6, textInput("hi_lbl", label = "Hit", value = default.labels$hi_lbl)),
-                           column(6, textInput("mi_lbl", label = "Miss", value = default.labels$mi_lbl))
+                             column(4, textInput("dec_lbl",
+                                                 label = "Decision",
+                                                 value = default.labels$dec_lbl)),
+                             column(4, textInput("dec.pos_lbl",
+                                                 label = "Decision positive",
+                                                 value = default.labels$dec.pos_lbl)),
+                             column(4, textInput("dec.neg_lbl",
+                                                 label = "Decision negative",
+                                                 value = default.labels$dec.neg_lbl))
                          ),
-                         fluidRow(
-                           column(6, textInput("fa_lbl", label = "False alarm", value = default.labels$fa_lbl)),
-                           column(6, textInput("cr_lbl", label = "Correct rejection", value = default.labels$cr_lbl))
-                         ),
-                         br(),
-                         bsButton("applycustomlabel", label = "Customize!",
-                                  icon = icon("wrench", lib = "glyphicon"),
-                                  style = "default", type = "action"),
+                         br(), br(),
+                         br(), br(),
                          bsButton("resetcustomlabel", label = "Reset default",
                                   icon = icon("refresh", lib = "glyphicon"),
                                   style = "default", type = "action"),
@@ -521,10 +528,15 @@ shinyUI(
                        
                        #####
                        ## Main panel for displaying preview of labels:
-                       mainPanel(h3("Here is a simplified preview of your labels:"),
-                                 "Click the 'Customize' button to update your selection of labels to build your own case study.",
-                                 br(),
-                                 plotOutput("previewlabels", width = "800", height = "750")
+                       mainPanel(
+                           br(),
+                           h3("Preview for your labels:"),
+                           br(), br(),
+                           fluidRow(offset = 1,
+                               column(6, plotOutput("previewlabels", width = "800", height = "650")
+                                      )
+                           )
+
                        )
                      )
             ),
@@ -627,7 +639,7 @@ shinyUI(
                        ## Main panel for displaying preview plots with colors:
                        mainPanel(
                            br(),
-                           h3("Previews for your color selection:"),
+                           h3("Previews for your colors:"),
                            fluidRow(offset = 1,
                                     column(6, plotOutput("sample.table"))
                                     ),

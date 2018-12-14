@@ -287,7 +287,7 @@ shinyServer(function(input, output, session){
   # Create reactive riskyr.scenario object from inputs
   riskyr.scenario <- reactive({
       riskyr(
-          # scen_lbl = input$scen_lbl,
+          scen_lbl = input$scen_lbl,
           scen_txt = input$scenario_txt,
           # scen_src = input$scen_src,
           # scen_apa = input$scen_apa,
