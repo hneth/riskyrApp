@@ -714,38 +714,16 @@ shinyServer(function(input, output, session){
     
   })
 
+
   output$previewlabels <- renderPlot({
-    
-    M <- matrix(nrow = 10, ncol = 11, byrow = TRUE, data = 0)
-    M[2:3, 1] <- M[4:5, 2] <- M[6:7, 3] <- M[4, 8] <- ""
-    M[6, 8] <- M[5, 9] <-  M[7, 9] <-  M[8:9, 10] <- ""
-    
-    diagram::plotmat(M, pos = c(1, 2, 4, 2, 1), curve = 0, lwd = 1,
-                     box.type = "rect", relsize = 0.98, arr.pos = 0.5, 
-                     box.prop = 1/2,
-                     arr.length = 0.2, arr.type = "triangle", arr.width = 0.15,
-                     box.col = "lightgrey", shadow.size = 0,
-                     lcol = rgb(62, 63, 58, max = 255),
-                     name = c(cus$target.population.lbl,
-                              paste0(cus$condition.lbl, ":\n",
-                                     cus$cond.true.lbl),
-                              paste0(cus$condition.lbl, ":\n",
-                                     cus$cond.false.lbl),
-                              cus$sdt.hi.lbl,
-                              cus$sdt.mi.lbl,
-                              cus$sdt.fa.lbl,  
-                              cus$sdt.cr.lbl,
-                              paste0(cus$decision.lbl, ":\n",
-                                     cus$dec.true.lbl),
-                              paste0(cus$decision.lbl, ":\n",
-                                     cus$dec.false.lbl),
-                             cus$target.population.lbl
-                              )
-    )
-    
-    
+      plot(riskyr.scenario(),
+           type = "prism",
+           col_pal = riskyr.colors(),
+           f_lbl = "nam",
+           mar_notes = FALSE
+      ) 
   })
-  
+
 
   ## Customize colors: ------
 
