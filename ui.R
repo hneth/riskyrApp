@@ -407,7 +407,8 @@ shinyUI(
                                                                                     "Bars" = "bar",
                                                                                     "Curves" = "curve",
                                                                                     "Plane PPV" = "plane.ppv",
-                                                                                    "Plane NPV" = "plane.npv"))
+                                                                                    "Plane NPV" = "plane.npv"),
+                                                                     selected = "prism")
                                                   ),
                                                   column(3,
                                                          selectInput("represent2", label = "Selection representation 2:", 
@@ -418,7 +419,8 @@ shinyUI(
                                                                                     "Bars" = "bar",
                                                                                     "Curves" = "curve",
                                                                                     "Plane PPV" = "plane.ppv",
-                                                                                    "Plane NPV" = "plane.npv"))
+                                                                                    "Plane NPV" = "plane.npv"),
+                                                                     selected = "table")
                                                   ),
                                                   column(3,
                                                          selectInput("represent3", label = "Selection representation 3:", 
@@ -429,7 +431,8 @@ shinyUI(
                                                                                     "Bars" = "bar",
                                                                                     "Curves" = "curve",
                                                                                     "Plane PPV" = "plane.ppv",
-                                                                                    "Plane NPV" = "plane.npv"))
+                                                                                    "Plane NPV" = "plane.npv"),
+                                                                     selected = "icons")
                                                   ),
                                                   column(3,
                                                          selectInput("represent4", label = "Selection representation 4:", 
@@ -440,7 +443,8 @@ shinyUI(
                                                                                     "Bars" = "bar",
                                                                                     "Curves" = "curve",
                                                                                     "Plane PPV" = "plane.ppv",
-                                                                                    "Plane NPV" = "plane.npv"))
+                                                                                    "Plane NPV" = "plane.npv"),
+                                                                     selected = "bar")
                                                   )
                                                 )
                                               )
