@@ -681,37 +681,27 @@ shinyServer(function(input, output, session){
   
   # Reset labels to default
   observeEvent(input$resetcustomlabel, {
-    cus$target.population.lbl <- as.character(default.terminology[names(default.terminology) == "target.population.lbl"])
-    cus$scenario.txt <- as.character(default.terminology[names(default.terminology) == "scenario.txt"])
-    # (a) Condition
-    cus$condition.lbl <- as.character(default.terminology[names(default.terminology) == "condition.lbl"])
-    cus$cond.true.lbl <- default.terminology[names(default.terminology) == "cond.true.lbl"]
-    cus$cond.false.lbl <- default.terminology[names(default.terminology) == "cond.false.lbl"]
-    # (b) Decisions:
-    cus$decision.lbl <- default.terminology[names(default.terminology) == "decision.lbl"]
-    cus$dec.true.lbl <- default.terminology[names(default.terminology) == "dec.true.lbl"]
-    cus$dec.false.lbl <- default.terminology[names(default.terminology) == "dec.false.lbl"]
-    # (c) sdt cases (combinations):
-    cus$sdt.hi.lbl <- default.terminology[names(default.terminology) == "sdt.hi.lbl"]
-    cus$sdt.mi.lbl <- default.terminology[names(default.terminology) == "sdt.mi.lbl"]
-    cus$sdt.fa.lbl <- default.terminology[names(default.terminology) == "sdt.fa.lbl"]
-    cus$sdt.cr.lbl <- default.terminology[names(default.terminology) == "sdt.cr.lbl"]
-    updateTextInput(session, "target.population.lbl", value = default.terminology[["target.population.lbl"]])
-    updateTextInput(session, "scenario.txt", value = default.terminology[["scenario.txt"]])
-    # (a) Condition
-    updateTextInput(session, "condition.lbl", value = default.terminology[["condition.lbl"]])
-    updateTextInput(session, "cond.true.lbl", value = default.terminology[["cond.true.lbl"]])
-    updateTextInput(session, "cond.false.lbl", value = default.terminology[["cond.false.lbl"]])
-    # (b) Decisions:
-    updateTextInput(session, "decision.lbl", value = default.terminology[["decision.lbl"]])
-    updateTextInput(session, "dec.true.lbl", value = default.terminology[["dec.true.lbl"]])
-    updateTextInput(session, "dec.false.lbl", value = default.terminology[["dec.false.lbl"]])
-    # (c) sdt cases (combinations):
-    updateTextInput(session, "sdt.hi.lbl", value = default.terminology[["sdt.hi.lbl"]])
-    updateTextInput(session, "sdt.mi.lbl", value = default.terminology[["sdt.mi.lbl"]])
-    updateTextInput(session, "sdt.fa.lbl", value = default.terminology[["sdt.fa.lbl"]])
-    updateTextInput(session, "sdt.cr.lbl", value = default.terminology[["sdt.cr.lbl"]])
-    
+    updateTextInput(session, "scen_lbl", value = default.labels$scen_lbl)
+    updateTextInput(session, "scen_txt", value = default.labels$scen_txt)
+    updateTextInput(session, "scen_src", value = default.labels$scen_src)
+    updateTextInput(session, "scen_apa", value = default.labels$scen_apa)
+    updateTextInput(session, "scen_lng", value = default.labels$scen_lng)
+    updateTextInput(session, "popu_lbl", value = default.labels$popu_lbl)
+    updateTextInput(session, "N_lbl", value = default.labels$N_lbl)
+    updateTextInput(session, "cond_lbl", value = default.labels$cond_lbl)
+    updateTextInput(session, "cond.true_lbl", value = default.labels$cond.true_lbl)
+    updateTextInput(session, "cond.false_lbl", value = default.labels$cond.false_lbl)
+    updateTextInput(session, "dec_lbl", value = default.labels$dec_lbl)
+    updateTextInput(session, "dec.pos_lbl", value = default.labels$dec.pos_lbl)
+    updateTextInput(session, "dec.neg_lbl", value = default.labels$dec.neg_lbl)
+    updateTextInput(session, "acc_lbl", value = default.labels$acc_lbl)
+    updateTextInput(session, "dec.cor_lbl", value = default.labels$dec.cor_lbl)
+    updateTextInput(session, "dec.err_lbl", value = default.labels$dec.err_lbl)
+    updateTextInput(session, "sdt_lbl", value = default.labels$sdt_lbl)
+    updateTextInput(session, "hi_lbl", value = default.labels$hi_lbl)
+    updateTextInput(session, "mi_lbl", value = default.labels$mi_lbl)
+    updateTextInput(session, "fa_lbl", value = default.labels$fa_lbl)
+    updateTextInput(session, "cr_lbl", value = default.labels$cr_lbl)
   })
 
 
@@ -720,7 +710,9 @@ shinyServer(function(input, output, session){
            type = "prism",
            col_pal = riskyr.colors(),
            f_lbl = "nam",
-           mar_notes = FALSE
+           mar_notes = FALSE,
+           p_lbl = NULL,
+           arr_c = 0
       ) 
   })
 

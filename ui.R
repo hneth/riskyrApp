@@ -524,11 +524,6 @@ shinyUI(
                        mainPanel(h3("Here is a simplified preview of your labels:"),
                                  "Click the 'Customize' button to update your selection of labels to build your own case study.",
                                  br(),
-                                 # br(),
-                                 # textOutput("labeltext"),
-                                 # br(),
-                                 # tableOutput("labeltable"),
-                                 # br(),
                                  plotOutput("previewlabels", width = "800", height = "750")
                        )
                      )
