@@ -19,7 +19,7 @@ library("riskyr")
 # sessionInfo()
 
 ## Import ready-made and worked out example data: ------
-datasets <- read.csv2("./www/examples_riskyrApp_2018-03-30.csv", stringsAsFactors = FALSE)
+datasets <- read.csv2("./www/df_scenarios_riskyrApp_2018-12-14.csv", stringsAsFactors = FALSE)
 
 ##### 
 ## Define defaults
@@ -51,7 +51,6 @@ shinyServer(function(input, output, session){
   #####
   # create modals with tutorial/help contents
 
-  
   inputs_modal <- modalDialog(
     title = "Inputs", 
     br(),
@@ -190,16 +189,9 @@ shinyServer(function(input, output, session){
   #####
   # Integrate worked out examples:
   # NEW:
-  observeEvent({
-    input$dataselection
-    input$dataselection2 }, {
-      if(input$tabs == "stats") {
-        updateSelectInput(session, "dataselection", selected = input$dataselection2)
-      }
-      if(input$tabs == "represent") {
-        updateSelectInput(session, "dataselection2", selected = input$dataselection)
-      }
-      if (input$dataselection != 1 | input$dataselection2 != 1) { # if 1st option is not ("---")
+  observeEvent(
+    input$dataselection, {
+      if (input$dataselection != 1) { # if 1st option is not ("---")
         # update all sliders
         updateSliderInput(session, "N", value = round(log10(datasets[input$dataselection, "N" ]), 0))
         updateSliderInput(session, "sens", value = datasets[input$dataselection, "sens" ])
@@ -208,41 +200,20 @@ shinyServer(function(input, output, session){
         updateNumericInput(session, "numprev",value = datasets[input$dataselection, "prev"])
         updateSliderInput(session, "spec", value = datasets[input$dataselection, "spec" ])
         updateNumericInput(session, "numspec", value = datasets[input$dataselection, "spec" ])
-        # display source
-        output$sourceOutput <- renderText(datasets[input$dataselection, "source"]) 
         # set labels
-        updateTextInput(session, "target.population.lbl", value = datasets[input$dataselection, "target.population.lbl"])
+        updateTextInput(session, "scen_lbl", value = datasets[input$dataselection, "scen_lbl"])
+        updateTextInput(session, "popu_lbl", value = datasets[input$dataselection, "popu_lbl"])
+        updateTextInput(session, "cond_lbl", value = datasets[input$dataselection, "cond_lbl"])
+        updateTextInput(session, "cond.true_lbl", value = datasets[input$dataselection, "cond.true_lbl"])
+        updateTextInput(session, "cond.false_lbl", value = datasets[input$dataselection, "cond.false_lbl"])
+        updateTextInput(session, "dec_lbl", value = datasets[input$dataselection, "dec_lbl"])
+        updateTextInput(session, "dec.pos_lbl", value = datasets[input$dataselection, "dec.pos_lbl"])
+        updateTextInput(session, "dec.neg_lbl", value = datasets[input$dataselection, "dec.neg_lbl"])
+        updateTextInput(session, "hi_lbl", value = datasets[input$dataselection, "hi_lbl"])
+        updateTextInput(session, "mi_lbl", value = datasets[input$dataselection, "mi_lbl"])
+        updateTextInput(session, "fa_lbl", value = datasets[input$dataselection, "fa_lbl"])
+        updateTextInput(session, "cr_lbl", value = datasets[input$dataselection, "cr_lbl"])
         updateTextInput(session, "scenario.txt", value = datasets[input$dataselection, "scenario.txt"])
-        
-        cus$target.population.lbl <- datasets[input$dataselection, "target.population.lbl"]
-        cus$scenario.txt <- datasets[input$dataselection, "scenario.txt"]
-        # (a) Condition
-        updateTextInput(session, "condition.lbl", value = datasets[input$dataselection, "condition.lbl"])
-        updateTextInput(session, "cond.true.lbl", value = datasets[input$dataselection, "cond.true.lbl"])
-        updateTextInput(session, "cond.false.lbl", value = datasets[input$dataselection, "cond.false.lbl"])
-        
-        cus$condition.lbl <- datasets[input$dataselection, "condition.lbl"]
-        cus$cond.true.lbl <- datasets[input$dataselection, "cond.true.lbl"]
-        cus$cond.false.lbl <- datasets[input$dataselection, "cond.false.lbl"]
-        # (b) Decisions:
-        updateTextInput(session, "decision.lbl", value = datasets[input$dataselection, "decision.lbl"])
-        updateTextInput(session, "dec.true.lbl", value = datasets[input$dataselection, "dec.true.lbl"] )
-        updateTextInput(session, "dec.false.lbl", value = datasets[input$dataselection, "dec.false.lbl"] )
-        
-        
-        cus$decision.lbl <- datasets[input$dataselection, "decision.lbl"]
-        cus$dec.true.lbl <- datasets[input$dataselection, "dec.true.lbl"]
-        cus$dec.false.lbl <- datasets[input$dataselection, "dec.false.lbl"]
-        # (c) sdt cases (combinations):
-        updateTextInput(session, "sdt.hi.lbl", value = datasets[input$dataselection, "sdt.hi.lbl"])
-        updateTextInput(session, "sdt.mi.lbl", value = datasets[input$dataselection, "sdt.mi.lbl"])
-        updateTextInput(session, "sdt.fa.lbl", value = datasets[input$dataselection, "sdt.fa.lbl"])
-        updateTextInput(session, "sdt.cr.lbl", value = datasets[input$dataselection, "sdt.cr.lbl"])
-
-        cus$sdt.hi.lbl <- datasets[input$dataselection, "sdt.hi.lbl"]
-        cus$sdt.mi.lbl <- datasets[input$dataselection, "sdt.mi.lbl"]
-        cus$sdt.fa.lbl <- datasets[input$dataselection, "sdt.fa.lbl"]
-        cus$sdt.cr.lbl <- datasets[input$dataselection, "sdt.cr.lbl"]
         }
   }, ignoreInit = TRUE)
 
