@@ -1,5 +1,5 @@
 # server.R
-# riskyrApp | R Shiny | spds, uni.kn | 2018 12 07
+# riskyrApp | R Shiny | spds, uni.kn | 2018 12 14
 
 
 ## Clean up: ------
@@ -24,11 +24,10 @@ datasets <- read.csv2("./www/df_scenarios_riskyrApp_2018-12-14.csv", stringsAsFa
 ##### 
 ## Define defaults
 
-# take defaults from example datasets stored in www folder
-default.parameters <- setNames(datasets[1, 2:5], names(datasets)[2:5])
-default.terminology <- setNames(datasets[1, 9:20], names(datasets)[9:20])
+# take default colors and labels from riskyr package
 default.colors <- init_pal()
 default.labels <- init_txt()
+
 
 # reactive color palette
 riskyr.colors <- reactive({ init_pal() })
@@ -188,7 +187,6 @@ shinyServer(function(input, output, session){
 
   #####
   # Integrate worked out examples:
-  # NEW:
   observeEvent(
     input$dataselection, {
       if (input$dataselection != 1) { # if 1st option is not ("---")
@@ -346,8 +344,6 @@ shinyServer(function(input, output, session){
            what = c("prev", "PPV", "NPV", "acc", "ppod")[c(TRUE, TRUE, TRUE, input$curve.show_acc, input$curve.show_ppod)],
            show_points = input$curve.show_points,
            log_scale = input$curve.log_scale
-           # ,
-           # p_lbl = input$bar.f_lbl
       )
   }
   
@@ -463,7 +459,6 @@ shinyServer(function(input, output, session){
   
   
   #####
-  ### Customization tab
   ## Customize labels
   
   # Reset labels to default
@@ -491,6 +486,7 @@ shinyServer(function(input, output, session){
     updateTextInput(session, "cr_lbl", value = default.labels$cr_lbl)
   })
 
+  # Prism for previewing labels
   output$previewlabels <- renderPlot({
       plot(riskyr.scenario(),
            type = "prism",
