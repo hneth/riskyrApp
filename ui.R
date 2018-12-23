@@ -62,11 +62,13 @@ shinyUI(
              theme = "bootstrap.sandstone.css",
              id = "tabs",
              
-             ## Tab panel: ------         
+             ## Tab panel: ------ 
+             
              tabPanel("Visualize risks",
                       icon = icon("blackboard", lib = "glyphicon"), value = "represent",
                       
                       ## Sidebar: ------ 
+                      
                       sidebarLayout(
                         
                         # Sidebar panel for inputs: ---- 
@@ -79,47 +81,56 @@ shinyUI(
                                       value = 3, round = FALSE
                           ),
                           br(),
+                          
                           radioButtons("checkprev", label = "Prevalence (in percent)", 
                                        choiceNames = list("Slider", "Field"),
                                        choiceValues = c(0, 1), inline = TRUE
                           ),
+                          
                           conditionalPanel(condition = "input.checkprev == 0",
                                            sliderInput("prev",  label = NULL, sep = "",
                                                        value = 15, min = 0, max = 100, step = 1,
                                                        pre = NULL, post = "%"
                                            )
                           ),
+                          
                           conditionalPanel(condition = "input.checkprev == 1", 
                                            numericInput("numprev", label = NULL, value = 15,
                                                         min = 0, max = 100, step = 10^-2
                                            )
                           ),
                           br(),
+                          
                           radioButtons("checksens", label = "Sensitivity (in percent)", 
                                        choiceNames = list("Slider", "Field"),
                                        choiceValues = c(0, 1), inline = TRUE
                           ),
+                          
                           conditionalPanel(condition = "input.checksens == 0",
                                            sliderInput("sens", label = NULL, sep = "", value = 85.00,
                                                        min = 0, max = 100, step = 1,
                                                        pre = NULL, post = "%"
                                            )
                           ),
+                          
                           conditionalPanel(condition = "input.checksens == 1", 
                                            numericInput("numsens", label = NULL, value = 85.00,
                                                         min = 0, max = 100, step = 10^-2
                                            )
                           ),
+                          
                           radioButtons("checkspec", label = "Specificity (in percent)", 
                                        choiceNames = list("Slider", "Field"),
                                        choiceValues = c(0, 1), inline = TRUE
                           ),
+                          
                           conditionalPanel(condition = "input.checkspec == 0",
                                            sliderInput("spec", label = NULL, sep = "", value = 75,
                                                        min = 0, max = 100, step = 1,
                                                        pre = NULL, post = "%"
                                            )
                           ),
+                          
                           conditionalPanel(condition = "input.checkspec == 1", 
                                            numericInput("numspec", label = NULL, value = 75,
                                                         min = 0, max = 100, step = 10^-2
@@ -127,7 +138,8 @@ shinyUI(
                           ),
                           br(), 
                           
-                          ## Provide existing data sets as drop-down list:
+                          ## Provide existing data sets as drop-down list: ------ 
+                          
                           selectInput("dataselection", label = "Load example:", 
                                       choices = setNames(as.list(1:nrow(datasets)), # create choices from datasets
                                                          datasets$scen_lbl), 
@@ -282,7 +294,7 @@ shinyUI(
                                                                                      "Fill top" = "filltop",
                                                                                      "Scattered" = "scatter"), 
                                                                       selected = "array")),
-                                                   column(2, offset = 6, downloadButton("icons.dl", label = "Save Icon Array"))
+                                                   column(2, offset = 6, downloadButton("icons.dl", label = "Save icons"))
                                                  ), 
                                                  br(),
                                                  fluidRow(
@@ -535,7 +547,7 @@ shinyUI(
                                    style = "default", type = "action")
                         ),
                         
-                        ## Main panel for displaying preview of labels: ------ 
+                        # Main panel for displaying preview of labels: ------ 
                         mainPanel(
                           br(),
                           h3("Preview of current text labels"),
@@ -642,7 +654,7 @@ shinyUI(
                         ),
                         
                       
-                        ## Main panel for displaying preview plots with colors: ---- 
+                        # Main panel for displaying preview plots with colors: ---- 
                         mainPanel(
                           br(),
                           h3("Preview of current colors"),
@@ -689,7 +701,7 @@ shinyUI(
              ),
              
              
-             ## Tooltips: ------ 
+             # Tooltips: ------ 
              
              # On inputs
              bsTooltip(id = list("N", "numN"), 

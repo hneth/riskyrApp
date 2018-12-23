@@ -109,7 +109,6 @@ shinyServer(function(input, output, session){
       updateNumericInput(session, "numsens", value = env$recalc.sens)
     })
   
-  
   observeEvent({
     input$numsens }, {
       env$sens <- input$numsens/100
@@ -325,7 +324,7 @@ shinyServer(function(input, output, session){
   output$curve.dl <- downloadHandler(
     filename = function() {paste0("riskyrApp_curves_", gsub(":", "-", Sys.time()), ".png")},
     content =  function(file){
-      png(file, width = 800, height = 550)
+      png(file, width = 750, height = 550)
       curve()
       dev.off()}
   )
@@ -553,7 +552,6 @@ shinyServer(function(input, output, session){
     updateColourInput(session, "color.txt", value = as.character(new.colors["txt"]))
     updateColourInput(session, "color.brd", value = as.character(new.colors["brd"]))
   })
-  
   
 }
 )
