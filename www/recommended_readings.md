@@ -1,7 +1,7 @@
 
 ## Recommended readings
 
-For further information on the transparent representation of risk and heuristic decision making, we recommend the following articles:
+For further details on the transparent representation of risk-related information and on heuristic decision making, we recommend the following articles: 
 
 - Arkes, H. R., & Gaissmaier, W. (2012). 
 Psychological research and the prostate-cancer screening controversy. 
@@ -72,3 +72,5 @@ _Journal of Experimental Psychology: General_, _130_, 380–400.
 - Wassner, C., Martignon, L., & Biehler, R. (2004). 
 Bayesianisches Denken in der Schule. 
 _Unterrichtswissenschaft_, _32_, 58–96.
+
+<!-- eof. --> 

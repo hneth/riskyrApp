@@ -1,16 +1,16 @@
 
-## About
+
+
+### About
 
 <!-- uni.kn logo and link to SPDS: -->  
-<!-- ![](./inst/pix/uniKn_logo.png) --> 
 
-<!-- <a href="https://www.spds.uni-konstanz.de/">
-<img src = "./www/uniKn_logo_s.png" alt = "spds.uni.kn" align = "right" width = "200" style = "width: 200px; float: right; border:20;"/>
---> 
-<!-- <img src = "./www/uniKn_logo_s.png" alt = "spds.uni.kn" style = "float: right; border:20;"/> --> 
-<!-- </a> --> 
+<a href="https://www.spds.uni-konstanz.de/">
+<img src = "../www/uniKn_logo_s.png" alt = "spds.uni.kn" align = "right" width = "250" style = "width: 250px; float: right; border:20;"/>
+</a>
 
 `riskyr` originated out of a series of lectures and workshops on risk literacy in spring/summer 2017. 
+
 The current version (`riskyr` 0.1.0, as of Feb. 19, 2018) is still under development. 
 Its primary developers and designers are 
 [Hansjörg Neth](https://www.spds.uni-konstanz.de/hans-neth), 
@@ -21,30 +21,29 @@ who are researchers at the department of
 [Social Psychology and Decision Sciences](https://www.spds.uni-konstanz.de) at the 
 [University of Konstanz](https://www.uni-konstanz.de/en/), Germany. 
 
+- Most recent release version: <https://CRAN.R-project.org/package=riskyr> 
+
+- Current development version: <https://github.com/hneth/riskyr/>
+
 The `riskyr` package is open source software written in [R](https://www.r-project.org/) and released under the 
 [GPL 2](https://tldrlegal.com/license/gnu-general-public-license-v2) | 
-[GPL 3](https://tldrlegal.com/license/gnu-general-public-license-v3-(gpl-3)) licenses. 
-
-Please email at <contact.riskyr@gmail.com>  in case you want to use, adapt, or share this software.
+[GPL 3](https://tldrlegal.com/license/gnu-general-public-license-v3-(gpl-3) licenses.
 
 ### Contact
 
+<!-- riskyr logo: -->  
+
+<a href = "https://github.com/hneth/riskyr">
+<img src = "../www/riskyr_cube_s.png" alt = "riskyr logo" title = "riskyr" width = "180px" align = "right" style = "float:right; border:20; width:180px;"/>
+</a>
+
 We appreciate your feedback, comments, or questions. 
 
-- Please report any `riskyr`-related issues at <https://github.com/hneth/riskyr/issues>.
+- Report any `riskyr`-related issues at <https://github.com/hneth/riskyr/issues>.
 
 - For general inquiries, please email us at <contact.riskyr@gmail.com>. 
 
 ### Reference
-
-<!-- riskyr logo: 
-<a href = "https://github.com/hneth/riskyr">
-<img alt = "riskyr logo" title = "riskyr" src = "./www/riskyr_cube_s.png" width = "180px" align = "right" style = "float:right; border:20; width:180px;"/>
--->  
-</a> 
-<!-- <img src = "./inst/pix/riskyr_cube_s.png" alt = "riskyr" align = "right" style = "float: right; border:20;"/> -->
-<!-- ![riskyr](./inst/pix/riskyr_cube_s.png) --> 
-<!-- knitr::include_graphics("./inst/pix/riskyr_cube_s.png") -->
 
 To cite `riskyr` in derivations and publications please use:
 
@@ -67,3 +66,5 @@ A BibTeX entry for LaTeX users is:
       }    
     
 Calling `citation("riskyr")` in the package also displays this information.
+
+<!-- eof. --> 
