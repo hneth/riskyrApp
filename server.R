@@ -325,7 +325,7 @@ shinyServer(function(input, output, session){
   output$curve.dl <- downloadHandler(
     filename = function() {paste0("riskyrApp_curves_", gsub(":", "-", Sys.time()), ".png")},
     content =  function(file){
-      png(file, width = 1000, height = 500)
+      png(file, width = 800, height = 550)
       curve()
       dev.off()}
   )

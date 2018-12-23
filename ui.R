@@ -305,7 +305,7 @@ shinyUI(
                                                )
                                       ),
                                       
-                                      # Bars: 
+                                      # Bars: ---- 
                                       tabPanel("Bars", 
                                                br(),
                                                fluidRow(
@@ -387,10 +387,10 @@ shinyUI(
                                       tabPanel("Compare", 
                                                br(),
                                                fluidRow(
-                                                 column(6, plotOutput("represent1", width = "550", height = "275")),
-                                                 column(6, plotOutput("represent2", width = "550", height = "275")),
-                                                 column(6, plotOutput("represent3", width = "550", height = "275")),
-                                                 column(6, plotOutput("represent4", width = "550", height = "275"))
+                                                 column(6, plotOutput("represent1", width = "450", height = "300")),
+                                                 column(6, plotOutput("represent2", width = "450", height = "300")),
+                                                 column(6, plotOutput("represent3", width = "450", height = "300")),
+                                                 column(6, plotOutput("represent4", width = "450", height = "300"))
                                                ),
                                                br(),
                                                br(),
@@ -631,17 +631,17 @@ shinyUI(
                           )
                         ),
                         
-                        #####
-                        ## Main panel for displaying preview plots with colors:
+                      
+                        ## Main panel for displaying preview plots with colors: ---- 
                         mainPanel(
                           br(),
                           h3("Previews for your colors:"),
                           fluidRow(offset = 1,
-                                   column(6, plotOutput("sample.table"))
+                                   column(6, plotOutput("sample.table", width = "500", height = "400"))
                           ),
                           br(),
                           fluidRow(
-                            column(6, plotOutput("sample.curves"))
+                            column(6, plotOutput("sample.curves", width = "500", height = "400"))
                           )
                         )
                       )
