@@ -1,17 +1,12 @@
 # riskyrApp
 
-
-
 The `riskyrApp` is an interactive `R Shiny` application that complements the R package `riskyr`. 
-
-
 
 ## Goal
 
 The goal of the `riskyrApp` is to communicate and explain common risk literacy measures by providing simple, transparent and interactive representations.
 
 The application is written in [R Shiny](https://shiny.rstudio.com/) and allows using the `riskyr` toolbox without any need for coding.
-
 
 ## Information
 
@@ -22,16 +17,13 @@ install.packages("riskyr")  # install riskyr from CRAN client
 library("riskyr")           # load to use the package
 ```
 
-
 The most recent development version can be installed from its [GitHub](https://github.com) repository at <https://github.com/hneth/riskyr/>: 
-
 ```{r}
 # install.packages("devtools")
 devtools::install_github("hneth/riskyr")
 ```
 
 Visit `riskyr` on [GitHub](https://github.com/hneth/riskyr) for additional information. 
-
 
 
 ## About
@@ -47,14 +39,14 @@ Visit `riskyr` on [GitHub](https://github.com/hneth/riskyr) for additional infor
 
 Its primary developers and designers are 
 [Hansjörg Neth](https://www.spds.uni-konstanz.de/hans-neth), 
-[Felix Gaisbauer](https://www.spds.uni-konstanz.de/felix-gaisbauer), and 
-[Nico Gradwohl](https://www.spds.uni-konstanz.de/nico-gradwohl), 
+[Felix Gaisbauer](https://www.spds.uni-konstanz.de/felix-gaisbauer), 
+[Nico Gradwohl](https://www.spds.uni-konstanz.de/nico-gradwohl), and 
+[Wolfgang Gaissmaier](https://www.spds.uni-konstanz.de/prof-dr-wolfgang-gaissmaier), 
 who are researchers at the department of 
 [Social Psychology and Decision Sciences](https://www.spds.uni-konstanz.de) at the 
 [University of Konstanz](https://www.uni-konstanz.de/en/), Germany. 
 
 Please email at <contact.riskyr@gmail.com>  in case you want to use, adapt, or share this software.
-
 
 ### Contact
 
@@ -64,7 +56,6 @@ We appreciate your feedback, comments, or questions.
 
 - For general inquiries, please email us at <contact.riskyr@gmail.com>. 
 
-
 ### Reference
 
 <!-- riskyr logo: -->  
@@ -72,7 +63,6 @@ We appreciate your feedback, comments, or questions.
 
 <img src = "./www/riskyr_cube_s.png" alt = "riskyr" align = "right" style = "float: right; border:20;"/>
 </a>
-
 
 To cite `riskyr` in derivations and publications use:
 
