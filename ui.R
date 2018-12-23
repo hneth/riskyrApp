@@ -473,7 +473,7 @@ shinyUI(
                         # Sidebar panel for inputs: ------ 
                         sidebarPanel(
                           # Inputs for label customization:
-                          h3("Use your own labels:"),
+                          h3("Use your own labels"),
                           br(),
                           fluidRow(
                             column(6, textInput("scen_lbl",
@@ -538,7 +538,7 @@ shinyUI(
                         ## Main panel for displaying preview of labels: ------ 
                         mainPanel(
                           br(),
-                          h3("Preview of current text labels:"),
+                          h3("Preview of current text labels"),
                           br(), br(),
                           fluidRow(offset = 1,
                                    column(6, plotOutput("previewlabels", width = "650", height = "500")
@@ -558,7 +558,7 @@ shinyUI(
                       
                         sidebarPanel(
                           # Inputs for color customization:
-                          h3("Use your own colors:"),
+                          h3("Use your own colors"),
                           br(),
                           fluidRow(
                             column(4, colourInput("color.hi", label = "hi (TP):",
@@ -645,7 +645,7 @@ shinyUI(
                         ## Main panel for displaying preview plots with colors: ---- 
                         mainPanel(
                           br(),
-                          h3("Previews of current colors:"),
+                          h3("Preview of current colors"),
                           fluidRow(offset = 1,
                                    column(6, plotOutput("sample.table", width = "450", height = "350"))
                           ),
