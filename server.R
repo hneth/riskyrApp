@@ -1,5 +1,5 @@
 # server.R
-# riskyrApp | R Shiny | spds, uni.kn | 2018 12 20
+# riskyrApp | R Shiny | spds, uni.kn | 2018 12 22
 
 ## Clean up: ------
 
