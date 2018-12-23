@@ -69,7 +69,7 @@ shinyUI(
                       ## Sidebar: ------ 
                       sidebarLayout(
                         
-                        # Sidebar panel for inputs:
+                        # Sidebar panel for inputs: ---- 
                         sidebarPanel(
                           tags$head(tags$script(HTML(JS.logify))),
                           tags$head(tags$script(HTML(JS.onload))),
@@ -79,7 +79,7 @@ shinyUI(
                                       value = 2, round = FALSE
                           ),
                           br(),
-                          radioButtons("checkprev", label = "Prevalence (in Percent)", 
+                          radioButtons("checkprev", label = "Prevalence (in percent)", 
                                        choiceNames = list("Slider", "Field"),
                                        choiceValues = c(0, 1), inline = TRUE
                           ),
@@ -95,7 +95,7 @@ shinyUI(
                                            )
                           ),
                           br(),
-                          radioButtons("checksens", label = "Sensitivity (in Percent)", 
+                          radioButtons("checksens", label = "Sensitivity (in percent)", 
                                        choiceNames = list("Slider", "Field"),
                                        choiceValues = c(0, 1), inline = TRUE
                           ),
@@ -110,7 +110,7 @@ shinyUI(
                                                         min = 0, max = 100, step = 10^-2
                                            )
                           ),
-                          radioButtons("checkspec", label = "Specificity (in Percent)", 
+                          radioButtons("checkspec", label = "Specificity (in percent)", 
                                        choiceNames = list("Slider", "Field"),
                                        choiceValues = c(0, 1), inline = TRUE
                           ),
@@ -128,7 +128,7 @@ shinyUI(
                           br(), 
                           
                           ## Provide existing data sets as drop-down list:
-                          selectInput("dataselection", label = "Or view an example:", 
+                          selectInput("dataselection", label = "Load example:", 
                                       choices = setNames(as.list(1:nrow(datasets)), # create choices from datasets
                                                          datasets$scen_lbl), 
                                       selected = 1),
@@ -149,11 +149,11 @@ shinyUI(
                                       tabPanel("Prism",
                                                br(),
                                                fluidRow(
-                                                 column(8, offset = 2, plotOutput("prism", width = "750", height = "550"))),
+                                                 column(8, offset = 2, plotOutput("prism", width = "650", height = "500"))),
                                                wellPanel(
                                                  fluidRow(
                                                    column(3, offset = 0,
-                                                          selectInput("prism.by", label = "Build prism by:", 
+                                                          selectInput("prism.by", label = "Create prism by:", 
                                                                       choices = list("condition only" = "cd", 
                                                                                      "decision only" = "dc", 
                                                                                      "accuracy only" = "ac",
@@ -166,22 +166,22 @@ shinyUI(
                                                                       selected = "cddc")
                                                    ),
                                                    column(3, 
-                                                          selectInput("prism.area", label = "Type of Boxes", 
+                                                          selectInput("prism.area", label = "Box area:", 
                                                                       choices = list("default boxes" = "no", 
                                                                                      "horizontal rectangles" = "hr",
                                                                                      "squares" = "sq"), 
                                                                       selected = "no")),
                                                    column(3, 
-                                                          selectInput("prism.f_lbl", label = "Labels:", 
-                                                                      choices = list("abbrev. names & values" = "def", 
-                                                                                     "abbrev. names" = "abbr",
+                                                          selectInput("prism.f_lbl", label = "Frequency labels:", 
+                                                                      choices = list("abbr. names & values" = "def", 
+                                                                                     "abbr. names" = "abbr",
                                                                                      "names only" = "nam",
                                                                                      "values only" = "num",
                                                                                      "names & values" = "namnum",
                                                                                      "no labels" = "no"
                                                                       ), 
                                                                       selected = "num")),
-                                                   column(2, offset = 1, downloadButton("prism.dl", label = "Save Prism"))
+                                                   column(2, offset = 1, downloadButton("prism.dl", label = "Save prism"))
                                                  )
                                                )
                                       ),
@@ -190,11 +190,11 @@ shinyUI(
                                       tabPanel("Table", 
                                                br(),
                                                fluidRow(
-                                                 column(8, offset = 2, plotOutput("table", width = "650", height = "550"))),
+                                                 column(8, offset = 2, plotOutput("table", width = "650", height = "500"))),
                                                wellPanel(
                                                  fluidRow(
                                                    column(3, offset = 0,
-                                                          selectInput("table.by", label = "Build table by:", 
+                                                          selectInput("table.by", label = "Create table by:", 
                                                                       choices = list("condition and decision" = "cddc",
                                                                                      "condition and accuracy" = "cdac",
                                                                                      "decision and condition" = "dccd",
@@ -204,12 +204,12 @@ shinyUI(
                                                                       selected = "cddc")
                                                    ),
                                                    column(3, 
-                                                          selectInput("table.p_split", label = "Population split", 
+                                                          selectInput("table.p_split", label = "Population split:", 
                                                                       choices = list("vertical" = "v", 
                                                                                      "horizontal" = "h"), 
                                                                       selected = "v")),
                                                    column(3, 
-                                                          selectInput("table.f_lbl", label = "Labels:", 
+                                                          selectInput("table.f_lbl", label = "Frequency labels:", 
                                                                       choices = list("abbrev. names & values" = "def", 
                                                                                      "abbrev. names" = "abbr",
                                                                                      "names only" = "nam",
@@ -218,7 +218,7 @@ shinyUI(
                                                                                      "no labels" = "no"
                                                                       ), 
                                                                       selected = "num")),
-                                                   column(2, offset = 1, downloadButton("table.dl", label = "Save Table"))
+                                                   column(2, offset = 1, downloadButton("table.dl", label = "Save table"))
                                                  )
                                                )
                                       ),
@@ -227,11 +227,11 @@ shinyUI(
                                       tabPanel("Area", 
                                                br(),
                                                fluidRow(
-                                                 column(8, offset = 2, plotOutput("area", width = "650", height = "550"))),
+                                                 column(8, offset = 2, plotOutput("area", width = "650", height = "500"))),
                                                wellPanel(
                                                  fluidRow(
                                                    column(3, offset = 0,
-                                                          selectInput("area.by", label = "Build area by:", 
+                                                          selectInput("area.by", label = "Create area by:", 
                                                                       choices = list("condition and decision" = "cddc",
                                                                                      "condition and accuracy" = "cdac",
                                                                                      "decision and condition" = "dccd",
@@ -241,7 +241,7 @@ shinyUI(
                                                                       selected = "cddc")
                                                    ),
                                                    column(3, 
-                                                          selectInput("area.p_split", label = "Population split", 
+                                                          selectInput("area.p_split", label = "Population split:", 
                                                                       choices = list("vertical" = "v", 
                                                                                      "horizontal" = "h"), 
                                                                       selected = "v")),
@@ -268,7 +268,7 @@ shinyUI(
                                                wellPanel(
                                                  fluidRow(
                                                    column(4, offset = 0,
-                                                          selectInput("icons.arr_type", "Display:",
+                                                          selectInput("icons.arr_type", "Array type:",
                                                                       choices = list("Array" = "array", 
                                                                                      "Shuffled" = "shuffledarray",
                                                                                      "Mosaic" = "mosaic",
@@ -282,22 +282,22 @@ shinyUI(
                                                  br(),
                                                  fluidRow(
                                                    column(3,
-                                                          selectInput("symbol.hi", label = "Symbol of hits (hi):", 
+                                                          selectInput("symbol.hi", label = "Symbol of hits (TP):", 
                                                                       choices = list("Circle" = 21, "Square" = 22, "Rhombus" = 23, "Triangle" = 24),
                                                                       selected = "22")
                                                    ),
                                                    column(3,
-                                                          selectInput("symbol.mi", label = "Symbol of miss (mi):", 
+                                                          selectInput("symbol.mi", label = "Symbol of miss (FN):", 
                                                                       choices = list("Circle" = 21, "Square" = 22, "Rhombus" = 23, "Triangle" = 24),
                                                                       selected = "22")
                                                    ),
                                                    column(3,
-                                                          selectInput("symbol.cr", label = "Symbol of correct rejections (cr):", 
+                                                          selectInput("symbol.cr", label = "Symbol of correct rejections (TN):", 
                                                                       choices = list("Circle" = 21, "Square" = 22, "Rhombus" = 23, "Triangle" = 24),
                                                                       selected = "22")
                                                    ),
                                                    column(3,
-                                                          selectInput("symbol.fa", label = "Symbol of false alarms (fa):", 
+                                                          selectInput("symbol.fa", label = "Symbol of false alarms (FP):", 
                                                                       choices = list("Circle" = 21, "Square" = 22, "Rhombus" = 23, "Triangle" = 24),
                                                                       selected = "22")
                                                    )
@@ -309,11 +309,11 @@ shinyUI(
                                       tabPanel("Bars", 
                                                br(),
                                                fluidRow(
-                                                 column(8, offset = 2, plotOutput("bar", width = "650", height = "550"))),
+                                                 column(8, offset = 2, plotOutput("bar", width = "650", height = "500"))),
                                                wellPanel(
                                                  fluidRow(
                                                    column(3, offset = 0,
-                                                          selectInput("bar.by", label = "Build bars by:", 
+                                                          selectInput("bar.by", label = "Create bars by:", 
                                                                       choices = list("condition" = "cd",
                                                                                      "decision" = "dc",
                                                                                      "accuracy" = "ac",
@@ -321,7 +321,7 @@ shinyUI(
                                                                       selected = "all")
                                                    ),
                                                    column(3, 
-                                                          selectInput("bar.dir", label = "Directions", 
+                                                          selectInput("bar.dir", label = "Directions:", 
                                                                       choices = list("uni-directional" = 1, 
                                                                                      "bi-directional" = 2), 
                                                                       selected = 1)),
@@ -335,7 +335,7 @@ shinyUI(
                                                                                      "no labels" = "no"
                                                                       ), 
                                                                       selected = "num")),
-                                                   column(2, offset = 1, downloadButton("bar.dl", label = "Save Bars"))
+                                                   column(2, offset = 1, downloadButton("bar.dl", label = "Save bars"))
                                                  )
                                                )
                                       ),
@@ -344,7 +344,7 @@ shinyUI(
                                       tabPanel("Curves", 
                                                br(),
                                                fluidRow(
-                                                 column(12, offset = 0, plotOutput("curve"))),
+                                                 column(12, offset = 0, plotOutput("curve", width = "650", height = "500"))),
                                                wellPanel(
                                                  fluidRow(
                                                    column(2, offset = 2, checkboxInput("curve.show_points", label = "Show point values", value = TRUE)),
@@ -370,9 +370,9 @@ shinyUI(
                                                wellPanel(
                                                  fluidRow(
                                                    column(3, checkboxInput("plane.show_point", label = "Show current PPV/NPV in plots", value = TRUE)), 
-                                                   column(2, offset = 1, downloadButton("plane.ppv.dl", label = "Save PPV Plane")),
+                                                   column(2, offset = 1, downloadButton("plane.ppv.dl", label = "Save PPV plane")),
                                                    column(2, offset = 4,
-                                                          downloadButton("plane.npv.dl", label = "Save NPV Plane"))
+                                                          downloadButton("plane.npv.dl", label = "Save NPV plane"))
                                                  ),
                                                  br(),
                                                  fluidRow(
@@ -383,7 +383,7 @@ shinyUI(
                                                )
                                       ),
                                       
-                                      # contrast representations: ------ 
+                                      # Contrast 4 representations: ------ 
                                       tabPanel("Compare", 
                                                br(),
                                                fluidRow(
@@ -397,7 +397,7 @@ shinyUI(
                                                wellPanel(
                                                  fluidRow(
                                                    column(3,
-                                                          selectInput("represent1", label = "Selection representation 1:", 
+                                                          selectInput("represent1", label = "Selection 1:", 
                                                                       choices = list("Prism" = "prism", 
                                                                                      "Table" = "table",
                                                                                      "Area" = "area",
@@ -409,7 +409,7 @@ shinyUI(
                                                                       selected = "prism")
                                                    ),
                                                    column(3,
-                                                          selectInput("represent2", label = "Selection representation 2:", 
+                                                          selectInput("represent2", label = "Selection 2:", 
                                                                       choices = list("Prism" = "prism", 
                                                                                      "Table" = "table",
                                                                                      "Area" = "area",
@@ -421,7 +421,7 @@ shinyUI(
                                                                       selected = "table")
                                                    ),
                                                    column(3,
-                                                          selectInput("represent3", label = "Selection representation 3:", 
+                                                          selectInput("represent3", label = "Selection 3:", 
                                                                       choices = list("Prism" = "prism", 
                                                                                      "Table" = "table",
                                                                                      "Area" = "area",
@@ -433,7 +433,7 @@ shinyUI(
                                                                       selected = "icons")
                                                    ),
                                                    column(3,
-                                                          selectInput("represent4", label = "Selection representation 4:", 
+                                                          selectInput("represent4", label = "Selection 4:", 
                                                                       choices = list("Prism" = "prism", 
                                                                                      "Table" = "table",
                                                                                      "Area" = "area",
@@ -528,10 +528,10 @@ shinyUI(
                         ## Main panel for displaying preview of labels:
                         mainPanel(
                           br(),
-                          h3("Preview for your labels:"),
+                          h3("Preview of current text labels:"),
                           br(), br(),
                           fluidRow(offset = 1,
-                                   column(6, plotOutput("previewlabels", width = "800", height = "650")
+                                   column(6, plotOutput("previewlabels", width = "750", height = "600")
                                    )
                           )
                           
@@ -635,13 +635,13 @@ shinyUI(
                         ## Main panel for displaying preview plots with colors: ---- 
                         mainPanel(
                           br(),
-                          h3("Previews for your colors:"),
+                          h3("Previews of current colors:"),
                           fluidRow(offset = 1,
-                                   column(6, plotOutput("sample.table", width = "500", height = "400"))
+                                   column(6, plotOutput("sample.table", width = "450", height = "350"))
                           ),
                           br(),
                           fluidRow(
-                            column(6, plotOutput("sample.curves", width = "500", height = "400"))
+                            column(6, plotOutput("sample.curves", width = "450", height = "350"))
                           )
                         )
                       )
@@ -683,26 +683,26 @@ shinyUI(
              
              # On inputs
              bsTooltip(id = list("N", "numN"), 
-                       title = "Number of individuals making up the population",
+                       title = "N of individuals in population",
                        placement = "right", trigger = "hover", options = list(container = "body")),
              
              bsTooltip(id = list("prev", "numprev"),
-                       title = "Probability of being affected: p(true)",
+                       title = "Probability of condition: p(true)",
                        placement = "right", trigger = "hover", options = list(container = "body")),
              
              bsTooltip(id = list("sens", "numsens"),
-                       title = "Probability of correctly detecting an affected individual: p(decision positive | condition true)",
+                       title = "Probability of correctly detecting true condition: p(decision positive | condition true)",
                        placement = "right", trigger = "hover", options = list(container = "body")),
              
              bsTooltip(id = list("spec", "numspec"),
-                       title = "Probability of correctly rejecting an unaffected individual: p(decision negative | condition false) = 1 - FA",
+                       title = "Probability of correctly detecting false condition: p(decision negative | condition false)",
                        placement = "right", trigger = "hover", options = list(container = "body")),
              
              # On Download buttons: ------ 
              
              bsTooltip(id = list("prism.dl", "table.dl", "area.dl", "icons.dl", "bar.dl", "curve.dl", 
                                  "plane.ppv.dl", "plane.npv.dl"),
-                       title = "Click this button to download and save the graph as .png file.",
+                       title = "Save current graph as .png file.",
                        placement = "left", trigger = "hover", options = list(container = "body"))
              
              
