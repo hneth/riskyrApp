@@ -4,9 +4,10 @@ The `riskyrApp` is an interactive `R Shiny` application that complements the R p
 
 ## Goal
 
-The goal of the `riskyrApp` is to communicate and explain common risk literacy measures by providing simple, transparent and interactive representations.
-
+`riskyrApp` is a teaching tool that showcases some functionality of the R package `riskyr`. 
 The application is written in [R Shiny](https://shiny.rstudio.com/) and allows using the `riskyr` toolbox without any need for coding.
+
+The main goal of both `riskyr` and `riskyrApp` is to communicate and explain common risk literacy measures in a transparent fashion by providing a set of powerful and interactive representations. 
 
 ## Information
 
@@ -35,9 +36,9 @@ Visit `riskyr` on [GitHub](https://github.com/hneth/riskyr) for additional infor
 <img src = "./www/uniKn_logo_s.png" alt = "spds.uni.kn" align = "right" style = "float: right; border:20;"/>
 </a>
 
-`riskyr` originated out of a series of lectures and workshops on risk literacy in spring/summer 2017. 
-
-Its primary developers and designers are 
+`riskyr` is developed at the [University of Konstanz](https://www.uni-konstanz.de/en/) 
+and originated out of a series of lectures and workshops on risk literacy in spring/summer 2017. 
+Its primary designers are 
 [Hansjörg Neth](https://www.spds.uni-konstanz.de/hans-neth), 
 [Felix Gaisbauer](https://www.spds.uni-konstanz.de/felix-gaisbauer), 
 [Nico Gradwohl](https://www.spds.uni-konstanz.de/nico-gradwohl), and 
@@ -46,7 +47,6 @@ who are researchers at the department of
 [Social Psychology and Decision Sciences](https://www.spds.uni-konstanz.de) at the 
 [University of Konstanz](https://www.uni-konstanz.de/en/), Germany. 
 
-Please email at <contact.riskyr@gmail.com>  in case you want to use, adapt, or share this software.
 
 ### Contact
 
@@ -56,13 +56,12 @@ We appreciate your feedback, comments, or questions.
 
 - For general inquiries, please email us at <contact.riskyr@gmail.com>. 
 
-### Reference
-
 <!-- riskyr logo: -->  
 <a href = "https://github.com/hneth/riskyr">
-
 <img src = "./www/riskyr_cube_s.png" alt = "riskyr" align = "right" style = "float: right; border:20;"/>
 </a>
+
+### Reference
 
 To cite `riskyr` in derivations and publications use:
 
@@ -86,3 +85,4 @@ A BibTeX entry for LaTeX users is:
     
 Calling `citation("riskyr")` in the package also displays this information.
 
+<!-- eof. --> 
