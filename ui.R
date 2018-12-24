@@ -139,7 +139,7 @@ shinyUI(
                           ),
                           br(), 
                           
-                        # Provide existing data sets as drop-down list: ------ 
+                          # Provide existing data sets as drop-down list: ------ 
                           
                           selectInput("dataselection", label = "Load example:", 
                                       choices = setNames(as.list(1:nrow(datasets)), # create choices from datasets
@@ -568,7 +568,7 @@ shinyUI(
                       icon = icon("wrench", lib = "glyphicon"),
                       value = "custom_colors",
                       sidebarLayout(
-                      
+                        
                         sidebarPanel(
                           # Inputs for color customization:
                           h3("Use your own colors"),
@@ -654,7 +654,7 @@ shinyUI(
                           )
                         ),
                         
-                      
+                        
                         # Main panel for displaying preview plots with colors: ---- 
                         mainPanel(
                           br(),
@@ -721,7 +721,7 @@ shinyUI(
                        title = "Probability of correctly detecting false condition: p(decision negative | condition false)",
                        placement = "right", trigger = "hover", options = list(container = "body")),
              
-             # On Download buttons: ------ 
+             # Download buttons: ------ 
              
              bsTooltip(id = list("prism.dl", "table.dl", "area.dl", "icons.dl", "bar.dl", "curve.dl", 
                                  "plane.ppv.dl", "plane.npv.dl"),
