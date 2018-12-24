@@ -9,10 +9,15 @@
 <img src = "../www/uniKn_logo_s.png" alt = "spds.uni.kn" align = "right" width = "250" style = "width: 250px; float: right; border:20;"/>
 </a>
 
-`riskyr` originated out of a series of lectures and workshops on risk literacy in spring/summer 2017. 
 
-The current version (`riskyr` 0.1.0, as of Feb. 19, 2018) is still under development. 
-Its primary developers and designers are 
+The `riskyrApp` is an interactive `R Shiny` application that complements the R package `riskyr`. 
+The application is written in [R Shiny](https://shiny.rstudio.com/) and allows using `riskyr` without any need for coding.
+
+`riskyr` is an R package that is developed at the [University of Konstanz](https://www.uni-konstanz.de/en/) 
+and originated out of a series of lectures and workshops on risk literacy in spring/summer 2017. 
+
+The current version (`riskyr` 0.2.0, as of Dec. 20, 2018) is still under development. 
+Its primary designers are 
 [Hansjörg Neth](https://www.spds.uni-konstanz.de/hans-neth), 
 [Felix Gaisbauer](https://www.spds.uni-konstanz.de/felix-gaisbauer), 
 [Nico Gradwohl](https://www.spds.uni-konstanz.de/nico-gradwohl), and 
