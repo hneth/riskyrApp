@@ -1,5 +1,5 @@
 # server.R
-# riskyrApp | R Shiny | spds, uni.kn | 2018 12 22
+# riskyrApp | R Shiny | spds, uni.kn | 2018 12 24
 
 ## Clean up: ------
 
@@ -18,12 +18,11 @@ library("colourpicker")
 library("riskyr")
 # sessionInfo()
 
-## Import ready-made and worked out example data: ------
+## Import data (example scenarios) and default colors and labels: ------
+
 datasets <- read.csv2("./www/df_scenarios_riskyrApp_2018-12-14.csv", stringsAsFactors = FALSE)
 
-## Define defaults ------
-
-# take default colors and labels from riskyr package: 
+# Default colors and text labels: 
 default.colors <- init_pal()
 default.labels <- init_txt()
 
@@ -518,7 +517,6 @@ shinyServer(function(input, output, session){
          # title_lbl = NA,
          mar_notes = FALSE)
   })
-  
   
   # Reset colors to default: 
   observeEvent(input$resetcustomcolor, {

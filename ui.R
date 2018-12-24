@@ -1,5 +1,5 @@
 # ui.R
-# riskyrApp | R Shiny | spds, uni.kn | 2018 12 22
+# riskyrApp | R Shiny | spds, uni.kn | 2018 12 24
 
 ## Dependencies: ------
 
@@ -8,21 +8,22 @@ library("shinyBS")
 library("markdown")
 library("colourpicker")
 
-## Install the currently included version of riskyr: ------
+## Install current version of riskyr: ------
 # detach("package:riskyr", unload = TRUE)
 # from CRAN: <https://CRAN.R-project.org/package=riskyr>
 # devtools::install_github("hneth/riskyr")
 library("riskyr")
 # sessionInfo()
 
-## Import ready-made and worked out example data: ------
+## Import data (example scenarios) and default colors and labels: ------
 
 datasets <- read.csv2("./www/df_scenarios_riskyrApp_2018-12-14.csv", stringsAsFactors = FALSE)
 
+# Default colors and text labels: 
 default.colors <- init_pal()
 default.labels <- init_txt()
 
-## logifySlider javascript function: 
+## logifySlider javascript function: ------ 
 JS.logify <-
   "
 // function to logify a sliderInput
@@ -40,7 +41,7 @@ $('#'+sliderId).data('ionRangeSlider').update({
 }
 }"
 
-## call logifySlider for each relevant sliderInput: 
+## Call logifySlider for each relevant sliderInput: ------ 
 JS.onload <-
   "
 // execute upon document loading
@@ -62,12 +63,12 @@ shinyUI(
              theme = "bootstrap.sandstone.css",
              id = "tabs",
              
-             ## Tab panel: ------ 
+             # Tab panel: ------ 
              
              tabPanel("Visualize risks",
                       icon = icon("blackboard", lib = "glyphicon"), value = "represent",
                       
-                      ## Sidebar: ------ 
+                      # Sidebar: ------ 
                       
                       sidebarLayout(
                         
@@ -138,7 +139,7 @@ shinyUI(
                           ),
                           br(), 
                           
-                          ## Provide existing data sets as drop-down list: ------ 
+                        # Provide existing data sets as drop-down list: ------ 
                           
                           selectInput("dataselection", label = "Load example:", 
                                       choices = setNames(as.list(1:nrow(datasets)), # create choices from datasets
@@ -151,7 +152,7 @@ shinyUI(
                           
                         ),
                         
-                        ## Main panel for displaying different visualizations: ------ 
+                        # Main panel for displaying different visualizations: ------ 
                         
                         mainPanel(
                           
@@ -163,27 +164,27 @@ shinyUI(
                                       tabPanel("Prism",
                                                br(),
                                                fluidRow(
-                                                 column(8, offset = 2, plotOutput("prism", width = "650", height = "500"))),
+                                                 column(8, offset = 0, plotOutput("prism", width = "600", height = "450"))),
                                                wellPanel(
                                                  fluidRow(
                                                    column(3, offset = 0,
-                                                          selectInput("prism.by", label = "Create prism by:", 
-                                                                      choices = list("condition only" = "cd", 
-                                                                                     "decision only" = "dc", 
-                                                                                     "accuracy only" = "ac",
-                                                                                     "condition and decision" = "cddc",
-                                                                                     "condition and accuracy" = "cdac",
-                                                                                     "decision and condition" = "dccd",
-                                                                                     "decision and accuracy" = "dcac",
-                                                                                     "accuracy and condition" = "accd",
-                                                                                     "accuracy and decision" = "acdc"),
+                                                          selectInput("prism.by", label = "Perspective by:", 
+                                                                      choices = list("condition tree" = "cd", 
+                                                                                     "decision tree"  = "dc", 
+                                                                                     "accuracy tree"  = "ac",
+                                                                                     "condition + decision" = "cddc",
+                                                                                     "condition + accuracy" = "cdac",
+                                                                                     "decision + condition" = "dccd",
+                                                                                     "decision + accuracy"  = "dcac",
+                                                                                     "accuracy + condition" = "accd",
+                                                                                     "accuracy + decision"  = "acdc"),
                                                                       selected = "cddc")
                                                    ),
                                                    column(3, 
                                                           selectInput("prism.area", label = "Box area:", 
                                                                       choices = list("default" = "no", 
-                                                                                     "horizontal rectangles" = "hr",
-                                                                                     "squares" = "sq"), 
+                                                                                     "squares" = "sq", 
+                                                                                     "horizontal rectangles" = "hr"), 
                                                                       selected = "no")),
                                                    column(3, 
                                                           selectInput("prism.f_lbl", label = "Frequency labels:", 
@@ -205,17 +206,17 @@ shinyUI(
                                       tabPanel("Table", 
                                                br(),
                                                fluidRow(
-                                                 column(8, offset = 2, plotOutput("table", width = "650", height = "500"))),
+                                                 column(8, offset = 0, plotOutput("table", width = "600", height = "450"))),
                                                wellPanel(
                                                  fluidRow(
                                                    column(3, offset = 0,
-                                                          selectInput("table.by", label = "Create table by:", 
-                                                                      choices = list("condition and decision" = "cddc",
-                                                                                     "condition and accuracy" = "cdac",
-                                                                                     "decision and condition" = "dccd",
-                                                                                     "decision and accuracy" = "dcac",
-                                                                                     "accuracy and condition" = "accd",
-                                                                                     "accuracy and decision" = "acdc"),
+                                                          selectInput("table.by", label = "Perspective by:", 
+                                                                      choices = list("condition + decision" = "cddc",
+                                                                                     "condition + accuracy" = "cdac",
+                                                                                     "decision + condition" = "dccd",
+                                                                                     "decision + accuracy"  = "dcac",
+                                                                                     "accuracy + condition" = "accd",
+                                                                                     "accuracy + decision"  = "acdc"),
                                                                       selected = "cddc")
                                                    ),
                                                    column(3, 
@@ -243,21 +244,21 @@ shinyUI(
                                       tabPanel("Area", 
                                                br(),
                                                fluidRow(
-                                                 column(8, offset = 2, plotOutput("area", width = "650", height = "500"))),
+                                                 column(8, offset = 0, plotOutput("area", width = "600", height = "450"))),
                                                wellPanel(
                                                  fluidRow(
                                                    column(3, offset = 0,
-                                                          selectInput("area.by", label = "Create area by:", 
-                                                                      choices = list("condition and decision" = "cddc",
-                                                                                     "condition and accuracy" = "cdac",
-                                                                                     "decision and condition" = "dccd",
-                                                                                     "decision and accuracy" = "dcac",
-                                                                                     "accuracy and condition" = "accd",
-                                                                                     "accuracy and decision" = "acdc"),
+                                                          selectInput("area.by", label = "Perspective by:", 
+                                                                      choices = list("condition + decision" = "cddc",
+                                                                                     "condition + accuracy" = "cdac",
+                                                                                     "decision + condition" = "dccd",
+                                                                                     "decision + accuracy"  = "dcac",
+                                                                                     "accuracy + condition" = "accd",
+                                                                                     "accuracy + decision"  = "acdc"),
                                                                       selected = "cddc")
                                                    ),
                                                    column(3, 
-                                                          selectInput("area.p_split", label = "Population split:", 
+                                                          selectInput("area.p_split", label = "Split by:", 
                                                                       choices = list("vertical" = "v", 
                                                                                      "horizontal" = "h"), 
                                                                       selected = "v")),
@@ -271,7 +272,7 @@ shinyUI(
                                                                                      "no labels" = "no"
                                                                       ), 
                                                                       selected = "num")),
-                                                   column(2, offset = 1, downloadButton("area.dl", label = "Save Area"))
+                                                   column(2, offset = 1, downloadButton("area.dl", label = "Save area"))
                                                  )
                                                )
                                       ),
@@ -281,18 +282,18 @@ shinyUI(
                                       tabPanel("Icons", 
                                                br(), 
                                                fluidRow(
-                                                 column(8, offset = 2, plotOutput("icons", width = "650", height = "500"))),
+                                                 column(8, offset = 0, plotOutput("icons", width = "600", height = "450"))),
                                                wellPanel(
                                                  fluidRow(
                                                    column(4, offset = 0,
                                                           selectInput("icons.arr_type", "Array type:",
-                                                                      choices = list("Array" = "array", 
-                                                                                     "Shuffled" = "shuffledarray",
-                                                                                     "Mosaic" = "mosaic",
-                                                                                     "Fill equal" = "fillequal",
-                                                                                     "Fill left" = "fillleft",
-                                                                                     "Fill top" = "filltop",
-                                                                                     "Scattered" = "scatter"), 
+                                                                      choices = list("array" = "array", 
+                                                                                     "shuffled" = "shuffledarray",
+                                                                                     "mosaic" = "mosaic",
+                                                                                     "fill equal" = "fillequal",
+                                                                                     "fill left" = "fillleft",
+                                                                                     "fill top" = "filltop",
+                                                                                     "scattered" = "scatter"), 
                                                                       selected = "array")),
                                                    column(2, offset = 6, downloadButton("icons.dl", label = "Save icons"))
                                                  ), 
@@ -327,21 +328,21 @@ shinyUI(
                                       tabPanel("Bars", 
                                                br(),
                                                fluidRow(
-                                                 column(8, offset = 2, plotOutput("bar", width = "650", height = "500"))),
+                                                 column(8, offset = 0, plotOutput("bar", width = "600", height = "450"))),
                                                wellPanel(
                                                  fluidRow(
                                                    column(3, offset = 0,
-                                                          selectInput("bar.by", label = "Create bars by:", 
+                                                          selectInput("bar.by", label = "Perspective by:", 
                                                                       choices = list("condition" = "cd",
-                                                                                     "decision" = "dc",
-                                                                                     "accuracy" = "ac",
+                                                                                     "decision"  = "dc",
+                                                                                     "accuracy"  = "ac",
                                                                                      "all" = "all"),
                                                                       selected = "all")
                                                    ),
                                                    column(3, 
                                                           selectInput("bar.dir", label = "Directions:", 
                                                                       choices = list("uni-directional" = 1, 
-                                                                                     "bi-directional" = 2), 
+                                                                                     "bi-directional"  = 2), 
                                                                       selected = 1)),
                                                    column(3, 
                                                           selectInput("bar.f_lbl", label = "Labels:", 
@@ -363,7 +364,7 @@ shinyUI(
                                       tabPanel("Curves", 
                                                br(),
                                                fluidRow(
-                                                 column(12, offset = 0, plotOutput("curve", width = "650", height = "500"))),
+                                                 column(12, offset = 0, plotOutput("curve", width = "600", height = "450"))),
                                                wellPanel(
                                                  fluidRow(
                                                    column(2, offset = 2, checkboxInput("curve.show_points", label = "Show point values", value = TRUE)),
