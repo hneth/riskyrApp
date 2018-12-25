@@ -226,8 +226,9 @@ shinyServer(function(input, output, session){
          type  = "table",
          col_pal = riskyr.colors(),
          by = input$table.by,
-         area = input$table.p_split,
-         f_lbl = input$table.f_lbl
+         p_split = input$table.p_split,
+         f_lbl = input$table.f_lbl,
+         p_lbl = input$table.p_lbl
     )
   }
   
@@ -236,7 +237,7 @@ shinyServer(function(input, output, session){
   output$table.dl <- downloadHandler(
     filename = function() {paste0("riskyrApp_table_", gsub(":", "-", Sys.time()), ".png")},
     content =  function(file){
-      png(file, width = 650, height = 550)
+      png(file, width = 650, height = 500)
       table()
       dev.off()}
   )
@@ -249,7 +250,8 @@ shinyServer(function(input, output, session){
          col_pal = riskyr.colors(),
          by = input$area.by,
          p_split = input$area.p_split,
-         f_lbl = input$area.f_lbl
+         f_lbl = input$area.f_lbl,
+         p_lbl = input$area.p_lbl
     )
   }
   
@@ -258,7 +260,7 @@ shinyServer(function(input, output, session){
   output$area.dl <- downloadHandler(
     filename = function() {paste0("riskyrApp_area_", gsub(":", "-", Sys.time()), ".png")},
     content =  function(file){
-      png(file, width = 650, height = 550)
+      png(file, width = 650, height = 500)
       area()
       dev.off()}
   )

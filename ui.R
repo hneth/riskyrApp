@@ -220,7 +220,7 @@ shinyUI(
                                                  column(8, offset = 0, plotOutput("table", width = "600", height = "450"))),
                                                wellPanel(
                                                  fluidRow(
-                                                   column(3, offset = 0,
+                                                   column(4, offset = 0,
                                                           selectInput("table.by", label = "Perspective by:", 
                                                                       choices = list("condition + decision" = "cddc",
                                                                                      "condition + accuracy" = "cdac",
@@ -230,21 +230,31 @@ shinyUI(
                                                                                      "accuracy + decision"  = "acdc"),
                                                                       selected = "cddc")
                                                    ),
-                                                   column(3, 
+                                                   column(4, 
                                                           selectInput("table.p_split", label = "Population split:", 
                                                                       choices = list("vertical" = "v", 
                                                                                      "horizontal" = "h"), 
-                                                                      selected = "v")),
-                                                   column(3, 
+                                                                      selected = "v"))),
+                                                 fluidRow(
+                                                   column(4, 
                                                           selectInput("table.f_lbl", label = "Frequency labels:", 
                                                                       choices = list("default" = "def", 
-                                                                                     "abbr. names" = "abbr",
                                                                                      "names only" = "nam",
                                                                                      "values only" = "num",
-                                                                                     "names and values" = "namnum",
+                                                                                     "names + values" = "namnum",
                                                                                      "no labels" = "no"
                                                                       ), 
                                                                       selected = "num")),
+                                                   column(4, 
+                                                          selectInput("table.p_lbl", label = "Probability labels:", 
+                                                                      choices = list("none" = NA,
+                                                                                     "names only" = "nam",
+                                                                                     "values only" = "num",
+                                                                                     "names + values" = "namnum",
+                                                                                     "short names + values" = "mix", 
+                                                                                     "no labels" = "no"
+                                                                      ), 
+                                                                      selected = "none")),
                                                    column(2, offset = 1, downloadButton("table.dl", label = "Save table"))
                                                  )
                                                )
@@ -258,7 +268,7 @@ shinyUI(
                                                  column(8, offset = 0, plotOutput("area", width = "600", height = "450"))),
                                                wellPanel(
                                                  fluidRow(
-                                                   column(3, offset = 0,
+                                                   column(4, offset = 0,
                                                           selectInput("area.by", label = "Perspective by:", 
                                                                       choices = list("condition + decision" = "cddc",
                                                                                      "condition + accuracy" = "cdac",
@@ -268,21 +278,31 @@ shinyUI(
                                                                                      "accuracy + decision"  = "acdc"),
                                                                       selected = "cddc")
                                                    ),
-                                                   column(3, 
+                                                   column(4, 
                                                           selectInput("area.p_split", label = "Split by:", 
                                                                       choices = list("vertical" = "v", 
                                                                                      "horizontal" = "h"), 
-                                                                      selected = "v")),
-                                                   column(3, 
-                                                          selectInput("area.f_lbl", label = "Labels:", 
+                                                                      selected = "v"))),
+                                                 fluidRow(
+                                                   column(4, 
+                                                          selectInput("area.f_lbl", label = "Frequency labels:", 
                                                                       choices = list("default" = "def", 
-                                                                                     "abbr. names" = "abbr",
                                                                                      "names only" = "nam",
                                                                                      "values only" = "num",
-                                                                                     "names and values" = "namnum",
+                                                                                     "names + values" = "namnum",
                                                                                      "no labels" = "no"
                                                                       ), 
                                                                       selected = "num")),
+                                                   column(4, 
+                                                          selectInput("area.p_lbl", label = "Probability labels:", 
+                                                                      choices = list("none" = NA,
+                                                                                     "names only" = "nam",
+                                                                                     "values only" = "num",
+                                                                                     "names + values" = "namnum",
+                                                                                     "short names + values" = "mix", 
+                                                                                     "no labels" = "no"
+                                                                      ), 
+                                                                      selected = "none")),
                                                    column(2, offset = 1, downloadButton("area.dl", label = "Save area"))
                                                  )
                                                )
