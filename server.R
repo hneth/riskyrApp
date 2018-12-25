@@ -1,5 +1,5 @@
 # server.R
-# riskyrApp | R Shiny | spds, uni.kn | 2018 12 24
+# riskyrApp | R Shiny | spds, uni.kn | 2018 12 25
 
 ## Clean up: ------
 
@@ -204,7 +204,8 @@ shinyServer(function(input, output, session){
          # lbl_txt = riskyr.labels(),
          by = input$prism.by,
          area = input$prism.area,
-         f_lbl = input$prism.f_lbl
+         f_lbl = input$prism.f_lbl,
+         p_lbl = input$prism.p_lbl
     )
   }
   

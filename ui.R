@@ -1,5 +1,5 @@
 # ui.R
-# riskyrApp | R Shiny | spds, uni.kn | 2018 12 24
+# riskyrApp | R Shiny | spds, uni.kn | 2018 12 25
 
 ## Dependencies: ------
 
@@ -167,7 +167,7 @@ shinyUI(
                                                  column(8, offset = 0, plotOutput("prism", width = "600", height = "450"))),
                                                wellPanel(
                                                  fluidRow(
-                                                   column(3, offset = 0,
+                                                   column(4, offset = 0,
                                                           selectInput("prism.by", label = "Perspective by:", 
                                                                       choices = list("condition tree" = "cd", 
                                                                                      "decision tree"  = "dc", 
@@ -180,22 +180,33 @@ shinyUI(
                                                                                      "accuracy + decision"  = "acdc"),
                                                                       selected = "cddc")
                                                    ),
-                                                   column(3, 
+                                                   column(4, 
                                                           selectInput("prism.area", label = "Box area:", 
                                                                       choices = list("default" = "no", 
                                                                                      "squares" = "sq", 
                                                                                      "horizontal rectangles" = "hr"), 
-                                                                      selected = "no")),
-                                                   column(3, 
+                                                                      selected = "no"))),
+                                                 fluidRow(
+                                                   column(4, 
                                                           selectInput("prism.f_lbl", label = "Frequency labels:", 
                                                                       choices = list("default" = "def", 
-                                                                                     "abbr. names" = "abbr",
                                                                                      "names only" = "nam",
                                                                                      "values only" = "num",
                                                                                      "names and values" = "namnum",
-                                                                                     "no labels" = "no"
+                                                                                     "none" = "no"
                                                                       ), 
                                                                       selected = "num")),
+                                                   column(4, 
+                                                          selectInput("prism.p_lbl", label = "Probability labels:", 
+                                                                      choices = list("default" = "def",
+                                                                                     "minimum" = "min",
+                                                                                     "mix names + values" = "mix", 
+                                                                                     "names only" = "nam",
+                                                                                     "values only" = "num",
+                                                                                     "names + values" = "namnum",
+                                                                                     "none" = "no"
+                                                                      ), 
+                                                                      selected = "no")),
                                                    column(2, offset = 1, downloadButton("prism.dl", label = "Save prism"))
                                                  )
                                                )
@@ -370,8 +381,8 @@ shinyUI(
                                                    column(2, offset = 2, checkboxInput("curve.show_points", label = "Show point values", value = TRUE)),
                                                    column(3, checkboxInput("curve.log_scale", label = "Scale prevalence on logarithmic scale", value = FALSE))),
                                                  fluidRow(
-                                                   column(2, offset = 2, checkboxInput("curve.show_acc", label = "Show accuracy (acc)", value = FALSE)),
-                                                   column(4, checkboxInput("curve.show_ppod", label = "Show proportion of positive decisions (ppod)", value = FALSE)),
+                                                   column(2, offset = 2, checkboxInput("curve.show_acc", label = "Accuracy (acc)", value = FALSE)),
+                                                   column(4, checkboxInput("curve.show_ppod", label = "Proportion of positive decisions (ppod)", value = FALSE)),
                                                    column(1, downloadButton("curve.dl", label = "Save curves"))
                                                  )
                                                )
