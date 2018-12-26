@@ -419,13 +419,14 @@ shinyUI(
                                                br(),
                                                wellPanel(
                                                  fluidRow(
-                                                   column(3, checkboxInput("plane.show_point", label = "Show current PPV/NPV in plots", value = TRUE)), 
-                                                   column(2, offset = 0, downloadButton("plane.ppv.dl", label = "Save PPV plane")),
-                                                   column(2, offset = 4,
-                                                          downloadButton("plane.npv.dl", label = "Save NPV plane"))),
-                                                 fluidRow(
                                                    column(6, sliderInput("theta", "Horizontal viewing angle", value = -45, min = -90, max = +90)),
-                                                   column(6, sliderInput("phi", "Vertical viewing angle", value = 0, min = 0, max =  90)))
+                                                   column(6, sliderInput("phi", "Vertical viewing angle", value = 0, min = 0, max =  90))),
+                                                 fluidRow(
+                                                   column(6, checkboxInput("plane.show_point", label = "Show current PPV/NPV in plots", value = TRUE)),
+                                                   column(6, checkboxInput("plane.show_foot",  label = "Show margin notes", value = TRUE))),
+                                                 fluidRow(
+                                                   column(2, offset = 3, downloadButton("plane.ppv.dl", label = "Save PPV plane")),
+                                                   column(2, offset = 3, downloadButton("plane.npv.dl", label = "Save NPV plane")))
                                                )
                                       ),
                                       

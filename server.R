@@ -338,7 +338,7 @@ shinyServer(function(input, output, session){
       dev.off()}
   )
   
-  ## (7) Planes: ---- 
+  ## (7) Planes: ------ 
   
   plane.ppv <- function(){
     plot(riskyr.scenario(),
@@ -347,7 +347,8 @@ shinyServer(function(input, output, session){
          col_pal = riskyr.colors(),
          show_point = input$plane.show_point,
          theta = input$theta, 
-         phi = input$phi
+         phi = input$phi,
+         mar_notes = input$plane.show_foot
     ) 
   }
   
@@ -368,7 +369,8 @@ shinyServer(function(input, output, session){
          col_pal = riskyr.colors(),
          show_point = input$plane.show_point,
          theta = input$theta, 
-         phi = input$phi
+         phi = input$phi,
+         mar_notes = input$plane.show_foot
     ) 
   }
   
