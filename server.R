@@ -195,7 +195,7 @@ shinyServer(function(input, output, session){
   
   ## Outputs: ---------- 
   
-  ## (1) Prism: ----
+  ## (1) Prism: ------
   
   prism <- function(){
     plot(riskyr.scenario(), 
@@ -207,7 +207,6 @@ shinyServer(function(input, output, session){
          f_lbl = input$prism.f_lbl,
          p_lbl = input$prism.p_lbl,
          mar_notes = input$prism.show_foot
-         # +++ here now +++
     )
   }
   
@@ -221,7 +220,7 @@ shinyServer(function(input, output, session){
       dev.off()}
   )
   
-  ## (2) Table: ----
+  ## (2) Table: ------
   
   table <- function(){
     plot(riskyr.scenario(), 
@@ -230,7 +229,8 @@ shinyServer(function(input, output, session){
          by = input$table.by,
          p_split = input$table.p_split,
          f_lbl = input$table.f_lbl,
-         p_lbl = input$table.p_lbl
+         p_lbl = input$table.p_lbl, 
+         mar_notes = input$table.show_foot
     )
   }
   
@@ -244,7 +244,7 @@ shinyServer(function(input, output, session){
       dev.off()}
   )
   
-  ## (3) Area: ----
+  ## (3) Area: ------ 
   
   area <- function(){
     plot(riskyr.scenario(), 
@@ -253,7 +253,8 @@ shinyServer(function(input, output, session){
          by = input$area.by,
          p_split = input$area.p_split,
          f_lbl = input$area.f_lbl,
-         p_lbl = input$area.p_lbl
+         p_lbl = input$area.p_lbl,
+         mar_notes = input$area.show_foot
     )
   }
   
@@ -267,7 +268,7 @@ shinyServer(function(input, output, session){
       dev.off()}
   )
   
-  ## (4) Icons: ---- 
+  ## (4) Icons: ------  
   
   icons <- function(){
     plot(riskyr.scenario(), 
@@ -275,7 +276,8 @@ shinyServer(function(input, output, session){
          col_pal = riskyr.colors(),
          arr_type = input$icons.arr_type,
          icon_types = c(as.integer(input$symbol.hi), as.integer(input$symbol.mi), 
-                        as.integer(input$symbol.cr), as.integer(input$symbol.fa)) 
+                        as.integer(input$symbol.fa), as.integer(input$symbol.cr)),
+         mar_notes = input$icons.show_foot
     )
   }
   
@@ -289,7 +291,7 @@ shinyServer(function(input, output, session){
       dev.off()}
   )
   
-  ## (5) Bars: ---- 
+  ## (5) Bars: ------  
   
   bar <- function(){
     plot(riskyr.scenario(), 
@@ -297,7 +299,8 @@ shinyServer(function(input, output, session){
          col_pal = riskyr.colors(),
          by = input$bar.by,
          dir = input$bar.dir,
-         f_lbl = input$bar.f_lbl
+         f_lbl = input$bar.f_lbl, 
+         mar_notes = input$bar.show_foot
     )
   }
   
@@ -311,7 +314,7 @@ shinyServer(function(input, output, session){
       dev.off()}
   )
   
-  ## (6) Curves: ---- 
+  ## (6) Curves: ------ 
   
   curve <- function(){
     plot(riskyr.scenario(), 
@@ -320,7 +323,8 @@ shinyServer(function(input, output, session){
          what = c("prev", "PPV", "NPV", "acc", "ppod")[c(TRUE, input$curve.show_PPV, input$curve.show_NPV, input$curve.show_acc, input$curve.show_ppod)],
          show_points = input$curve.show_points,
          log_scale = input$curve.log_scale, 
-         uc = (input$curve.uc / 100)
+         uc = (input$curve.uc / 100), 
+         mar_notes = input$curve.show_foot
          )
   }
   

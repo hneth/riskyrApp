@@ -159,7 +159,7 @@ shinyUI(
                           ## Tabset with prism/table/area/etc.: 
                           tabsetPanel(type = "tabs",
                                       
-                                      # Prism: ---- 
+                                      # Prism: ------ 
                                       
                                       tabPanel("Prism",
                                                br(),
@@ -178,8 +178,7 @@ shinyUI(
                                                                                      "decision + accuracy"  = "dcac",
                                                                                      "accuracy + condition" = "accd",
                                                                                      "accuracy + decision"  = "acdc"),
-                                                                      selected = "cddc")
-                                                   ),
+                                                                      selected = "cddc")),
                                                    column(4, 
                                                           selectInput("prism.area", label = "Box area", 
                                                                       choices = list("default" = "no", 
@@ -208,14 +207,12 @@ shinyUI(
                                                                       ), 
                                                                       selected = "no"))),
                                                  fluidRow(
-                                                   column(4, offset = 0, checkboxInput("prism.show_head", label = "Show header", value = TRUE)),
-                                                   # +++ here now +++ 
                                                    column(4, checkboxInput("prism.show_foot", label = "Show margin notes", value = TRUE)),
-                                                   column(2, offset = 1, downloadButton("prism.dl", label = "Save prism")))
+                                                   column(2, offset = 5, downloadButton("prism.dl", label = "Save prism")))
                                                )
                                       ),
                                       
-                                      # Table: ---- 
+                                      # Table: ------ 
                                       
                                       tabPanel("Table", 
                                                br(),
@@ -245,8 +242,7 @@ shinyUI(
                                                                                      "names only" = "nam",
                                                                                      "values only" = "num",
                                                                                      "names + values" = "namnum",
-                                                                                     "no labels" = "no"
-                                                                      ), 
+                                                                                     "no labels" = "no"), 
                                                                       selected = "num")),
                                                    column(4, 
                                                           selectInput("table.p_lbl", label = "Probability labels", 
@@ -255,15 +251,15 @@ shinyUI(
                                                                                      "values only" = "num",
                                                                                      "names + values" = "namnum",
                                                                                      "short names + values" = "mix", 
-                                                                                     "no labels" = "no"
-                                                                      ), 
-                                                                      selected = "none")),
-                                                   column(2, offset = 1, downloadButton("table.dl", label = "Save table"))
-                                                 )
+                                                                                     "no labels" = "no"), 
+                                                                      selected = "none"))),
+                                                 fluidRow(
+                                                   column(4, checkboxInput("table.show_foot", label = "Show margin notes", value = TRUE)),
+                                                   column(2, offset = 5, downloadButton("table.dl", label = "Save table")))
                                                )
                                       ),
                                       
-                                      # Area: ---- 
+                                      # Area: ------  
                                       
                                       tabPanel("Area", 
                                                br(),
@@ -279,8 +275,7 @@ shinyUI(
                                                                                      "decision + accuracy"  = "dcac",
                                                                                      "accuracy + condition" = "accd",
                                                                                      "accuracy + decision"  = "acdc"),
-                                                                      selected = "cddc")
-                                                   ),
+                                                                      selected = "cddc")),
                                                    column(4, 
                                                           selectInput("area.p_split", label = "Split by", 
                                                                       choices = list("vertical" = "v", 
@@ -293,8 +288,7 @@ shinyUI(
                                                                                      "names only" = "nam",
                                                                                      "values only" = "num",
                                                                                      "names + values" = "namnum",
-                                                                                     "no labels" = "no"
-                                                                      ), 
+                                                                                     "no labels" = "no"), 
                                                                       selected = "num")),
                                                    column(4, 
                                                           selectInput("area.p_lbl", label = "Probability labels", 
@@ -303,11 +297,11 @@ shinyUI(
                                                                                      "values only" = "num",
                                                                                      "names + values" = "namnum",
                                                                                      "short names + values" = "mix", 
-                                                                                     "no labels" = "no"
-                                                                      ), 
-                                                                      selected = "none")),
-                                                   column(2, offset = 1, downloadButton("area.dl", label = "Save area"))
-                                                 )
+                                                                                     "no labels" = "no"), 
+                                                                      selected = "none"))),
+                                                 fluidRow(
+                                                   column(4, checkboxInput("area.show_foot", label = "Show margin notes", value = TRUE)),
+                                                   column(2, offset = 5, downloadButton("area.dl", label = "Save area")))
                                                )
                                       ),
                                       
@@ -328,36 +322,31 @@ shinyUI(
                                                                                      "fill left" = "fillleft",
                                                                                      "fill top" = "filltop",
                                                                                      "scattered" = "scatter"), 
-                                                                      selected = "array")),
-                                                   column(2, offset = 6, downloadButton("icons.dl", label = "Save icons"))
-                                                 ), 
-                                                 br(),
+                                                                      selected = "array"))),
                                                  fluidRow(
                                                    column(3,
                                                           selectInput("symbol.hi", label = "hi (TP) symbol", 
                                                                       choices = list("Circle" = 21, "Square" = 22, "Rhombus" = 23, "Triangle" = 24),
-                                                                      selected = "22")
-                                                   ),
+                                                                      selected = "22")),
                                                    column(3,
                                                           selectInput("symbol.mi", label = "mi (FN) symbol", 
                                                                       choices = list("Circle" = 21, "Square" = 22, "Rhombus" = 23, "Triangle" = 24),
-                                                                      selected = "22")
-                                                   ),
-                                                   column(3,
-                                                          selectInput("symbol.cr", label = "cr (TN) symbol", 
-                                                                      choices = list("Circle" = 21, "Square" = 22, "Rhombus" = 23, "Triangle" = 24),
-                                                                      selected = "22")
-                                                   ),
+                                                                      selected = "22")),
                                                    column(3,
                                                           selectInput("symbol.fa", label = "fa (FP) symbol", 
                                                                       choices = list("Circle" = 21, "Square" = 22, "Rhombus" = 23, "Triangle" = 24),
-                                                                      selected = "22")
-                                                   )
-                                                 )
+                                                                      selected = "22")),
+                                                   column(3,
+                                                          selectInput("symbol.cr", label = "cr (TN) symbol", 
+                                                                      choices = list("Circle" = 21, "Square" = 22, "Rhombus" = 23, "Triangle" = 24),
+                                                                      selected = "22"))),
+                                                 fluidRow(
+                                                   column(4, checkboxInput("icons.show_foot", label = "Show margin notes", value = TRUE)),
+                                                   column(2, offset = 5, downloadButton("icons.dl", label = "Save icons")))
                                                )
                                       ),
                                       
-                                      # Bars: ----  
+                                      # Bars: ------  
                                       
                                       tabPanel("Bars", 
                                                br(),
@@ -371,8 +360,7 @@ shinyUI(
                                                                                      "decision"  = "dc",
                                                                                      "accuracy"  = "ac",
                                                                                      "all" = "all"),
-                                                                      selected = "all")
-                                                   ),
+                                                                      selected = "all")),
                                                    column(3, 
                                                           selectInput("bar.dir", label = "Directions", 
                                                                       choices = list("uni-directional" = 1, 
@@ -385,15 +373,15 @@ shinyUI(
                                                                                      "names only" = "nam",
                                                                                      "values only" = "num",
                                                                                      "names and values" = "namnum",
-                                                                                     "no labels" = "no"
-                                                                      ), 
-                                                                      selected = "num")),
-                                                   column(2, offset = 1, downloadButton("bar.dl", label = "Save bars"))
-                                                 )
+                                                                                     "no labels" = "no"), 
+                                                                      selected = "num"))),
+                                                 fluidRow(
+                                                   column(4, checkboxInput("bar.show_foot", label = "Show margin notes", value = TRUE)),
+                                                   column(2, offset = 5, downloadButton("bar.dl", label = "Save bars")))
                                                )
                                       ),
                                       
-                                      # Curves: ---- 
+                                      # Curves: ------ 
                                       
                                       tabPanel("Curves", 
                                                br(),
@@ -406,15 +394,16 @@ shinyUI(
                                                    column(3, checkboxInput("curve.show_acc", label = "Accuracy (acc)", value = FALSE)),
                                                    column(3, checkboxInput("curve.show_ppod", label = "Proportion of positive decisions (ppod)", value = FALSE))),
                                                  fluidRow(
-                                                   column(6, offset = 0, checkboxInput("curve.show_points", label = "Show point values", value = TRUE)),
+                                                   column(3, offset = 0, checkboxInput("curve.show_points", label = "Show point values", value = TRUE)),
+                                                   column(3, checkboxInput("curve.show_foot", label = "Show margin notes", value = TRUE)), 
                                                    column(6, checkboxInput("curve.log_scale", label = "Prevalence on logarithmic scale", value = FALSE))),
                                                  fluidRow(
                                                    column(6, sliderInput("curve.uc", "Uncertainty", value = 0, min = 0, max = 30, step = 1, pre = NULL, post = "%")),
-                                                   column(1, offset = 3, downloadButton("curve.dl", label = "Save curves")))
+                                                   column(2, offset = 3, downloadButton("curve.dl", label = "Save curves")))
                                                )
                                       ),
                                       
-                                      # Planes: ---- 
+                                      # Planes: ------ 
                                       
                                       tabPanel("Planes", 
                                                br(),
