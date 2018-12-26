@@ -315,7 +315,7 @@ shinyServer(function(input, output, session){
     plot(riskyr.scenario(), 
          type  = "curve",
          col_pal = riskyr.colors(),
-         what = c("prev", "PPV", "NPV", "acc", "ppod")[c(TRUE, TRUE, TRUE, input$curve.show_acc, input$curve.show_ppod)],
+         what = c("prev", "PPV", "NPV", "acc", "ppod")[c(TRUE, input$curve.show_PPV, input$curve.show_NPV, input$curve.show_acc, input$curve.show_ppod)],
          show_points = input$curve.show_points,
          log_scale = input$curve.log_scale, 
          uc = (input$curve.uc / 100)
