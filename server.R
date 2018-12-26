@@ -12,7 +12,7 @@ library("shinyBS")
 library("markdown")
 library("colourpicker")
 
-## Install the currently included version of riskyr: ------
+## Install/load current version of riskyr: ------
 # detach("package:riskyr", unload = TRUE)
 # devtools::install_github("hneth/riskyr")
 library("riskyr")
@@ -32,15 +32,14 @@ riskyr.colors <- reactive({ init_pal() })
 # reactive labels: 
 riskyr.labels <- reactive({ init_txt() })
 
-
 ## Define server logic: ------ 
 
 shinyServer(function(input, output, session){
   
-  # save environment parameters N, prev, sens, spec as reactive values: 
+  # Environment parameters N, prev, sens, spec as reactive values: 
   env <- reactiveValues(env = NULL) 
   
-  # create modals with tutorial/help contents: ---- 
+  # Create modals with tutorial/help contents: ---- 
   
   inputs_modal <- modalDialog(
     title = "Inputs", 
@@ -74,7 +73,7 @@ shinyServer(function(input, output, session){
   
   ## Couple numeric and slider inputs: ------ 
   
-  ## population (logified version): ---- 
+   ## population (logified version): ---- 
   
   observeEvent({
     input$N
@@ -83,7 +82,7 @@ shinyServer(function(input, output, session){
     env$recalc.N <- input$N
   })
   
-  ## prevalence: ---- 
+   ## prevalence: ---- 
   
   observeEvent({
     input$prev }, {
@@ -99,7 +98,7 @@ shinyServer(function(input, output, session){
       updateSliderInput(session, "prev", value = env$recalc.prev)
     })
   
-  ## sensitivity: ---- 
+   ## sensitivity: ---- 
   
   observeEvent({
     input$sens }, {
@@ -115,7 +114,7 @@ shinyServer(function(input, output, session){
       updateSliderInput(session, "sens", value = env$recalc.sens)
     })
   
-  ## specificity: ---- 
+   ## specificity: ---- 
   
   observeEvent({
     input$spec }, {
@@ -195,7 +194,7 @@ shinyServer(function(input, output, session){
   
   ## Outputs: ---------- 
   
-  ## (1) Prism: ------
+   ## (1) Prism: ------
   
   prism <- function(){
     plot(riskyr.scenario(), 
@@ -220,7 +219,7 @@ shinyServer(function(input, output, session){
       dev.off()}
   )
   
-  ## (2) Table: ------
+   ## (2) Table: ------
   
   table <- function(){
     plot(riskyr.scenario(), 
@@ -244,7 +243,7 @@ shinyServer(function(input, output, session){
       dev.off()}
   )
   
-  ## (3) Area: ------ 
+   ## (3) Area: ------ 
   
   area <- function(){
     plot(riskyr.scenario(), 
@@ -254,6 +253,7 @@ shinyServer(function(input, output, session){
          p_split = input$area.p_split,
          f_lbl = input$area.f_lbl,
          p_lbl = input$area.p_lbl,
+         sum_w = (input$area.sum_w/100), 
          mar_notes = input$area.show_foot
     )
   }
@@ -268,7 +268,7 @@ shinyServer(function(input, output, session){
       dev.off()}
   )
   
-  ## (4) Icons: ------  
+   ## (4) Icons: ------  
   
   icons <- function(){
     plot(riskyr.scenario(), 
@@ -291,7 +291,7 @@ shinyServer(function(input, output, session){
       dev.off()}
   )
   
-  ## (5) Bars: ------  
+   ## (5) Bars: ------  
   
   bar <- function(){
     plot(riskyr.scenario(), 
@@ -314,7 +314,7 @@ shinyServer(function(input, output, session){
       dev.off()}
   )
   
-  ## (6) Curves: ------ 
+   ## (6) Curves: ------ 
   
   curve <- function(){
     plot(riskyr.scenario(), 
@@ -323,7 +323,7 @@ shinyServer(function(input, output, session){
          what = c("prev", "PPV", "NPV", "acc", "ppod")[c(TRUE, input$curve.show_PPV, input$curve.show_NPV, input$curve.show_acc, input$curve.show_ppod)],
          show_points = input$curve.show_points,
          log_scale = input$curve.log_scale, 
-         uc = (input$curve.uc / 100), 
+         uc = (input$curve.uc/100), 
          mar_notes = input$curve.show_foot
          )
   }
@@ -338,7 +338,7 @@ shinyServer(function(input, output, session){
       dev.off()}
   )
   
-  ## (7) Planes: ------ 
+   ## (7) Planes: ------ 
   
   plane.ppv <- function(){
     plot(riskyr.scenario(),
@@ -384,7 +384,7 @@ shinyServer(function(input, output, session){
       dev.off()}
   )
   
-  ## (8) Contrasting representations: ------ 
+   ## (8) Contrasting representations: ------ 
   
   output$represent1 <- renderPlot({
     switch(input$represent1,

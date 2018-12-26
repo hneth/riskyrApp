@@ -58,7 +58,6 @@ logifySlider('N2', sci = false)
 ## Define user interface logic: ------
 
 shinyUI(
-  
   navbarPage(title = "riskyrApp",
              theme = "bootstrap.sandstone.css",
              id = "tabs",
@@ -79,64 +78,48 @@ shinyUI(
                           
                           sliderInput("N", label = "Population (logarithmic scale)",
                                       min = 1, max = 5,
-                                      value = 3, round = FALSE
-                          ),
+                                      value = 3, round = FALSE),
                           br(),
                           
                           radioButtons("checkprev", label = "Prevalence (in percent)", 
                                        choiceNames = list("Slider", "Field"),
-                                       choiceValues = c(0, 1), inline = TRUE
-                          ),
+                                       choiceValues = c(0, 1), inline = TRUE),
                           
                           conditionalPanel(condition = "input.checkprev == 0",
                                            sliderInput("prev",  label = NULL, sep = "",
                                                        value = 15, min = 0, max = 100, step = 1,
-                                                       pre = NULL, post = "%"
-                                           )
-                          ),
+                                                       pre = NULL, post = "%")),
                           
                           conditionalPanel(condition = "input.checkprev == 1", 
                                            numericInput("numprev", label = NULL, value = 15,
-                                                        min = 0, max = 100, step = 10^-2
-                                           )
-                          ),
+                                                        min = 0, max = 100, step = 10^-2)),
                           br(),
                           
                           radioButtons("checksens", label = "Sensitivity (in percent)", 
                                        choiceNames = list("Slider", "Field"),
-                                       choiceValues = c(0, 1), inline = TRUE
-                          ),
+                                       choiceValues = c(0, 1), inline = TRUE),
                           
                           conditionalPanel(condition = "input.checksens == 0",
                                            sliderInput("sens", label = NULL, sep = "", value = 85.00,
                                                        min = 0, max = 100, step = 1,
-                                                       pre = NULL, post = "%"
-                                           )
-                          ),
+                                                       pre = NULL, post = "%")),
                           
                           conditionalPanel(condition = "input.checksens == 1", 
                                            numericInput("numsens", label = NULL, value = 85.00,
-                                                        min = 0, max = 100, step = 10^-2
-                                           )
-                          ),
+                                                        min = 0, max = 100, step = 10^-2)),
                           
                           radioButtons("checkspec", label = "Specificity (in percent)", 
                                        choiceNames = list("Slider", "Field"),
-                                       choiceValues = c(0, 1), inline = TRUE
-                          ),
+                                       choiceValues = c(0, 1), inline = TRUE),
                           
                           conditionalPanel(condition = "input.checkspec == 0",
                                            sliderInput("spec", label = NULL, sep = "", value = 75,
                                                        min = 0, max = 100, step = 1,
-                                                       pre = NULL, post = "%"
-                                           )
-                          ),
+                                                       pre = NULL, post = "%")),
                           
                           conditionalPanel(condition = "input.checkspec == 1", 
                                            numericInput("numspec", label = NULL, value = 75,
-                                                        min = 0, max = 100, step = 10^-2
-                                           )
-                          ),
+                                                        min = 0, max = 100, step = 10^-2)),
                           br(), 
                           
                           # Provide existing data sets as drop-down list: ------ 
@@ -148,15 +131,13 @@ shinyUI(
                           
                           bsButton("help_inputs", label = "Help",
                                    icon = icon("question-sign", lib = "glyphicon"),
-                                   style = "default", type = "action")
-                          
-                        ),
+                                   style = "default", type = "action")),
                         
                         # Main panel for displaying different visualizations: ------ 
                         
                         mainPanel(
                           
-                          ## Tabset with prism/table/area/etc.: 
+                          # Tabset with prism/table/area/etc.: 
                           tabsetPanel(type = "tabs",
                                       
                                       # Prism: ------ 
@@ -303,8 +284,9 @@ shinyUI(
                                                                                      "no labels" = "no"), 
                                                                       selected = "none"))),
                                                  fluidRow(
-                                                   column(4, checkboxInput("area.show_foot", label = "Show margin notes", value = TRUE)),
-                                                   column(2, offset = 5, downloadButton("area.dl", label = "Save area")))
+                                                   column(6, sliderInput("area.sum_w", "Marginal sum width", value = 0, min = 0, max = 100, step = 5, pre = NULL, post = "%")),
+                                                   column(3, checkboxInput("area.show_foot", label = "Show margin notes", value = TRUE)),
+                                                   column(2, offset = 0, downloadButton("area.dl", label = "Save area")))
                                                )
                                       ),
                                       
@@ -486,7 +468,7 @@ shinyUI(
                                                                                      "Plane PPV" = "plane.ppv",
                                                                                      "Plane NPV" = "plane.npv"),
                                                                       selected = "bar")))
-                                                 ))
+                                               ))
                           )
                         )
                       )
@@ -661,7 +643,7 @@ shinyUI(
                           br(),
                           fluidRow(
                             column(6, plotOutput("sample.curves", width = "450", height = "350")))
-                          )
+                        )
                       )
              ),
              
