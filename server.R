@@ -23,7 +23,7 @@ library("riskyr")
 datasets <- read.csv2("./www/df_scenarios_riskyrApp_2018-12-14.csv", stringsAsFactors = FALSE)
 
 # Default colors and text labels: 
-default.colors <- init_pal()
+default.colors <- init_pal() 
 default.labels <- init_txt()
 
 # reactive color palette: 

@@ -633,7 +633,8 @@ shinyUI(
                                                               "black + white" = "pal_bw",
                                                               "green, blue, sand" = "pal_gbs",
                                                               "uni.kn" = "pal_kn",
-                                                              "viridis" = "pal_vir"), selected = 1))),
+                                                              "viridis" = "pal_vir"), 
+                                               selected = 1))),
                           br(), br(), 
                           fluidRow(
                             column(5,                          
