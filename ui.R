@@ -1,5 +1,5 @@
 # ui.R
-# riskyrApp | R Shiny | spds, uni.kn | 2018 12 25
+# riskyrApp | R Shiny | spds, uni.kn | 2018 12 26
 
 ## Dependencies: ------
 
@@ -316,7 +316,7 @@ shinyUI(
                                                  column(8, offset = 0, plotOutput("icons", width = "600", height = "450"))),
                                                wellPanel(
                                                  fluidRow(
-                                                   column(4, offset = 0,
+                                                   column(3, offset = 0,
                                                           selectInput("icons.arr_type", "Array type:",
                                                                       choices = list("array" = "array", 
                                                                                      "shuffled" = "shuffledarray",
@@ -398,15 +398,17 @@ shinyUI(
                                                  column(12, offset = 0, plotOutput("curve", width = "600", height = "450"))),
                                                wellPanel(
                                                  fluidRow(
-                                                   column(2, offset = 2, checkboxInput("curve.show_points", label = "Show point values", value = TRUE)),
-                                                   column(3, checkboxInput("curve.log_scale", label = "Scale prevalence on logarithmic scale", value = FALSE))),
+                                                   column(3, offset = 0, checkboxInput("curve.show_PPV", label = "Positive predictive value (PPV)", value = TRUE)),
+                                                   column(3, checkboxInput("curve.show_NPV", label = "Negative predictive value (NPV)", value = TRUE)),
+                                                   column(3, checkboxInput("curve.show_acc", label = "Accuracy (acc)", value = FALSE)),
+                                                   column(3, checkboxInput("curve.show_ppod", label = "Proportion of positive decisions (ppod)", value = FALSE))),
                                                  fluidRow(
-                                                   column(2, offset = 2, checkboxInput("curve.show_acc", label = "Accuracy (acc)", value = FALSE)),
-                                                   column(4, checkboxInput("curve.show_ppod", label = "Proportion of positive decisions (ppod)", value = FALSE)),
-                                                   column(1, downloadButton("curve.dl", label = "Save curves"))
-                                                 )
+                                                   column(6, offset = 0, checkboxInput("curve.show_points", label = "Show point values", value = TRUE)),
+                                                   column(6, checkboxInput("curve.log_scale", label = "Prevalence on logarithmic scale", value = FALSE))),
+                                                 fluidRow(
+                                                   column(6, sliderInput("curve.uc", "Uncertainty", value = 0, min = 0, max = 30, step = 1, pre = NULL, post = "%")),
+                                                   column(1, offset = 3, downloadButton("curve.dl", label = "Save curves")))
                                                )
-                                               
                                       ),
                                       
                                       # Planes: ---- 
@@ -422,7 +424,7 @@ shinyUI(
                                                wellPanel(
                                                  fluidRow(
                                                    column(3, checkboxInput("plane.show_point", label = "Show current PPV/NPV in plots", value = TRUE)), 
-                                                   column(2, offset = 1, downloadButton("plane.ppv.dl", label = "Save PPV plane")),
+                                                   column(2, offset = 0, downloadButton("plane.ppv.dl", label = "Save PPV plane")),
                                                    column(2, offset = 4,
                                                           downloadButton("plane.npv.dl", label = "Save NPV plane"))
                                                  ),

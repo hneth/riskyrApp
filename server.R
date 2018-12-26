@@ -1,5 +1,5 @@
 # server.R
-# riskyrApp | R Shiny | spds, uni.kn | 2018 12 25
+# riskyrApp | R Shiny | spds, uni.kn | 2018 12 26
 
 ## Clean up: ------
 
@@ -317,8 +317,9 @@ shinyServer(function(input, output, session){
          col_pal = riskyr.colors(),
          what = c("prev", "PPV", "NPV", "acc", "ppod")[c(TRUE, TRUE, TRUE, input$curve.show_acc, input$curve.show_ppod)],
          show_points = input$curve.show_points,
-         log_scale = input$curve.log_scale
-    )
+         log_scale = input$curve.log_scale, 
+         uc = (input$curve.uc / 100)
+         )
   }
   
   output$curve <- renderPlot({ curve() })
