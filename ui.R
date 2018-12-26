@@ -206,9 +206,11 @@ shinyUI(
                                                                                      "names + values" = "namnum",
                                                                                      "none" = "no"
                                                                       ), 
-                                                                      selected = "no")),
-                                                   column(2, offset = 1, downloadButton("prism.dl", label = "Save prism"))
-                                                 )
+                                                                      selected = "no"))),
+                                                 fluidRow(
+                                                   column(4, offset = 0, checkboxInput("prism.show_head", label = "Show header", value = TRUE)),
+                                                   column(4, checkboxInput("prism.show_foot", label = "Show margin notes", value = TRUE)),
+                                                   column(2, offset = 1, downloadButton("prism.dl", label = "Save prism")))
                                                )
                                       ),
                                       
