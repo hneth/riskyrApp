@@ -475,7 +475,7 @@ shinyUI(
                       )
              ),
              
-             # Customize labels: ------ 
+             # Customize text labels: ------ 
              
              tabPanel("Customize labels",
                       icon = icon("pencil", lib = "glyphicon"), value = "custom_labels",
@@ -561,6 +561,7 @@ shinyUI(
                       value = "custom_colors",
                       sidebarLayout(
                         
+                        # Sidebar panel for inputs: ------
                         sidebarPanel(
                           # Inputs for color customization:
                           h3("Use your own colors"),
@@ -573,7 +574,7 @@ shinyUI(
                                                   value = default.colors["fa"], showColour = "background",
                                                   palette = "square", allowedCols = NULL)),
                             
-                            column(4, colourInput("color.pos", label = "Positive decisions",
+                            column(4, colourInput("color.pos", label = "dec.pos",
                                                   value = default.colors["pos"], showColour = "background",
                                                   palette = "square", allowedCols = NULL))),
                           fluidRow(
@@ -583,34 +584,40 @@ shinyUI(
                             column(4, colourInput("color.cr", label = "cr (TN)",
                                                   value = default.colors["cr"], showColour = "background",
                                                   palette = "square", allowedCols = NULL)),
-                            column(4, colourInput("color.neg", label = "Negative decisions",
+                            column(4, colourInput("color.neg", label = "dec.neg",
                                                   value = default.colors["neg"], showColour = "background",
                                                   palette = "square", allowedCols = NULL))),
                           fluidRow(
-                            column(4, colourInput("color.true", label = "Condition true",
+                            column(4, colourInput("color.true", label = "cond.true",
                                                   value = default.colors["true"], showColour = "background",
                                                   palette = "square", allowedCols = NULL)),
-                            column(4, colourInput("color.false", label = "Condition false",
+                            column(4, colourInput("color.false", label = "cond.false",
                                                   value = default.colors["false"], showColour = "background",
                                                   palette = "square", allowedCols = NULL)),
-                            column(4, colourInput("color.N", label = "Population",
+                            column(4, colourInput("color.N", label = "population",
                                                   value = default.colors["N"], showColour = "background",
                                                   palette = "square", allowedCols = NULL))),
                           br(), br(),
-                          br(), br(),
+                          fluidRow(
+                            column(4, colourInput("color.cor", label = "dec.cor",
+                                                  value = default.colors["cor"], showColour = "background",
+                                                  palette = "square", allowedCols = NULL)),
+                            column(4, colourInput("color.err", label = "dec.err",
+                                                  value = default.colors["err"], showColour = "background",
+                                                  palette = "square", allowedCols = NULL))),
                           br(), br(),
                           fluidRow(
-                            column(6, colourInput("color.ppv", label = "Positive predictive value (PPV)",
+                            column(6, colourInput("color.ppv", label = "PPV",
                                                   value = default.colors["ppv"], showColour = "background",
                                                   palette = "square", allowedCols = NULL)),
-                            column(6, colourInput("color.npv", label = "Negative predictive value (NPV)",
+                            column(6, colourInput("color.npv", label = "NPV",
                                                   value = default.colors["npv"], showColour = "background",
                                                   palette = "square", allowedCols = NULL))),
                           fluidRow(
-                            column(6, colourInput("color.txt", label = "Text:",
+                            column(6, colourInput("color.txt", label = "Text",
                                                   value = default.colors["txt"], showColour = "background",
                                                   palette = "square", allowedCols = NULL)),
-                            column(6, colourInput("color.brd", label = "Lines:",
+                            column(6, colourInput("color.brd", label = "Lines",
                                                   value = default.colors["brd"], showColour = "background",
                                                   palette = "square", allowedCols = NULL))),
                           br(), br(),
@@ -635,12 +642,15 @@ shinyUI(
                                             style = "default", type = "action")))
                         ),
                         
-                        # Main panel for displaying preview plots with colors: ---- 
+                        # Main panel: Display preview plots with current colors: ---- 
                         mainPanel(
                           br(),
                           h3("Preview of current colors"),
                           fluidRow(offset = 1,
                                    column(6, plotOutput("sample.table", width = "450", height = "350"))),
+                          br(),
+                          fluidRow(
+                            column(6, plotOutput("sample.bar", width = "450", height = "350"))),
                           br(),
                           fluidRow(
                             column(6, plotOutput("sample.curves", width = "450", height = "350")))

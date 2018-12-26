@@ -438,7 +438,7 @@ shinyServer(function(input, output, session){
     )
   })
   
-  ## Customize labels: ------ 
+  ## Customize text labels: ------ 
   
   # Reset labels to default
   observeEvent(input$resetcustomlabel, {
@@ -482,12 +482,12 @@ shinyServer(function(input, output, session){
   riskyr.colors <- reactive({
     init_pal(
       N_col = input$color.N,
-      cond.true_col = input$color.true,
+      cond.true_col  = input$color.true,
       cond.false_col = input$color.false,
       dec.pos_col = input$color.pos,
       dec.neg_col = input$color.neg,
-      # dec.cor_col = input$colo,
-      # dec.err_col = ,
+      dec.cor_col = input$color.cor,
+      dec.err_col = input$color.err,
       hi_col = input$color.hi,
       mi_col = input$color.mi,
       fa_col = input$color.fa,
@@ -505,7 +505,7 @@ shinyServer(function(input, output, session){
          col_pal = riskyr.colors(),
          type = "table",
          f_lbl = "nam",
-         # title_lbl = NA,
+         # title_lbl = "",
          mar_notes = FALSE)
   })
   
@@ -515,7 +515,7 @@ shinyServer(function(input, output, session){
          col_pal = riskyr.colors(),
          type = "prism",
          f_lbl = "nam",
-         # title_lbl = NA,
+         # title_lbl = "",
          mar_notes = FALSE)
   })
   
@@ -524,8 +524,20 @@ shinyServer(function(input, output, session){
     plot(riskyr.scenario(),
          col_pal = riskyr.colors(),
          type = "curve",
+         what = "all", 
          f_lbl = "nam",
          show_points = FALSE,
+         uc = .10, 
+         # title_lbl = "",
+         mar_notes = FALSE)
+  })
+  
+  # Simplified display of bar plot: 
+  output$sample.bar <- renderPlot({
+    plot(riskyr.scenario(),
+         col_pal = riskyr.colors(),
+         type = "bar",
+         f_lbl = "nam",
          # title_lbl = NA,
          mar_notes = FALSE)
   })
