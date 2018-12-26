@@ -189,7 +189,7 @@ shinyUI(
                                                                       ), 
                                                                       selected = "no"))),
                                                  fluidRow(
-                                                   column(4, checkboxInput("prism.show_foot", label = "Show margin notes", value = TRUE)),
+                                                   column(4, checkboxInput("prism.show_foot", label = "Show margin notes", value = FALSE)),
                                                    column(2, offset = 5, downloadButton("prism.dl", label = "Save prism")))
                                                )
                                       ),
@@ -237,7 +237,7 @@ shinyUI(
                                                                                      "no labels" = "no"), 
                                                                       selected = "none"))),
                                                  fluidRow(
-                                                   column(4, checkboxInput("table.show_foot", label = "Show margin notes", value = TRUE)),
+                                                   column(4, checkboxInput("table.show_foot", label = "Show margin notes", value = FALSE)),
                                                    column(2, offset = 5, downloadButton("table.dl", label = "Save table")))
                                                )
                                       ),
@@ -285,7 +285,7 @@ shinyUI(
                                                                       selected = "none"))),
                                                  fluidRow(
                                                    column(6, sliderInput("area.sum_w", "Marginal sum width", value = 0, min = 0, max = 100, step = 5, pre = NULL, post = "%")),
-                                                   column(3, checkboxInput("area.show_foot", label = "Show margin notes", value = TRUE)),
+                                                   column(3, checkboxInput("area.show_foot", label = "Show margin notes", value = FALSE)),
                                                    column(2, offset = 0, downloadButton("area.dl", label = "Save area")))
                                                )
                                       ),
@@ -327,7 +327,7 @@ shinyUI(
                                                                       choices = list("Circle" = 21, "Square" = 22, "Rhombus" = 23, "Triangle" = 24),
                                                                       selected = "22"))),
                                                  fluidRow(
-                                                   column(4, checkboxInput("icons.show_foot", label = "Show margin notes", value = TRUE)),
+                                                   column(4, checkboxInput("icons.show_foot", label = "Show margin notes", value = FALSE)),
                                                    column(2, offset = 5, downloadButton("icons.dl", label = "Save icons")))
                                                )
                                       ),
@@ -363,7 +363,7 @@ shinyUI(
                                                                                      "no labels" = "no"), 
                                                                       selected = "num"))),
                                                  fluidRow(
-                                                   column(4, checkboxInput("bar.show_foot", label = "Show margin notes", value = TRUE)),
+                                                   column(4, checkboxInput("bar.show_foot", label = "Show margin notes", value = FALSE)),
                                                    column(2, offset = 5, downloadButton("bar.dl", label = "Save bars")))
                                                )
                                       ),
@@ -383,7 +383,7 @@ shinyUI(
                                                    column(3, checkboxInput("curve.show_ppod", label = "Proportion of positive decisions (ppod)", value = FALSE))),
                                                  fluidRow(
                                                    column(3, offset = 0, checkboxInput("curve.show_points", label = "Show point values", value = TRUE)),
-                                                   column(3, checkboxInput("curve.show_foot", label = "Show margin notes", value = TRUE)), 
+                                                   column(3, checkboxInput("curve.show_foot", label = "Show margin notes", value = FALSE)), 
                                                    column(6, checkboxInput("curve.log_scale", label = "Prevalence on logarithmic scale", value = FALSE))),
                                                  fluidRow(
                                                    column(6, sliderInput("curve.uc", "Uncertainty", value = 0, min = 0, max = 30, step = 1, pre = NULL, post = "%")),
@@ -405,7 +405,7 @@ shinyUI(
                                                    column(6, sliderInput("phi", "Vertical viewing angle", value = 0, min = 0, max =  90))),
                                                  fluidRow(
                                                    column(6, checkboxInput("plane.show_point", label = "Show current PPV/NPV in plots", value = TRUE)),
-                                                   column(6, checkboxInput("plane.show_foot",  label = "Show margin notes", value = TRUE))),
+                                                   column(6, checkboxInput("plane.show_foot",  label = "Show margin notes", value = FALSE))),
                                                  fluidRow(
                                                    column(2, offset = 3, downloadButton("plane.ppv.dl", label = "Save PPV plane")),
                                                    column(2, offset = 3, downloadButton("plane.npv.dl", label = "Save NPV plane")))
@@ -434,7 +434,7 @@ shinyUI(
                                                                                      "Curves" = "curve",
                                                                                      "Plane PPV" = "plane.ppv",
                                                                                      "Plane NPV" = "plane.npv"),
-                                                                      selected = "prism")),
+                                                                      selected = "table")),
                                                    column(3, offset = 4, 
                                                           selectInput("represent2", label = "Plot 2", 
                                                                       choices = list("Prism" = "prism", 
@@ -445,7 +445,7 @@ shinyUI(
                                                                                      "Curves" = "curve",
                                                                                      "Plane PPV" = "plane.ppv",
                                                                                      "Plane NPV" = "plane.npv"),
-                                                                      selected = "table"))),
+                                                                      selected = "prism"))),
                                                  fluidRow(
                                                    column(3, offset = 0, 
                                                           selectInput("represent3", label = "Plot 3", 
@@ -457,7 +457,7 @@ shinyUI(
                                                                                      "Curves" = "curve",
                                                                                      "Plane PPV" = "plane.ppv",
                                                                                      "Plane NPV" = "plane.npv"),
-                                                                      selected = "icons")),
+                                                                      selected = "area")),
                                                    column(3, offset = 4, 
                                                           selectInput("represent4", label = "Plot 4", 
                                                                       choices = list("Prism" = "prism", 
@@ -468,7 +468,7 @@ shinyUI(
                                                                                      "Curves" = "curve",
                                                                                      "Plane PPV" = "plane.ppv",
                                                                                      "Plane NPV" = "plane.npv"),
-                                                                      selected = "area")))
+                                                                      selected = "icons")))
                                                ))
                           )
                         )
