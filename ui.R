@@ -535,12 +535,15 @@ shinyUI(
                                                 value = default.labels$dec.neg_lbl))),
                           br(), br(),
                           br(), br(),
-                          bsButton("resetcustomlabel", label = "Reset defaults",
+                          fluidRow(
+                            column(5,     
+                                   bsButton("resetcustomlabel", label = "Reset defaults",
                                    icon = icon("refresh", lib = "glyphicon"),
-                                   style = "default", type = "action"),
-                          bsButton("help_custom_labels", label = "Help",
+                                   style = "default", type = "action")),
+                            column(3, offset = 2,     
+                                   bsButton("help_custom_labels", label = "Help",
                                    icon = icon("question-sign", lib = "glyphicon"),
-                                   style = "default", type = "action")
+                                   style = "default", type = "action")))
                         ),
                         
                         # Main panel for displaying preview of labels: ------ 
@@ -622,8 +625,8 @@ shinyUI(
                                                   palette = "square", allowedCols = NULL))),
                           br(), br(),
                           fluidRow(
-                            column(6,
-                                   selectInput("alt.palette", label = "Load color palette",
+                            column(7,
+                                   selectInput("alt.palette", label = "Color palette",
                                                choices = list("---" = "default",
                                                               "4 colours" = "pal_4c",
                                                               "black & white" = "pal_bw",
@@ -632,11 +635,11 @@ shinyUI(
                                                               "viridis" = "pal_vir"), selected = 1))),
                           br(),
                           fluidRow(
-                            column(3,                          
+                            column(5,                          
                                    bsButton("resetcustomcolor", label = "Reset default",
                                             icon = icon("refresh", lib = "glyphicon"),
                                             style = "default", type = "action")),
-                            column(3,
+                            column(3, offset = 2,  
                                    bsButton("help_custom_colors", label = "Help",
                                             icon = icon("question-sign", lib = "glyphicon"),
                                             style = "default", type = "action")))
