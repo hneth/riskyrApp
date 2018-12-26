@@ -341,19 +341,19 @@ shinyUI(
                                                br(),
                                                wellPanel(
                                                  fluidRow(
-                                                   column(3, offset = 0,
+                                                   column(4, offset = 0,
                                                           selectInput("bar.by", label = "Perspective by", 
                                                                       choices = list("condition" = "cd",
                                                                                      "decision"  = "dc",
                                                                                      "accuracy"  = "ac",
                                                                                      "all" = "all"),
                                                                       selected = "all")),
-                                                   column(3, 
+                                                   column(4, 
                                                           selectInput("bar.dir", label = "Directions", 
                                                                       choices = list("uni-directional" = 1, 
                                                                                      "bi-directional"  = 2), 
                                                                       selected = 1)),
-                                                   column(3, 
+                                                   column(4, 
                                                           selectInput("bar.f_lbl", label = "Labels", 
                                                                       choices = list("default" = "def", 
                                                                                      "abbr. names" = "abbr",
@@ -424,8 +424,8 @@ shinyUI(
                                                br(),
                                                wellPanel(
                                                  fluidRow(
-                                                   column(3,
-                                                          selectInput("represent1", label = "Selection 1", 
+                                                   column(3, offset = 0, 
+                                                          selectInput("represent1", label = "Plot 1", 
                                                                       choices = list("Prism" = "prism", 
                                                                                      "Table" = "table",
                                                                                      "Area" = "area",
@@ -435,8 +435,8 @@ shinyUI(
                                                                                      "Plane PPV" = "plane.ppv",
                                                                                      "Plane NPV" = "plane.npv"),
                                                                       selected = "prism")),
-                                                   column(3,
-                                                          selectInput("represent2", label = "Selection 2", 
+                                                   column(3, offset = 4, 
+                                                          selectInput("represent2", label = "Plot 2", 
                                                                       choices = list("Prism" = "prism", 
                                                                                      "Table" = "table",
                                                                                      "Area" = "area",
@@ -445,9 +445,10 @@ shinyUI(
                                                                                      "Curves" = "curve",
                                                                                      "Plane PPV" = "plane.ppv",
                                                                                      "Plane NPV" = "plane.npv"),
-                                                                      selected = "table")),
-                                                   column(3,
-                                                          selectInput("represent3", label = "Selection 3", 
+                                                                      selected = "table"))),
+                                                 fluidRow(
+                                                   column(3, offset = 0, 
+                                                          selectInput("represent3", label = "Plot 3", 
                                                                       choices = list("Prism" = "prism", 
                                                                                      "Table" = "table",
                                                                                      "Area" = "area",
@@ -457,8 +458,8 @@ shinyUI(
                                                                                      "Plane PPV" = "plane.ppv",
                                                                                      "Plane NPV" = "plane.npv"),
                                                                       selected = "icons")),
-                                                   column(3,
-                                                          selectInput("represent4", label = "Selection 4", 
+                                                   column(3, offset = 4, 
+                                                          selectInput("represent4", label = "Plot 4", 
                                                                       choices = list("Prism" = "prism", 
                                                                                      "Table" = "table",
                                                                                      "Area" = "area",
@@ -467,7 +468,7 @@ shinyUI(
                                                                                      "Curves" = "curve",
                                                                                      "Plane PPV" = "plane.ppv",
                                                                                      "Plane NPV" = "plane.npv"),
-                                                                      selected = "bar")))
+                                                                      selected = "area")))
                                                ))
                           )
                         )
