@@ -1,20 +1,17 @@
 
-
-
 ### About
 
 <!-- uni.kn logo and link to SPDS: -->  
 
 <a href="https://www.spds.uni-konstanz.de/">
-<img src = "../www/uniKn_logo_s.png" alt = "spds.uni.kn" align = "right" width = "250" style = "width: 250px; float: right; border:20;"/>
+<img src = "../www/uniKn_logo_s.png" alt = "spds.uni.kn" align = "right" width = "250" style = "width: 250px; float: right; border:30;"/>
 </a>
-
 
 The `riskyrApp` is an interactive `R Shiny` application that complements the R package `riskyr`. 
 The application is written in [R Shiny](https://shiny.rstudio.com/) and allows using `riskyr` without any need for coding.
 
 `riskyr` is an R package that is developed at the [University of Konstanz](https://www.uni-konstanz.de/en/) 
-and originated out of a series of lectures and workshops on risk literacy in spring/summer 2017. 
+and originated out of a series of lectures and workshops on risk literacy.  
 
 The current version (`riskyr` 0.2.0, as of Dec. 20, 2018) is still under development. 
 Its primary designers are 
@@ -26,9 +23,11 @@ who are researchers at the department of
 [Social Psychology and Decision Sciences](https://www.spds.uni-konstanz.de) at the 
 [University of Konstanz](https://www.uni-konstanz.de/en/), Germany. 
 
-- Most recent release version: <https://CRAN.R-project.org/package=riskyr> 
+- Most recent official release: <https://CRAN.R-project.org/package=riskyr> 
 
 - Current development version: <https://github.com/hneth/riskyr/>
+
+- Interactive online version: <http://riskyr.org> 
 
 The `riskyr` package is open source software written in [R](https://www.r-project.org/) and released under the 
 [GPL 2](https://tldrlegal.com/license/gnu-general-public-license-v2) | 
@@ -39,7 +38,7 @@ The `riskyr` package is open source software written in [R](https://www.r-projec
 <!-- riskyr logo: -->  
 
 <a href = "https://github.com/hneth/riskyr">
-<img src = "../www/riskyr_cube_s.png" alt = "riskyr logo" title = "riskyr" width = "180px" align = "right" style = "float:right; border:20; width:180px;"/>
+<img src = "../www/riskyr_cube_s.png" alt = "riskyr logo" title = "riskyr" width = "180px" align = "right" style = "float:right; border:30; width:180px;"/>
 </a>
 
 We appreciate your feedback, comments, or questions. 
