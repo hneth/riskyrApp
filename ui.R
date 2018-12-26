@@ -165,6 +165,7 @@ shinyUI(
                                                br(),
                                                fluidRow(
                                                  column(8, offset = 0, plotOutput("prism", width = "600", height = "450"))),
+                                               br(),
                                                wellPanel(
                                                  fluidRow(
                                                    column(4, offset = 0,
@@ -218,6 +219,7 @@ shinyUI(
                                                br(),
                                                fluidRow(
                                                  column(8, offset = 0, plotOutput("table", width = "600", height = "450"))),
+                                               br(),
                                                wellPanel(
                                                  fluidRow(
                                                    column(4, offset = 0,
@@ -265,6 +267,7 @@ shinyUI(
                                                br(),
                                                fluidRow(
                                                  column(8, offset = 0, plotOutput("area", width = "600", height = "450"))),
+                                               br(),
                                                wellPanel(
                                                  fluidRow(
                                                    column(4, offset = 0,
@@ -311,6 +314,7 @@ shinyUI(
                                                br(), 
                                                fluidRow(
                                                  column(8, offset = 0, plotOutput("icons", width = "600", height = "450"))),
+                                               br(),
                                                wellPanel(
                                                  fluidRow(
                                                    column(3, offset = 0,
@@ -352,6 +356,7 @@ shinyUI(
                                                br(),
                                                fluidRow(
                                                  column(8, offset = 0, plotOutput("bar", width = "600", height = "450"))),
+                                               br(),
                                                wellPanel(
                                                  fluidRow(
                                                    column(3, offset = 0,
@@ -387,6 +392,7 @@ shinyUI(
                                                br(),
                                                fluidRow(
                                                  column(12, offset = 0, plotOutput("curve", width = "600", height = "450"))),
+                                               br(),
                                                wellPanel(
                                                  fluidRow(
                                                    column(3, offset = 0, checkboxInput("curve.show_PPV", label = "Positive predictive value (PPV)", value = TRUE)),
@@ -409,23 +415,17 @@ shinyUI(
                                                br(),
                                                fluidRow(
                                                  column(6, plotOutput("plane.ppv")),
-                                                 column(6, plotOutput("plane.npv"))
-                                               ),
-                                               br(),
+                                                 column(6, plotOutput("plane.npv"))),
                                                br(),
                                                wellPanel(
                                                  fluidRow(
                                                    column(3, checkboxInput("plane.show_point", label = "Show current PPV/NPV in plots", value = TRUE)), 
                                                    column(2, offset = 0, downloadButton("plane.ppv.dl", label = "Save PPV plane")),
                                                    column(2, offset = 4,
-                                                          downloadButton("plane.npv.dl", label = "Save NPV plane"))
-                                                 ),
-                                                 br(),
+                                                          downloadButton("plane.npv.dl", label = "Save NPV plane"))),
                                                  fluidRow(
                                                    column(6, sliderInput("theta", "Horizontal viewing angle", value = -45, min = -90, max = +90)),
-                                                   column(6, sliderInput("phi", "Vertical viewing angle", value = 0, min = 0, max =  90))
-                                                 ),
-                                                 br()
+                                                   column(6, sliderInput("phi", "Vertical viewing angle", value = 0, min = 0, max =  90)))
                                                )
                                       ),
                                       
@@ -439,7 +439,6 @@ shinyUI(
                                                  column(6, plotOutput("represent3", width = "500", height = "350")),
                                                  column(6, plotOutput("represent4", width = "500", height = "350"))
                                                ),
-                                               br(),
                                                br(),
                                                wellPanel(
                                                  fluidRow(
@@ -489,8 +488,7 @@ shinyUI(
                                                                                      "Curves" = "curve",
                                                                                      "Plane PPV" = "plane.ppv",
                                                                                      "Plane NPV" = "plane.npv"),
-                                                                      selected = "bar")
-                                                   )
+                                                                      selected = "bar"))
                                                  )
                                                )
                                       )
