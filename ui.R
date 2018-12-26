@@ -546,7 +546,7 @@ shinyUI(
                                    style = "default", type = "action")))
                         ),
                         
-                        # Main panel for displaying preview of labels: ------ 
+                        # Main panel: Display preview plot with current labels: ------ 
                         mainPanel(
                           br(),
                           h3("Preview of current text labels"),
@@ -628,12 +628,13 @@ shinyUI(
                             column(7,
                                    selectInput("alt.palette", label = "Color palette",
                                                choices = list("---" = "default",
-                                                              "4 colours" = "pal_4c",
-                                                              "black & white" = "pal_bw",
+                                                              "colorful" = "pal_org", 
+                                                              "four colors" = "pal_4c",
+                                                              "black + white" = "pal_bw",
                                                               "green, blue, sand" = "pal_gbs",
                                                               "uni.kn" = "pal_kn",
                                                               "viridis" = "pal_vir"), selected = 1))),
-                          br(),
+                          br(), br(), 
                           fluidRow(
                             column(5,                          
                                    bsButton("resetcustomcolor", label = "Reset default",
@@ -649,12 +650,10 @@ shinyUI(
                         mainPanel(
                           br(),
                           h3("Preview of current colors"),
-                          fluidRow(offset = 1,
-                                   column(6, plotOutput("sample.table", width = "450", height = "350"))),
-                          br(),
+                          fluidRow(
+                            column(6, plotOutput("sample.table", width = "450", height = "350"))),
                           fluidRow(
                             column(6, plotOutput("sample.bar", width = "450", height = "350"))),
-                          br(),
                           fluidRow(
                             column(6, plotOutput("sample.curves", width = "450", height = "350")))
                         )
