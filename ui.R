@@ -438,8 +438,7 @@ shinyUI(
                                                  column(6, plotOutput("represent1", width = "500", height = "350")),
                                                  column(6, plotOutput("represent2", width = "500", height = "350")),
                                                  column(6, plotOutput("represent3", width = "500", height = "350")),
-                                                 column(6, plotOutput("represent4", width = "500", height = "350"))
-                                               ),
+                                                 column(6, plotOutput("represent4", width = "500", height = "350"))),
                                                br(),
                                                wellPanel(
                                                  fluidRow(
@@ -453,8 +452,7 @@ shinyUI(
                                                                                      "Curves" = "curve",
                                                                                      "Plane PPV" = "plane.ppv",
                                                                                      "Plane NPV" = "plane.npv"),
-                                                                      selected = "prism")
-                                                   ),
+                                                                      selected = "prism")),
                                                    column(3,
                                                           selectInput("represent2", label = "Selection 2", 
                                                                       choices = list("Prism" = "prism", 
@@ -465,8 +463,7 @@ shinyUI(
                                                                                      "Curves" = "curve",
                                                                                      "Plane PPV" = "plane.ppv",
                                                                                      "Plane NPV" = "plane.npv"),
-                                                                      selected = "table")
-                                                   ),
+                                                                      selected = "table")),
                                                    column(3,
                                                           selectInput("represent3", label = "Selection 3", 
                                                                       choices = list("Prism" = "prism", 
@@ -477,8 +474,7 @@ shinyUI(
                                                                                      "Curves" = "curve",
                                                                                      "Plane PPV" = "plane.ppv",
                                                                                      "Plane NPV" = "plane.npv"),
-                                                                      selected = "icons")
-                                                   ),
+                                                                      selected = "icons")),
                                                    column(3,
                                                           selectInput("represent4", label = "Selection 4", 
                                                                       choices = list("Prism" = "prism", 
@@ -489,12 +485,8 @@ shinyUI(
                                                                                      "Curves" = "curve",
                                                                                      "Plane PPV" = "plane.ppv",
                                                                                      "Plane NPV" = "plane.npv"),
-                                                                      selected = "bar"))
-                                                 )
-                                               )
-                                      )
-                                      
-                                      
+                                                                      selected = "bar")))
+                                                 ))
                           )
                         )
                       )
@@ -529,8 +521,7 @@ shinyUI(
                             # ,
                             column(6, textInput("popu_lbl",
                                                 label = "Population label",
-                                                value = default.labels$popu_lbl))
-                          ),
+                                                value = default.labels$popu_lbl))),
                           br(),
                           fluidRow(
                             column(4, textInput("cond_lbl",
@@ -541,15 +532,13 @@ shinyUI(
                                                 value = default.labels$cond.true_lbl)),
                             column(4, textInput("cond.false_lbl",
                                                 label = "Condition false",
-                                                value = default.labels$cond.false_lbl))
-                          ),
+                                                value = default.labels$cond.false_lbl))),
                           br(),
                           fluidRow(
                             column(3, textInput("hi_lbl", label = "hi (TP)", value = default.labels$hi_lbl)),
                             column(3, textInput("mi_lbl", label = "mi (FN)", value = default.labels$mi_lbl)),
                             column(3, textInput("fa_lbl", label = "fa (FP)", value = default.labels$fa_lbl)),
-                            column(3, textInput("cr_lbl", label = "cr (TN)", value = default.labels$cr_lbl))
-                          ),
+                            column(3, textInput("cr_lbl", label = "cr (TN)", value = default.labels$cr_lbl))),
                           br(),
                           fluidRow(
                             column(4, textInput("dec_lbl",
@@ -560,8 +549,7 @@ shinyUI(
                                                 value = default.labels$dec.pos_lbl)),
                             column(4, textInput("dec.neg_lbl",
                                                 label = "Decision negative",
-                                                value = default.labels$dec.neg_lbl))
-                          ),
+                                                value = default.labels$dec.neg_lbl))),
                           br(), br(),
                           br(), br(),
                           bsButton("resetcustomlabel", label = "Reset defaults",
@@ -576,13 +564,10 @@ shinyUI(
                         mainPanel(
                           br(),
                           h3("Preview of current text labels"),
-                          br(), br(),
+                          br(), 
+                          br(),
                           fluidRow(offset = 1,
-                                   column(6, plotOutput("previewlabels", width = "650", height = "500")
-                                   )
-                          )
-                          
-                        )
+                                   column(6, plotOutput("previewlabels", width = "650", height = "500"))))
                       )
              ),
              
@@ -607,8 +592,7 @@ shinyUI(
                             
                             column(4, colourInput("color.pos", label = "Positive decisions",
                                                   value = default.colors["pos"], showColour = "background",
-                                                  palette = "square", allowedCols = NULL))
-                          ),
+                                                  palette = "square", allowedCols = NULL))),
                           fluidRow(
                             column(4, colourInput("color.mi", label = "mi (FN)",
                                                   value = default.colors["mi"], showColour = "background",
@@ -618,8 +602,7 @@ shinyUI(
                                                   palette = "square", allowedCols = NULL)),
                             column(4, colourInput("color.neg", label = "Negative decisions",
                                                   value = default.colors["neg"], showColour = "background",
-                                                  palette = "square", allowedCols = NULL))
-                          ),
+                                                  palette = "square", allowedCols = NULL))),
                           fluidRow(
                             column(4, colourInput("color.true", label = "Condition true",
                                                   value = default.colors["true"], showColour = "background",
@@ -629,8 +612,7 @@ shinyUI(
                                                   palette = "square", allowedCols = NULL)),
                             column(4, colourInput("color.N", label = "Population",
                                                   value = default.colors["N"], showColour = "background",
-                                                  palette = "square", allowedCols = NULL))
-                          ),
+                                                  palette = "square", allowedCols = NULL))),
                           br(), br(),
                           br(), br(),
                           br(), br(),
@@ -640,16 +622,14 @@ shinyUI(
                                                   palette = "square", allowedCols = NULL)),
                             column(6, colourInput("color.npv", label = "Negative predictive value (NPV)",
                                                   value = default.colors["npv"], showColour = "background",
-                                                  palette = "square", allowedCols = NULL))
-                          ),
+                                                  palette = "square", allowedCols = NULL))),
                           fluidRow(
                             column(6, colourInput("color.txt", label = "Text:",
                                                   value = default.colors["txt"], showColour = "background",
                                                   palette = "square", allowedCols = NULL)),
                             column(6, colourInput("color.brd", label = "Lines:",
                                                   value = default.colors["brd"], showColour = "background",
-                                                  palette = "square", allowedCols = NULL))
-                          ),
+                                                  palette = "square", allowedCols = NULL))),
                           br(), br(),
                           fluidRow(
                             column(6,
@@ -659,38 +639,29 @@ shinyUI(
                                                               "black & white" = "pal_bw",
                                                               "green, blue, sand" = "pal_gbs",
                                                               "uni.kn" = "pal_kn",
-                                                              "viridis" = "pal_vir"), selected = 1)
-                            )
-                          ),
+                                                              "viridis" = "pal_vir"), selected = 1))),
                           br(),
                           fluidRow(
                             column(3,                          
                                    bsButton("resetcustomcolor", label = "Reset default",
                                             icon = icon("refresh", lib = "glyphicon"),
-                                            style = "default", type = "action")
-                            ),
+                                            style = "default", type = "action")),
                             column(3,
                                    bsButton("help_custom_colors", label = "Help",
                                             icon = icon("question-sign", lib = "glyphicon"),
-                                            style = "default", type = "action")
-                            )
-                            
-                          )
+                                            style = "default", type = "action")))
                         ),
-                        
                         
                         # Main panel for displaying preview plots with colors: ---- 
                         mainPanel(
                           br(),
                           h3("Preview of current colors"),
                           fluidRow(offset = 1,
-                                   column(6, plotOutput("sample.table", width = "450", height = "350"))
-                          ),
+                                   column(6, plotOutput("sample.table", width = "450", height = "350"))),
                           br(),
                           fluidRow(
-                            column(6, plotOutput("sample.curves", width = "450", height = "350"))
+                            column(6, plotOutput("sample.curves", width = "450", height = "350")))
                           )
-                        )
                       )
              ),
              
