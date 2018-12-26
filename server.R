@@ -205,7 +205,9 @@ shinyServer(function(input, output, session){
          by = input$prism.by,
          area = input$prism.area,
          f_lbl = input$prism.f_lbl,
-         p_lbl = input$prism.p_lbl
+         p_lbl = input$prism.p_lbl,
+         mar_notes = input$prism.show_foot
+         # +++ here now +++
     )
   }
   
