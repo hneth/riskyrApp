@@ -1,6 +1,6 @@
 # riskyrApp
 
-The `riskyrApp` is an interactive `R Shiny` application that complements the R package `riskyr`. 
+The `riskyrApp` is an interactive application that complements the R package `riskyr`. 
 
 ## Goal
 
@@ -37,8 +37,7 @@ devtools::install_github("hneth/riskyr")
 <img src = "./www/uniKn_logo_s.png" alt = "spds.uni.kn" align = "right" style = "float: right; border:40;"/>
 </a>
 
-`riskyr` is developed at the [University of Konstanz](https://www.uni-konstanz.de/en/) 
-and originated out of a series of lectures and workshops on risk literacy. 
+`riskyr` originated out of a series of lectures and workshops on risk literacy. 
 Its primary designers are 
 [Hansjörg Neth](https://www.spds.uni-konstanz.de/hans-neth), 
 [Felix Gaisbauer](https://www.spds.uni-konstanz.de/felix-gaisbauer), 
