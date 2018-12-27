@@ -23,11 +23,11 @@ library("riskyr")
 datasets <- read.csv2("./www/df_scenarios_riskyrApp_2018-12-14.csv", stringsAsFactors = FALSE)
 
 # Default color palette and text labels: 
-default.colors <- pal_gbs  # init_pal() 
+default.colors <- pal_mod  # init_pal() 
 default.labels <- txt_TF   # init_txt()
 
 # Reactive color palette and text labels: 
-riskyr.colors <- reactive({ pal_gbs })  # reactive({ init_pal() })
+riskyr.colors <- reactive({ pal_mod })  # reactive({ init_pal() })
 riskyr.labels <- reactive({ txt_TF })   # reactive({ init_txt() })
 
 ## Define server logic: ------ 
@@ -582,19 +582,19 @@ shinyServer(function(input, output, session){
   
   # Reset colors to default: 
   observeEvent(input$resetcustomcolor, {
-    updateSelectInput(session, "alt.palette", selected = "pal_gbs") # "default")
+    updateSelectInput(session, "alt.palette", selected = "pal_mod") # "default")
   })
   
   # Integrated alternative palettes: 
   observeEvent(input$alt.palette,{
     new.colors <- switch(input$alt.palette,
-                         default = pal_gbs, # init_pal(),
-                         pal_4c = pal_4c,
-                         pal_bw = pal_bw,
-                         pal_gbs = pal_gbs,
-                         pal_kn = pal_kn,
+                         default = pal_mod, # init_pal(),
+                         pal_mod = pal_mod,
                          pal_org = pal_org,
-                         pal_vir = pal_vir
+                         pal_rgb = pal_rgb,
+                         pal_kn  = pal_kn,
+                         pal_vir = pal_vir,
+                         pal_bw  = pal_bw
     )
     updateColourInput(session, "color.N", value = as.character(new.colors["N"]))
     updateColourInput(session, "color.true",  value = as.character(new.colors["true"]))

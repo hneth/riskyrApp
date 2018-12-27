@@ -20,7 +20,7 @@ library("riskyr")
 datasets <- read.csv2("./www/df_scenarios_riskyrApp_2018-12-14.csv", stringsAsFactors = FALSE)
 
 # Default color palette and text labels: ------ 
-default.colors <- pal_gbs  # init_pal() 
+default.colors <- pal_mod  # init_pal() 
 default.labels <- txt_TF   # init_txt()
 
 ## logifySlider javascript function: ------ 
@@ -690,12 +690,12 @@ shinyUI(
                             column(7,
                                    selectInput("alt.palette", label = "Color palette",
                                                choices = list("---" = "default",
-                                                              "four colors" = "pal_4c",
-                                                              "many colors" = "pal_org",
-                                                              "green, blue, sand" = "pal_gbs",
-                                                              "uni.kn" = "pal_kn",
-                                                              "viridis" = "pal_vir",
-                                                              "black + white" = "pal_bw"), 
+                                                              "modern colors"   = "pal_mod",
+                                                              "original colors" = "pal_org",
+                                                              "RGB colors"      = "pal_rgb",
+                                                              "uni.kn colors"   = "pal_kn",
+                                                              "viridis colors"  = "pal_vir",
+                                                              "black and white" = "pal_bw"), 
                                                selected = 1))),
                           
                           br(), br(), 
