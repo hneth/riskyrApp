@@ -712,10 +712,10 @@ shinyUI(
                         "----",
                         
                         # 1st screen in dropdown navigation:
-                        tabPanel("References & Readings",
+                        tabPanel("Readings & References",
                                  icon = icon("book", lib = "glyphicon"),
                                  value = "references",
-                                 h1("References and recommended readings"),
+                                 h1("Readings and references"),
                                  
                                  fluidRow(
                                    column(5, offset = 0, includeMarkdown("www/recommended_readings.md")),
