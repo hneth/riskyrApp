@@ -62,7 +62,7 @@ shinyUI(
              theme = "bootstrap.sandstone.css",
              id = "tabs",
              
-             # 1. Tab panel: ------ 
+             # 1. Tab panel: Visualizations ------ 
              
              tabPanel("Visualize risks",
                       icon = icon("blackboard", lib = "glyphicon"), value = "represent",
@@ -131,7 +131,8 @@ shinyUI(
                           
                           bsButton("help_inputs", label = "Help",
                                    icon = icon("question-sign", lib = "glyphicon"),
-                                   style = "default", type = "action")),
+                                   style = "default", type = "action")
+                        ),
                         
                         # B. Main panel for displaying different visualizations: ------ 
                         
@@ -196,7 +197,7 @@ shinyUI(
                                                    column(4, checkboxInput("prism.show_foot", label = "Show margin notes", value = FALSE)),
                                                    column(2, offset = 5, downloadButton("prism.dl", label = "Save prism"))) 
                                                ) # wellPanel. 
-                                      ),
+                                      ), # tabPanel.
                                       
                                       # Table: ------ 
                                       
@@ -248,7 +249,7 @@ shinyUI(
                                                    column(4, checkboxInput("table.show_foot", label = "Show margin notes", value = FALSE)),
                                                    column(2, offset = 5, downloadButton("table.dl", label = "Save table")))
                                                ) # wellPanel. 
-                                      ),
+                                      ), # tabPanel.
                                       
                                       # Area: ------  
                                       
@@ -300,7 +301,7 @@ shinyUI(
                                                    column(3, checkboxInput("area.show_foot", label = "Show margin notes", value = FALSE)),
                                                    column(2, offset = 0, downloadButton("area.dl", label = "Save area")))
                                                ) # wellPanel. 
-                                      ),
+                                      ), # tabPanel.
                                       
                                       # Icons: ---- 
                                       
@@ -385,7 +386,7 @@ shinyUI(
                                                    column(4, checkboxInput("bar.show_foot", label = "Show margin notes", value = FALSE)),
                                                    column(2, offset = 5, downloadButton("bar.dl", label = "Save bars")))
                                                ) # wellPanel. 
-                                      ),
+                                      ), # tabPanel.
                                       
                                       # Curves: ------ 
                                       
@@ -412,7 +413,7 @@ shinyUI(
                                                    column(6, sliderInput("curve.uc", "Uncertainty", value = 0, min = 0, max = 30, step = 1, pre = NULL, post = "%")),
                                                    column(2, offset = 3, downloadButton("curve.dl", label = "Save curves")))
                                                ) # wellPanel. 
-                                      ),
+                                      ), # tabPanel.
                                       
                                       # Planes: ------ 
                                       
@@ -437,7 +438,7 @@ shinyUI(
                                                    column(2, offset = 3, downloadButton("plane.ppv.dl", label = "Save PPV plane")),
                                                    column(2, offset = 4, downloadButton("plane.npv.dl", label = "Save NPV plane")))
                                                ) # wellPanel. 
-                                      ),
+                                      ), # tabPanel.
                                       
                                       # Contrast 4 representations: ------
                                       
@@ -506,7 +507,7 @@ shinyUI(
                       )
              ),
              
-             # 2. Customize text labels: ------ 
+             # 2. Customize labels: ------ 
              
              tabPanel("Customize labels",
                       icon = icon("pencil", lib = "glyphicon"), value = "custom_labels",
@@ -517,8 +518,8 @@ shinyUI(
                         sidebarPanel(
                           # Inputs for label customization:
                           h3("Use your own labels"),
-                          
                           br(),
+                          
                           fluidRow(
                             column(6, textInput("scen_lbl",
                                                 label = "Scenario label",
@@ -528,8 +529,8 @@ shinyUI(
                             # label = "Description of scenario:",
                             # value = default.labels$scen_txt))
                           ),
-                          
                           br(),
+                          
                           fluidRow(
                             # column(6, textInput("N_lbl",
                             #                     label = "Label for population:",
@@ -537,9 +538,9 @@ shinyUI(
                             # ,
                             column(6, textInput("popu_lbl",
                                                 label = "Population label",
-                                                value = default.labels$popu_lbl))),
-                          
+                                                value = default.labels$popu_lbl))), 
                           br(),
+                          
                           fluidRow(
                             column(4, textInput("cond_lbl",
                                                 label = "Condition label",
@@ -556,8 +557,7 @@ shinyUI(
                             column(3, textInput("hi_lbl", label = "hi (TP)", value = default.labels$hi_lbl)),
                             column(3, textInput("mi_lbl", label = "mi (FN)", value = default.labels$mi_lbl)),
                             column(3, textInput("fa_lbl", label = "fa (FP)", value = default.labels$fa_lbl)),
-                            column(3, textInput("cr_lbl", label = "cr (TN)", value = default.labels$cr_lbl))),
-                          
+                            column(3, textInput("cr_lbl", label = "cr (TN)", value = default.labels$cr_lbl))), 
                           br(),
                           
                           fluidRow(
@@ -570,8 +570,20 @@ shinyUI(
                             column(4, textInput("dec.neg_lbl",
                                                 label = "Decision negative",
                                                 value = default.labels$dec.neg_lbl))),
-                          br(), br(),
-                          br(), br(),
+                          br(), 
+                          
+                          fluidRow(
+                            column(4, textInput("acc_lbl",
+                                                label = "Accuracy label",
+                                                value = default.labels$acc_lbl)),
+                            column(4, textInput("dec.cor_lbl",
+                                                label = "Decision correct",
+                                                value = default.labels$dec.cor_lbl)),
+                            column(4, textInput("dec.err_lbl",
+                                                label = "Decision erroneous",
+                                                value = default.labels$dec.err_lbl))),
+                          br(), 
+                          br(),
                           
                           fluidRow(
                             column(5,     
@@ -581,18 +593,23 @@ shinyUI(
                             column(3, offset = 2,     
                                    bsButton("help_custom_labels", label = "Help",
                                             icon = icon("question-sign", lib = "glyphicon"),
-                                            style = "default", type = "action")))),
+                                            style = "default", type = "action")))
+                        ), # sidebarPanel.
                         
-                        # B. Main panel: Display preview plot with current text labels: ------ 
+                        # B. Main panel: Preview plots with current text labels: ------ 
                         mainPanel(
                           br(),
-                          h3("Preview of current text labels"),
-                          br(), 
-                          br(),
                           
-                          fluidRow(offset = 1,
-                                   column(6, plotOutput("previewlabels", width = "650", height = "500")))))
-             ),
+                          h3("Preview of current labels"),
+                          
+                          fluidRow(
+                            column(6, plotOutput("preview_labels_prism", width = "500", height = "400"))),  # prism by cddc
+                          
+                          fluidRow(
+                            column(6, plotOutput("preview_labels_table", width = "450", height = "350")))  # table by ac
+                          
+                        ) # mainPanel. 
+                      )),
              
              # 3. Customize colors: ------- 
              
@@ -611,6 +628,7 @@ shinyUI(
                             column(4, colourInput("color.hi", label = "hi (TP)",
                                                   value = default.colors["hi"], showColour = "background",
                                                   palette = "square", allowedCols = NULL)),
+                            
                             column(4, colourInput("color.fa", label = "fa (FP)",
                                                   value = default.colors["fa"], showColour = "background",
                                                   palette = "square", allowedCols = NULL)),
@@ -658,6 +676,7 @@ shinyUI(
                             column(6, colourInput("color.npv", label = "NPV",
                                                   value = default.colors["npv"], showColour = "background",
                                                   palette = "square", allowedCols = NULL))),
+                          
                           fluidRow(
                             column(6, colourInput("color.txt", label = "Text",
                                                   value = default.colors["txt"], showColour = "background",
@@ -689,7 +708,9 @@ shinyUI(
                             column(3, offset = 2,  
                                    bsButton("help_custom_colors", label = "Help",
                                             icon = icon("question-sign", lib = "glyphicon"),
-                                            style = "default", type = "action")))),
+                                            style = "default", type = "action")))
+                          
+                        ), # sidebarPanel.
                         
                         # B. Main panel: Display preview plots with current colors: ---- 
                         mainPanel(
@@ -698,13 +719,17 @@ shinyUI(
                           h3("Preview of current colors"),
                           
                           fluidRow(
-                            column(6, plotOutput("sample.table", width = "450", height = "350"))),
+                            column(6, plotOutput("preview_colors_table", width = "450", height = "350"))), # table by cddc
                           
                           fluidRow(
-                            column(6, plotOutput("sample.tree", width = "450", height = "350"))),
+                            column(6, plotOutput("preview_colors_tree", width = "500", height = "300"))), # tree by ac 
                           
                           fluidRow(
-                            column(6, plotOutput("sample.curves", width = "450", height = "350")))))),
+                            column(6, plotOutput("preview_colors_curves", width = "450", height = "350")))
+                          
+                        ) # mainPanel.
+                        
+                      )),
              
              navbarMenu("About",  icon = icon("info-sign", lib = "glyphicon"),
                         

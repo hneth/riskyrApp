@@ -139,20 +139,26 @@ shinyServer(function(input, output, session){
       # scen_lng = input$scen_lng,
       popu_lbl = input$popu_lbl,
       # N_lbl = input$N_lbl,
+      #
+      # Condition:
       cond_lbl = input$cond_lbl,
       cond.true_lbl = input$cond.true_lbl,
       cond.false_lbl = input$cond.false_lbl,
+      # Decisions:
       dec_lbl = input$dec_lbl,
       dec.pos_lbl = input$dec.pos_lbl,
       dec.neg_lbl = input$dec.neg_lbl,
-      # acc_lbl = input$acc_lbl,
-      # dec.cor_lbl = input$dec.cor_lbl,
-      # dec.err_lbl= input$dec.err_lbl,
+      # Accuracy:
+      acc_lbl = input$acc_lbl,
+      dec.cor_lbl = input$dec.cor_lbl,
+      dec.err_lbl= input$dec.err_lbl,
+      # SDT cases/categories:
       # sdt_lbl = input$sdt_lbl,
       hi_lbl = input$hi_lbl,
       mi_lbl = input$mi_lbl,
       fa_lbl = input$fa_lbl,
       cr_lbl = input$cr_lbl,
+      # 
       N = env$N,
       prev = env$prev,
       sens = env$sens,
@@ -438,7 +444,7 @@ shinyServer(function(input, output, session){
   
   ## Customize text labels: ------ 
   
-  # Reset labels to default
+  # Reset labels to default: 
   observeEvent(input$resetcustomlabel, {
     updateTextInput(session, "scen_lbl", value = default.labels$scen_lbl)
     updateTextInput(session, "scen_txt", value = default.labels$scen_txt)
@@ -463,16 +469,31 @@ shinyServer(function(input, output, session){
     updateTextInput(session, "cr_lbl", value = default.labels$cr_lbl)
   })
   
-  # Prism for previewing labels: 
-  output$previewlabels <- renderPlot({
+  ## Simple plots for previewing labels: ------ 
+  
+  # a. Prism (by cddc): 
+  output$preview_labels_prism <- renderPlot({
     plot(riskyr.scenario(),
          type = "prism",
+         by = "cddc", 
          col_pal = riskyr.colors(),
          f_lbl = "nam",
          mar_notes = FALSE,
-         p_lbl = NULL,
+         p_lbl = NA,
          arr_c = 0
     ) 
+  })
+  
+  # b. Table (by ac): 
+  output$preview_labels_table <- renderPlot({
+    plot(riskyr.scenario(),
+         col_pal = riskyr.colors(),
+         type = "table",
+         by = "cdac", 
+         f_lbl = "nam",
+         p_lbl = NA, 
+         # title_lbl = "",
+         mar_notes = FALSE)
   })
   
   ## Customize colors: ------ 
@@ -497,44 +518,34 @@ shinyServer(function(input, output, session){
     )
   })
 
-  ## Simple preview plots: ------ 
+  ## Simple plots for previewing colors: ------ 
     
-  # a. Simplified table plot: 
-  output$sample.table <- renderPlot({
+  # a. Simplified table plot (by cddc): 
+  output$preview_colors_table <- renderPlot({
     plot(riskyr.scenario(),
          col_pal = riskyr.colors(),
          type = "table",
-         f_lbl = "nam",
-         # title_lbl = "",
-         mar_notes = FALSE)
-  })
-  
-  # b. Simplified prism plot: 
-  output$sample.prism <- renderPlot({
-    plot(riskyr.scenario(),
-         col_pal = riskyr.colors(),
-         type = "prism",
          by = "cddc", 
          f_lbl = "nam",
-         p_lbl = "no", 
+         p_lbl = NA, 
          # title_lbl = "",
          mar_notes = FALSE)
   })
   
-  # c. Simplified tree plot: 
-  output$sample.tree <- renderPlot({
+  # b. Simplified tree plot (by ac): 
+  output$preview_colors_tree <- renderPlot({
     plot(riskyr.scenario(),
          col_pal = riskyr.colors(),
          type = "prism",
          by = "ac",  # to show accuracy colors! 
          f_lbl = "nam",
-         p_lbl = "no", 
+         p_lbl = NA, 
          # title_lbl = "",
          mar_notes = FALSE)
   })
   
-  # d. Simplified plot of curves: 
-  output$sample.curves <- renderPlot({
+  # c. Simplified plot of curves: 
+  output$preview_colors_curves <- renderPlot({
     plot(riskyr.scenario(),
          col_pal = riskyr.colors(),
          type = "curve",
@@ -546,8 +557,20 @@ shinyServer(function(input, output, session){
          mar_notes = FALSE)
   })
   
-  # # e. Simplified bar plot: 
-  # output$sample.bar <- renderPlot({
+  # # d. Simplified prism plot (by cddc): 
+  # output$preview_colors_prism <- renderPlot({
+  #   plot(riskyr.scenario(),
+  #        col_pal = riskyr.colors(),
+  #        type = "prism",
+  #        by = "cddc", 
+  #        f_lbl = "nam",
+  #        p_lbl = NA, 
+  #        # title_lbl = "",
+  #        mar_notes = FALSE)
+  # })
+  
+  ## e. Simplified bar plot: 
+  # output$preview_colors_bar <- renderPlot({
   #   plot(riskyr.scenario(),
   #        col_pal = riskyr.colors(),
   #        type = "bar",
@@ -559,7 +582,7 @@ shinyServer(function(input, output, session){
   
   # Reset colors to default: 
   observeEvent(input$resetcustomcolor, {
-    updateSelectInput(session, "alt.palette", selected = "default")
+    updateSelectInput(session, "alt.palette", selected = "pal_gbs") # "default")
   })
   
   # Integrated alternative palettes: 
