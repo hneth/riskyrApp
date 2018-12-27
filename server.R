@@ -516,6 +516,7 @@ shinyServer(function(input, output, session){
          type = "prism",
          by = "cddc", 
          f_lbl = "nam",
+         p_lbl = "no", 
          # title_lbl = "",
          mar_notes = FALSE)
   })
@@ -527,6 +528,7 @@ shinyServer(function(input, output, session){
          type = "prism",
          by = "ac",  # to show accuracy colors! 
          f_lbl = "nam",
+         p_lbl = "no", 
          # title_lbl = "",
          mar_notes = FALSE)
   })
@@ -544,16 +546,16 @@ shinyServer(function(input, output, session){
          mar_notes = FALSE)
   })
   
-  # e. Simplified bar plot: 
-  output$sample.bar <- renderPlot({
-    plot(riskyr.scenario(),
-         col_pal = riskyr.colors(),
-         type = "bar",
-         by = "all", 
-         f_lbl = "nam",
-         # title_lbl = "",
-         mar_notes = FALSE)
-  })
+  # # e. Simplified bar plot: 
+  # output$sample.bar <- renderPlot({
+  #   plot(riskyr.scenario(),
+  #        col_pal = riskyr.colors(),
+  #        type = "bar",
+  #        by = "all", 
+  #        f_lbl = "nam",
+  #        # title_lbl = "",
+  #        mar_notes = FALSE)
+  # })
   
   # Reset colors to default: 
   observeEvent(input$resetcustomcolor, {
