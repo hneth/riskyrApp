@@ -1,5 +1,5 @@
 # server.R
-# riskyrApp | R Shiny | spds, uni.kn | 2018 12 26
+# riskyrApp | R Shiny | spds, uni.kn | 2018 12 27
 
 ## Clean up: ------
 
@@ -22,15 +22,13 @@ library("riskyr")
 
 datasets <- read.csv2("./www/df_scenarios_riskyrApp_2018-12-14.csv", stringsAsFactors = FALSE)
 
-# Default colors and text labels: 
-default.colors <- init_pal() 
-default.labels <- init_txt()
+# Default color palette and text labels: 
+default.colors <- pal_gbs  # init_pal() 
+default.labels <- txt_TF   # init_txt()
 
-# reactive color palette: 
-riskyr.colors <- reactive({ init_pal() })
-
-# reactive labels: 
-riskyr.labels <- reactive({ init_txt() })
+# Reactive color palette and text labels: 
+riskyr.colors <- reactive({ pal_gbs })  # reactive({ init_pal() })
+riskyr.labels <- reactive({ txt_TF })   # reactive({ init_txt() })
 
 ## Define server logic: ------ 
 
@@ -498,8 +496,10 @@ shinyServer(function(input, output, session){
       brd_col = input$color.brd
     )
   })
-  
-  # Simplified display of table: 
+
+  ## Simple preview plots: ------ 
+    
+  # a. Simplified table plot: 
   output$sample.table <- renderPlot({
     plot(riskyr.scenario(),
          col_pal = riskyr.colors(),
@@ -509,17 +509,29 @@ shinyServer(function(input, output, session){
          mar_notes = FALSE)
   })
   
-  # Simplified display of prism: 
+  # b. Simplified prism plot: 
   output$sample.prism <- renderPlot({
     plot(riskyr.scenario(),
          col_pal = riskyr.colors(),
          type = "prism",
+         by = "cddc", 
          f_lbl = "nam",
          # title_lbl = "",
          mar_notes = FALSE)
   })
   
-  # Simplified plot with PPV and NPV curves: 
+  # c. Simplified tree plot: 
+  output$sample.tree <- renderPlot({
+    plot(riskyr.scenario(),
+         col_pal = riskyr.colors(),
+         type = "prism",
+         by = "ac",  # to show accuracy colors! 
+         f_lbl = "nam",
+         # title_lbl = "",
+         mar_notes = FALSE)
+  })
+  
+  # d. Simplified plot of curves: 
   output$sample.curves <- renderPlot({
     plot(riskyr.scenario(),
          col_pal = riskyr.colors(),
@@ -532,13 +544,14 @@ shinyServer(function(input, output, session){
          mar_notes = FALSE)
   })
   
-  # Simplified display of bar plot: 
+  # e. Simplified bar plot: 
   output$sample.bar <- renderPlot({
     plot(riskyr.scenario(),
          col_pal = riskyr.colors(),
          type = "bar",
+         by = "all", 
          f_lbl = "nam",
-         # title_lbl = NA,
+         # title_lbl = "",
          mar_notes = FALSE)
   })
   
@@ -550,7 +563,7 @@ shinyServer(function(input, output, session){
   # Integrated alternative palettes: 
   observeEvent(input$alt.palette,{
     new.colors <- switch(input$alt.palette,
-                         default = init_pal(),
+                         default = pal_gbs, # init_pal(),
                          pal_4c = pal_4c,
                          pal_bw = pal_bw,
                          pal_gbs = pal_gbs,
@@ -559,11 +572,11 @@ shinyServer(function(input, output, session){
                          pal_vir = pal_vir
     )
     updateColourInput(session, "color.N", value = as.character(new.colors["N"]))
-    updateColourInput(session, "color.true", value = as.character(new.colors["true"]))
+    updateColourInput(session, "color.true",  value = as.character(new.colors["true"]))
     updateColourInput(session, "color.false", value = as.character(new.colors["false"]))
     updateColourInput(session, "color.pos", value = as.character(new.colors["pos"]))
     updateColourInput(session, "color.neg", value = as.character(new.colors["neg"]))
-    updateColourInput(session, "color.cor", value = as.character(new.colors["corr"]))
+    updateColourInput(session, "color.cor", value = as.character(new.colors["cor"]))
     updateColourInput(session, "color.err", value = as.character(new.colors["err"]))
     updateColourInput(session, "color.hi", value = as.character(new.colors["hi"]))
     updateColourInput(session, "color.mi", value = as.character(new.colors["mi"]))
