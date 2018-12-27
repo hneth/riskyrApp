@@ -383,7 +383,7 @@ shinyUI(
                                                  
                                                  fluidRow(
                                                    column(4, checkboxInput("bar.show_foot", label = "Show margin notes", value = FALSE)),
-                                                   column(2, offset = 6, downloadButton("bar.dl", label = "Save bars")))
+                                                   column(2, offset = 5, downloadButton("bar.dl", label = "Save bars")))
                                                ) # wellPanel. 
                                       ),
                                       
@@ -410,7 +410,7 @@ shinyUI(
                                                  
                                                  fluidRow(
                                                    column(6, sliderInput("curve.uc", "Uncertainty", value = 0, min = 0, max = 30, step = 1, pre = NULL, post = "%")),
-                                                   column(2, offset = 4, downloadButton("curve.dl", label = "Save curves")))
+                                                   column(2, offset = 3, downloadButton("curve.dl", label = "Save curves")))
                                                ) # wellPanel. 
                                       ),
                                       
@@ -434,7 +434,7 @@ shinyUI(
                                                    column(6, checkboxInput("plane.show_foot",  label = "Show margin notes", value = FALSE))),
                                                  
                                                  fluidRow(
-                                                   column(2, offset = 4, downloadButton("plane.ppv.dl", label = "Save PPV plane")),
+                                                   column(2, offset = 3, downloadButton("plane.ppv.dl", label = "Save PPV plane")),
                                                    column(2, offset = 4, downloadButton("plane.npv.dl", label = "Save NPV plane")))
                                                ) # wellPanel. 
                                       ),
