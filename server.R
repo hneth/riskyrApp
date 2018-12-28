@@ -140,7 +140,7 @@ shinyServer(function(input, output, session){
       # scen_lng = input$scen_lng,
       # Population: 
       popu_lbl = input$popu_lbl,
-      # N_lbl    = input$N_lbl, 
+      N_lbl    = input$N_lbl, 
       # Condition:
       cond_lbl = input$cond_lbl,
       cond.true_lbl  = input$cond.true_lbl,
@@ -172,7 +172,7 @@ shinyServer(function(input, output, session){
   observeEvent(
     input$dataselection, {
       if (input$dataselection != 1) { # if 1st option is not ("---")
-        # update all sliders
+        # update all sliders: 
         updateSliderInput(session, "N", value = round(log10(datasets[input$dataselection, "N" ]), 0))
         updateSliderInput(session, "sens", value = datasets[input$dataselection, "sens" ])
         updateNumericInput(session, "numsens", value = datasets[input$dataselection, "sens"])
@@ -180,15 +180,18 @@ shinyServer(function(input, output, session){
         updateNumericInput(session, "numprev",value = datasets[input$dataselection, "prev"])
         updateSliderInput(session, "spec", value = datasets[input$dataselection, "spec" ])
         updateNumericInput(session, "numspec", value = datasets[input$dataselection, "spec" ])
-        # set labels
+        # set text labels: 
         updateTextInput(session, "scen_lbl", value = datasets[input$dataselection, "scen_lbl"])
         updateTextInput(session, "popu_lbl", value = datasets[input$dataselection, "popu_lbl"])
+        # Note: "N_lbl" not set in data! 
         updateTextInput(session, "cond_lbl", value = datasets[input$dataselection, "cond_lbl"])
         updateTextInput(session, "cond.true_lbl", value = datasets[input$dataselection, "cond.true_lbl"])
         updateTextInput(session, "cond.false_lbl", value = datasets[input$dataselection, "cond.false_lbl"])
         updateTextInput(session, "dec_lbl", value = datasets[input$dataselection, "dec_lbl"])
         updateTextInput(session, "dec.pos_lbl", value = datasets[input$dataselection, "dec.pos_lbl"])
         updateTextInput(session, "dec.neg_lbl", value = datasets[input$dataselection, "dec.neg_lbl"])
+        # Note: Accuracy labels are not set in data!
+        # Note: "sdt_lbl" not set in data!
         updateTextInput(session, "hi_lbl", value = datasets[input$dataselection, "hi_lbl"])
         updateTextInput(session, "mi_lbl", value = datasets[input$dataselection, "mi_lbl"])
         updateTextInput(session, "fa_lbl", value = datasets[input$dataselection, "fa_lbl"])
