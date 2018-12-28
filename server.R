@@ -48,7 +48,7 @@ shinyServer(function(input, output, session){
   )
   
   custom_labels_modal <- modalDialog(
-    title = "Customize Labels", 
+    title = "Customize labels", 
     br(),
     "Coming soon...",
     easyClose = FALSE, size = "l",
@@ -56,14 +56,14 @@ shinyServer(function(input, output, session){
   )
   
   custom_colors_modal <- modalDialog(
-    title = "Customize Colors", 
+    title = "Customize colors", 
     br(),
     "Coming soon...",
     easyClose = FALSE, size = "l",
     footer = modalButton("Close")
   )
   
-  # Help buttons deliever tutorial/help modals: 
+  # Help buttons to deliver tutorial/help modals: 
   observeEvent(input$help_inputs, { showModal(inputs_modal) })
   observeEvent(input$help_custom_labels, { showModal(custom_labels_modal) })
   observeEvent(input$help_custom_colors, { showModal(custom_colors_modal) })
@@ -71,7 +71,7 @@ shinyServer(function(input, output, session){
   
   ## Couple numeric and slider inputs: ------ 
   
-   # - population (logified version): ---- 
+  # - population (logified version): ---- 
   
   observeEvent({
     input$N
@@ -80,7 +80,7 @@ shinyServer(function(input, output, session){
     env$recalc.N <- input$N
   })
   
-   # - prevalence: ---- 
+  # - prevalence: ---- 
   
   observeEvent({
     input$prev }, {
@@ -96,7 +96,7 @@ shinyServer(function(input, output, session){
       updateSliderInput(session, "prev", value = env$recalc.prev)
     })
   
-   # - sensitivity: ---- 
+  # - sensitivity: ---- 
   
   observeEvent({
     input$sens }, {
@@ -112,7 +112,7 @@ shinyServer(function(input, output, session){
       updateSliderInput(session, "sens", value = env$recalc.sens)
     })
   
-   # - specificity: ---- 
+  # - specificity: ---- 
   
   observeEvent({
     input$spec }, {
@@ -139,8 +139,8 @@ shinyServer(function(input, output, session){
       # scen_apa = input$scen_apa,
       # scen_lng = input$scen_lng,
       # Population: 
-      popu_lbl = input$popu_lbl,
-      N_lbl    = input$N_lbl, 
+      popu_lbl = input$popu_lbl, 
+      N_lbl    = input$N_lbl,   # +++ here now +++: Why not used???
       # Condition:
       cond_lbl = input$cond_lbl,
       cond.true_lbl  = input$cond.true_lbl,
@@ -203,7 +203,7 @@ shinyServer(function(input, output, session){
   
   ## Outputs: ---------- 
   
-   # 1. Prism: ------
+  # 1. Prism: ------
   
   prism <- function(){
     plot(riskyr.scenario(), 
@@ -228,7 +228,7 @@ shinyServer(function(input, output, session){
       dev.off()}
   )
   
-   # 2. Table: ------
+  # 2. Table: ------
   
   table <- function(){
     plot(riskyr.scenario(), 
@@ -252,7 +252,7 @@ shinyServer(function(input, output, session){
       dev.off()}
   )
   
-   # 3. Area: ------ 
+  # 3. Area: ------ 
   
   area <- function(){
     plot(riskyr.scenario(), 
@@ -277,7 +277,7 @@ shinyServer(function(input, output, session){
       dev.off()}
   )
   
-   # 4. Icons: ------  
+  # 4. Icons: ------  
   
   icons <- function(){
     plot(riskyr.scenario(), 
@@ -300,7 +300,7 @@ shinyServer(function(input, output, session){
       dev.off()}
   )
   
-   # 5. Bars: ------  
+  # 5. Bars: ------  
   
   bar <- function(){
     plot(riskyr.scenario(), 
@@ -323,7 +323,7 @@ shinyServer(function(input, output, session){
       dev.off()}
   )
   
-   # 6. Curves: ------ 
+  # 6. Curves: ------ 
   
   curve <- function(){
     plot(riskyr.scenario(), 
@@ -334,7 +334,7 @@ shinyServer(function(input, output, session){
          log_scale = input$curve.log_scale, 
          uc = (input$curve.uc/100), 
          mar_notes = input$curve.show_foot
-         )
+    )
   }
   
   output$curve <- renderPlot({ curve() })
@@ -347,7 +347,7 @@ shinyServer(function(input, output, session){
       dev.off()}
   )
   
-   # 7. Planes: ------ 
+  # 7. Planes: ------ 
   
   plane.ppv <- function(){
     plot(riskyr.scenario(),
@@ -393,7 +393,7 @@ shinyServer(function(input, output, session){
       dev.off()}
   )
   
-   # 8. Contrasting representations: ------ 
+  # 8. Contrasting representations: ------ 
   
   output$represent1 <- renderPlot({
     switch(input$represent1,
@@ -526,9 +526,9 @@ shinyServer(function(input, output, session){
       brd_col = input$color.brd
     )
   })
-
+  
   ## Simple plots for previewing colors: ------ 
-    
+  
   # a. Simplified table plot (by cddc): 
   output$preview_colors_table <- renderPlot({
     plot(riskyr.scenario(),
@@ -607,16 +607,21 @@ shinyServer(function(input, output, session){
                          pal_bw  = pal_bw
     )
     updateColourInput(session, "color.N", value = as.character(new.colors["N"]))
+    # condition:
     updateColourInput(session, "color.true",  value = as.character(new.colors["true"]))
     updateColourInput(session, "color.false", value = as.character(new.colors["false"]))
+    # decision: 
     updateColourInput(session, "color.pos", value = as.character(new.colors["pos"]))
     updateColourInput(session, "color.neg", value = as.character(new.colors["neg"]))
+    # accuracy:
     updateColourInput(session, "color.cor", value = as.character(new.colors["cor"]))
     updateColourInput(session, "color.err", value = as.character(new.colors["err"]))
+    # SDT:
     updateColourInput(session, "color.hi", value = as.character(new.colors["hi"]))
     updateColourInput(session, "color.mi", value = as.character(new.colors["mi"]))
     updateColourInput(session, "color.fa", value = as.character(new.colors["fa"]))
     updateColourInput(session, "color.cr", value = as.character(new.colors["cr"]))
+    # else:
     updateColourInput(session, "color.ppv", value = as.character(new.colors["ppv"]))
     updateColourInput(session, "color.npv", value = as.character(new.colors["npv"]))
     updateColourInput(session, "color.txt", value = as.character(new.colors["txt"]))

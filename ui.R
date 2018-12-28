@@ -534,6 +534,7 @@ shinyUI(
                             column(6, textInput("scen_lbl",
                                                 label = "Scenario label",
                                                 value = default.labels$scen_lbl))#,
+                            
                             # column(6, textInput("scen_txt",
                             #                    label = "Description of scenario:",
                             #                    value = default.labels$scen_txt))
@@ -544,6 +545,7 @@ shinyUI(
                             column(6, textInput("popu_lbl",
                                                 label = "Population label",
                                                 value = default.labels$popu_lbl)),
+                            
                             column(4, textInput("N_lbl",
                                                 label = "N label",
                                                 value = default.labels$N_lbl))
