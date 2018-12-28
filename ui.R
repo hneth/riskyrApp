@@ -1,5 +1,5 @@
 # ui.R
-# riskyrApp | R Shiny | spds, uni.kn | 2018 12 27
+# riskyrApp | R Shiny | spds, uni.kn | 2018 12 28
 
 ## Dependencies: ------
 
@@ -175,20 +175,24 @@ shinyUI(
                                                    column(4, 
                                                           selectInput("prism.f_lbl", label = "Frequency labels", 
                                                                       choices = list("default" = "def", 
-                                                                                     "names only" = "nam",
-                                                                                     "values only" = "num",
-                                                                                     "names and values" = "namnum",
+                                                                                     "names only"     = "nam",
+                                                                                     "values only"    = "num",
+                                                                                     "names + values" = "namnum",
+                                                                                     "abbr. names"          = "abb",
+                                                                                     "abbr. names + values" = "abbnum",
                                                                                      "none" = "no"
                                                                       ), 
                                                                       selected = "num")),
                                                    column(4, 
                                                           selectInput("prism.p_lbl", label = "Probability labels", 
                                                                       choices = list("default" = "def",
-                                                                                     "minimum" = "min",
-                                                                                     "mix names + values" = "mix", 
-                                                                                     "names only" = "nam",
-                                                                                     "values only" = "num",
+                                                                                     "names only"     = "nam",
+                                                                                     "values only"    = "num",
                                                                                      "names + values" = "namnum",
+                                                                                     "abbr. names"          = "abb",
+                                                                                     "abbr. names + values" = "abbnum",
+                                                                                     "main names"           = "min",
+                                                                                     "main names + values"  = "mix", 
                                                                                      "none" = "no"
                                                                       ), 
                                                                       selected = "no"))),
@@ -410,8 +414,8 @@ shinyUI(
                                                    column(6, checkboxInput("curve.log_scale", label = "Prevalence on logarithmic scale", value = FALSE))),
                                                  
                                                  fluidRow(
-                                                   column(6, sliderInput("curve.uc", "Uncertainty", value = 0, min = 0, max = 30, step = 1, pre = NULL, post = "%")),
-                                                   column(2, offset = 3, downloadButton("curve.dl", label = "Save curves")))
+                                                   column(8, sliderInput("curve.uc", "Uncertainty", value = 0, min = 0, max = 50, step = 1, pre = NULL, post = "%")),
+                                                   column(2, offset = 1, downloadButton("curve.dl", label = "Save curves")))
                                                ) # wellPanel. 
                                       ), # tabPanel.
                                       
@@ -465,7 +469,7 @@ shinyUI(
                                                                                      "Plane PPV" = "plane.ppv",
                                                                                      "Plane NPV" = "plane.npv"),
                                                                       selected = "table")),
-                                                   column(3, offset = 4, 
+                                                   column(3, offset = 3, 
                                                           selectInput("represent2", label = "Plot 2", 
                                                                       choices = list("Prism" = "prism", 
                                                                                      "Table" = "table",
@@ -489,7 +493,7 @@ shinyUI(
                                                                                      "Plane PPV" = "plane.ppv",
                                                                                      "Plane NPV" = "plane.npv"),
                                                                       selected = "area")),
-                                                   column(3, offset = 4, 
+                                                   column(3, offset = 3, 
                                                           selectInput("represent4", label = "Plot 4", 
                                                                       choices = list("Prism" = "prism", 
                                                                                      "Table" = "table",
