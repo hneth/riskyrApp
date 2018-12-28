@@ -147,7 +147,7 @@ shinyUI(
                                                br(),
                                                
                                                fluidRow(
-                                                 column(8, offset = 0, plotOutput("prism", width = "600", height = "450"))),
+                                                 column(8, offset = 0, plotOutput("prism", width = "600", height = "475"))),
                                                br(),
                                                
                                                wellPanel(
@@ -264,7 +264,7 @@ shinyUI(
                                                br(),
                                                
                                                fluidRow(
-                                                 column(8, offset = 0, plotOutput("area", width = "600", height = "450"))),
+                                                 column(8, offset = 0, plotOutput("area", width = "600", height = "475"))),
                                                br(),
                                                
                                                wellPanel(
@@ -533,22 +533,21 @@ shinyUI(
                           fluidRow(
                             column(6, textInput("scen_lbl",
                                                 label = "Scenario label",
-                                                value = default.labels$scen_lbl))
-                            # ,
+                                                value = default.labels$scen_lbl))#,
                             # column(6, textInput("scen_txt",
-                            # label = "Description of scenario:",
-                            # value = default.labels$scen_txt))
+                            #                    label = "Description of scenario:",
+                            #                    value = default.labels$scen_txt))
                           ),
                           br(),
                           
                           fluidRow(
-                            # column(6, textInput("N_lbl",
-                            #                     label = "Label for population:",
-                            #                     value = default.labels$N_lbl))
-                            # ,
                             column(6, textInput("popu_lbl",
                                                 label = "Population label",
-                                                value = default.labels$popu_lbl))), 
+                                                value = default.labels$popu_lbl)),
+                            column(4, textInput("N_lbl",
+                                                label = "N label",
+                                                value = default.labels$N_lbl))
+                            ), 
                           br(),
                           
                           fluidRow(
@@ -606,7 +605,7 @@ shinyUI(
                                             style = "default", type = "action")))
                         ), # sidebarPanel.
                         
-                        # B. Main panel: Preview plots with current text labels: ------ 
+                        # B. Main panel: Preview plots for current text labels: ------ 
                         mainPanel(
                           br(),
                           
@@ -632,7 +631,7 @@ shinyUI(
                         sidebarPanel(
                           # Inputs for color customization:
                           h3("Use your own colors"),
-                          br(),
+                          br(), br(),
                           
                           fluidRow(
                             column(4, colourInput("color.hi", label = "hi (TP)",
@@ -694,7 +693,7 @@ shinyUI(
                             column(6, colourInput("color.brd", label = "Lines",
                                                   value = default.colors["brd"], showColour = "background",
                                                   palette = "square", allowedCols = NULL))),
-                          br(), br(),
+                          br(), br(), br(), 
                           
                           fluidRow(
                             column(7,
@@ -708,7 +707,7 @@ shinyUI(
                                                               "black and white" = "pal_bw"), 
                                                selected = 1))),
                           
-                          br(), br(), 
+                          br(), br(), br(),
                           
                           fluidRow(
                             column(5,                          
@@ -722,17 +721,17 @@ shinyUI(
                           
                         ), # sidebarPanel.
                         
-                        # B. Main panel: Display preview plots with current colors: ---- 
+                        # B. Main panel: Preview plots for current colors: ---- 
                         mainPanel(
                           br(),
                           
                           h3("Preview of current colors"),
                           
                           fluidRow(
-                            column(6, plotOutput("preview_colors_table", width = "450", height = "350"))), # table by cddc
+                            column(6, plotOutput("preview_colors_table", width = "450", height = "280"))), # table by cddc
                           
                           fluidRow(
-                            column(6, plotOutput("preview_colors_tree", width = "500", height = "300"))), # tree by ac 
+                            column(6, plotOutput("preview_colors_tree", width = "500", height = "280"))), # tree by ac 
                           
                           fluidRow(
                             column(6, plotOutput("preview_colors_curves", width = "450", height = "350")))
