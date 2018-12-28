@@ -132,17 +132,18 @@ shinyServer(function(input, output, session){
   ## Create reactive riskyr.scenario object from inputs: ---- 
   riskyr.scenario <- reactive({
     riskyr(
+      # Scenario: 
       scen_lbl = input$scen_lbl,
       scen_txt = input$scenario_txt,
       # scen_src = input$scen_src,
       # scen_apa = input$scen_apa,
       # scen_lng = input$scen_lng,
+      # Population: 
       popu_lbl = input$popu_lbl,
-      # N_lbl = input$N_lbl,
-      #
+      # N_lbl    = input$N_lbl, 
       # Condition:
       cond_lbl = input$cond_lbl,
-      cond.true_lbl = input$cond.true_lbl,
+      cond.true_lbl  = input$cond.true_lbl,
       cond.false_lbl = input$cond.false_lbl,
       # Decisions:
       dec_lbl = input$dec_lbl,
@@ -151,14 +152,14 @@ shinyServer(function(input, output, session){
       # Accuracy:
       acc_lbl = input$acc_lbl,
       dec.cor_lbl = input$dec.cor_lbl,
-      dec.err_lbl= input$dec.err_lbl,
+      dec.err_lbl = input$dec.err_lbl,
       # SDT cases/categories:
       # sdt_lbl = input$sdt_lbl,
       hi_lbl = input$hi_lbl,
       mi_lbl = input$mi_lbl,
       fa_lbl = input$fa_lbl,
       cr_lbl = input$cr_lbl,
-      # 
+      # Parameters: 
       N = env$N,
       prev = env$prev,
       sens = env$sens,
@@ -452,22 +453,27 @@ shinyServer(function(input, output, session){
     updateTextInput(session, "scen_src", value = default.labels$scen_src)
     updateTextInput(session, "scen_apa", value = default.labels$scen_apa)
     updateTextInput(session, "scen_lng", value = default.labels$scen_lng)
+    #
     updateTextInput(session, "popu_lbl", value = default.labels$popu_lbl)
-    updateTextInput(session, "N_lbl", value = default.labels$N_lbl)
+    updateTextInput(session, "N_lbl",    value = default.labels$N_lbl)
+    #
     updateTextInput(session, "cond_lbl", value = default.labels$cond_lbl)
-    updateTextInput(session, "cond.true_lbl", value = default.labels$cond.true_lbl)
+    updateTextInput(session, "cond.true_lbl",  value = default.labels$cond.true_lbl)
     updateTextInput(session, "cond.false_lbl", value = default.labels$cond.false_lbl)
-    updateTextInput(session, "dec_lbl", value = default.labels$dec_lbl)
+    #
+    updateTextInput(session, "dec_lbl",     value = default.labels$dec_lbl)
     updateTextInput(session, "dec.pos_lbl", value = default.labels$dec.pos_lbl)
     updateTextInput(session, "dec.neg_lbl", value = default.labels$dec.neg_lbl)
-    updateTextInput(session, "acc_lbl", value = default.labels$acc_lbl)
+    #
+    updateTextInput(session, "acc_lbl",     value = default.labels$acc_lbl)
     updateTextInput(session, "dec.cor_lbl", value = default.labels$dec.cor_lbl)
     updateTextInput(session, "dec.err_lbl", value = default.labels$dec.err_lbl)
+    #
     updateTextInput(session, "sdt_lbl", value = default.labels$sdt_lbl)
-    updateTextInput(session, "hi_lbl", value = default.labels$hi_lbl)
-    updateTextInput(session, "mi_lbl", value = default.labels$mi_lbl)
-    updateTextInput(session, "fa_lbl", value = default.labels$fa_lbl)
-    updateTextInput(session, "cr_lbl", value = default.labels$cr_lbl)
+    updateTextInput(session, "hi_lbl",  value = default.labels$hi_lbl)
+    updateTextInput(session, "mi_lbl",  value = default.labels$mi_lbl)
+    updateTextInput(session, "fa_lbl",  value = default.labels$fa_lbl)
+    updateTextInput(session, "cr_lbl",  value = default.labels$cr_lbl)
   })
   
   ## Simple plots for previewing labels: ------ 

@@ -547,7 +547,7 @@ shinyUI(
                             column(4, textInput("N_lbl",
                                                 label = "N label",
                                                 value = default.labels$N_lbl))
-                            ), 
+                          ), 
                           br(),
                           
                           fluidRow(
