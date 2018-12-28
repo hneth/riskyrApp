@@ -1,5 +1,5 @@
 # server.R
-# riskyrApp | R Shiny | spds, uni.kn | 2018 12 27
+# riskyrApp | R Shiny | spds, uni.kn | 2018 12 28
 
 ## Clean up: ------
 
@@ -167,6 +167,7 @@ shinyServer(function(input, output, session){
   })
   
   ## Integrate worked out examples: ------ 
+  
   observeEvent(
     input$dataselection, {
       if (input$dataselection != 1) { # if 1st option is not ("---")
