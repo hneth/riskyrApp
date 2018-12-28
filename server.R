@@ -37,7 +37,7 @@ shinyServer(function(input, output, session){
   # Environment parameters N, prev, sens, spec as reactive values: 
   env <- reactiveValues(env = NULL) 
   
-  # Create modals with tutorial/help contents: ---- 
+  ## Create modals with tutorial/help contents: ---- 
   
   inputs_modal <- modalDialog(
     title = "Inputs", 
@@ -71,7 +71,7 @@ shinyServer(function(input, output, session){
   
   ## Couple numeric and slider inputs: ------ 
   
-   ## population (logified version): ---- 
+   # - population (logified version): ---- 
   
   observeEvent({
     input$N
@@ -80,7 +80,7 @@ shinyServer(function(input, output, session){
     env$recalc.N <- input$N
   })
   
-   ## prevalence: ---- 
+   # - prevalence: ---- 
   
   observeEvent({
     input$prev }, {
@@ -96,7 +96,7 @@ shinyServer(function(input, output, session){
       updateSliderInput(session, "prev", value = env$recalc.prev)
     })
   
-   ## sensitivity: ---- 
+   # - sensitivity: ---- 
   
   observeEvent({
     input$sens }, {
@@ -112,7 +112,7 @@ shinyServer(function(input, output, session){
       updateSliderInput(session, "sens", value = env$recalc.sens)
     })
   
-   ## specificity: ---- 
+   # - specificity: ---- 
   
   observeEvent({
     input$spec }, {
@@ -199,7 +199,7 @@ shinyServer(function(input, output, session){
   
   ## Outputs: ---------- 
   
-   ## (1) Prism: ------
+   # 1. Prism: ------
   
   prism <- function(){
     plot(riskyr.scenario(), 
@@ -219,12 +219,12 @@ shinyServer(function(input, output, session){
   output$prism.dl <- downloadHandler(
     filename = function() {paste0("riskyrApp_prism_", gsub(":", "-", Sys.time()), ".png")},
     content =  function(file){
-      png(file, width = 750, height = 550)
+      png(file, width = 600, height = 475)
       prism()
       dev.off()}
   )
   
-   ## (2) Table: ------
+   # 2. Table: ------
   
   table <- function(){
     plot(riskyr.scenario(), 
@@ -243,12 +243,12 @@ shinyServer(function(input, output, session){
   output$table.dl <- downloadHandler(
     filename = function() {paste0("riskyrApp_table_", gsub(":", "-", Sys.time()), ".png")},
     content =  function(file){
-      png(file, width = 650, height = 500)
+      png(file, width = 600, height = 450)
       table()
       dev.off()}
   )
   
-   ## (3) Area: ------ 
+   # 3. Area: ------ 
   
   area <- function(){
     plot(riskyr.scenario(), 
@@ -268,12 +268,12 @@ shinyServer(function(input, output, session){
   output$area.dl <- downloadHandler(
     filename = function() {paste0("riskyrApp_area_", gsub(":", "-", Sys.time()), ".png")},
     content =  function(file){
-      png(file, width = 650, height = 500)
+      png(file, width = 600, height = 475)
       area()
       dev.off()}
   )
   
-   ## (4) Icons: ------  
+   # 4. Icons: ------  
   
   icons <- function(){
     plot(riskyr.scenario(), 
@@ -291,12 +291,12 @@ shinyServer(function(input, output, session){
   output$icons.dl <- downloadHandler(
     filename = function() {paste0("riskyrApp_icons_", gsub(":", "-", Sys.time()), ".png")},
     content =  function(file){
-      png(file, width = 650, height = 550)
+      png(file, width = 600, height = 450)
       icons()
       dev.off()}
   )
   
-   ## (5) Bars: ------  
+   # 5. Bars: ------  
   
   bar <- function(){
     plot(riskyr.scenario(), 
@@ -314,12 +314,12 @@ shinyServer(function(input, output, session){
   output$bar.dl <- downloadHandler(
     filename = function() {paste0("riskyrApp_bar_", gsub(":", "-", Sys.time()), ".png")},
     content =  function(file){
-      png(file, width = 650, height = 550)
+      png(file, width = 600, height = 450)
       bar()
       dev.off()}
   )
   
-   ## (6) Curves: ------ 
+   # 6. Curves: ------ 
   
   curve <- function(){
     plot(riskyr.scenario(), 
@@ -338,12 +338,12 @@ shinyServer(function(input, output, session){
   output$curve.dl <- downloadHandler(
     filename = function() {paste0("riskyrApp_curves_", gsub(":", "-", Sys.time()), ".png")},
     content =  function(file){
-      png(file, width = 750, height = 550)
+      png(file, width = 600, height = 450)
       curve()
       dev.off()}
   )
   
-   ## (7) Planes: ------ 
+   # 7. Planes: ------ 
   
   plane.ppv <- function(){
     plot(riskyr.scenario(),
@@ -362,7 +362,7 @@ shinyServer(function(input, output, session){
   output$plane.ppv.dl <- downloadHandler(
     filename = function() {paste0("riskyrApp_PPV-plane_", gsub(":", "-", Sys.time()), ".png")},
     content =  function(file){
-      png(file, width = 610, height = 400)
+      png(file, width = 600, height = 450)
       plane.ppv()
       dev.off()}
   )
@@ -384,12 +384,12 @@ shinyServer(function(input, output, session){
   output$plane.npv.dl <- downloadHandler(
     filename = function() {paste0("riskyrApp_NPV-plane_", gsub(":", "-", Sys.time()), ".png")},
     content =  function(file){
-      png(file, width = 610, height = 400)
+      png(file, width = 600, height = 450)
       plane.npv()
       dev.off()}
   )
   
-   ## (8) Contrasting representations: ------ 
+   # 8. Contrasting representations: ------ 
   
   output$represent1 <- renderPlot({
     switch(input$represent1,
@@ -479,10 +479,9 @@ shinyServer(function(input, output, session){
          by = "cddc", 
          col_pal = riskyr.colors(),
          f_lbl = "nam",
-         mar_notes = FALSE,
          p_lbl = NA,
-         arr_c = 0
-    ) 
+         arr_c = 0,
+         mar_notes = FALSE) 
   })
   
   # b. Table (by ac): 
@@ -541,6 +540,7 @@ shinyServer(function(input, output, session){
          by = "ac",  # to show accuracy colors! 
          f_lbl = "nam",
          p_lbl = NA, 
+         arr_c = 0, 
          # title_lbl = "",
          mar_notes = FALSE)
   })
@@ -558,7 +558,7 @@ shinyServer(function(input, output, session){
          mar_notes = FALSE)
   })
   
-  # # d. Simplified prism plot (by cddc): 
+  ## d. Simplified prism plot (by cddc): 
   # output$preview_colors_prism <- renderPlot({
   #   plot(riskyr.scenario(),
   #        col_pal = riskyr.colors(),
