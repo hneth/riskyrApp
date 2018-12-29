@@ -133,35 +133,44 @@ shinyServer(function(input, output, session){
   
   riskyr.scenario <- reactive({
     riskyr(#
-      ## (a) Scenario text: 
-      # Scenario: 
+      
+      ## (1) Text labels: 
+      
+      # Scenario info: 
       scen_lbl = input$scen_lbl,
       scen_txt = input$scenario_txt,
       # scen_src = input$scen_src,
       # scen_apa = input$scen_apa,
       # scen_lng = input$scen_lng,
+      
       # Population: 
       popu_lbl = input$popu_lbl, 
-      N_lbl    = input$N_lbl,   # +++ here now +++: Why not used???
+      N_lbl    = input$N_lbl,
+      
       # Condition:
       cond_lbl = input$cond_lbl,
       cond.true_lbl  = input$cond.true_lbl,
       cond.false_lbl = input$cond.false_lbl,
+      
       # Decisions:
       dec_lbl = input$dec_lbl,
       dec.pos_lbl = input$dec.pos_lbl,
       dec.neg_lbl = input$dec.neg_lbl,
+      
       # Accuracy:
       acc_lbl = input$acc_lbl,
       dec.cor_lbl = input$dec.cor_lbl,
       dec.err_lbl = input$dec.err_lbl,
+      
       # SDT cases/categories:
-      # sdt_lbl = input$sdt_lbl,
+      sdt_lbl = input$sdt_lbl,
       hi_lbl = input$hi_lbl,
       mi_lbl = input$mi_lbl,
       fa_lbl = input$fa_lbl,
       cr_lbl = input$cr_lbl,
-      ## (b) Numeric parameters: 
+      
+      ## (2) Numeric parameters: 
+      
       N = env$N,
       prev = env$prev,
       sens = env$sens,

@@ -517,7 +517,7 @@ shinyUI(
                       )
              ),
              
-             # 2. Customize labels: ------ 
+             # 2. Customize text labels: ------ 
              
              tabPanel("Customize labels",
                       icon = icon("pencil", lib = "glyphicon"), value = "custom_labels",
@@ -531,77 +531,82 @@ shinyUI(
                           br(),
                           
                           fluidRow(
-                            column(6, textInput("scen_lbl",
-                                                label = "Scenario label",
+                            column(7, textInput("scen_lbl",
+                                                label = "Scenario title",
                                                 value = default.labels$scen_lbl))#,
                             
-                            # column(6, textInput("scen_txt",
+                            # column(7, textInput("scen_txt",
                             #                    label = "Description of scenario:",
                             #                    value = default.labels$scen_txt))
                           ),
-                          br(),
+                          # br(),
                           
                           fluidRow(
-                            column(6, textInput("popu_lbl",
-                                                label = "Population label",
+                            column(4, textInput("popu_lbl",
+                                                label = "Population",
                                                 value = default.labels$popu_lbl)),
                             
-                            column(4, textInput("N_lbl",
-                                                label = "N label",
+                            column(3, textInput("N_lbl",
+                                                label = "N",
                                                 value = default.labels$N_lbl))
                           ), 
                           br(),
                           
                           fluidRow(
                             column(4, textInput("cond_lbl",
-                                                label = "Condition label",
+                                                label = "Condition",
                                                 value = default.labels$cond_lbl)),
-                            column(4, textInput("cond.true_lbl",
-                                                label = "Condition true",
+                            column(3, textInput("cond.true_lbl",
+                                                label = "cond.true",
                                                 value = default.labels$cond.true_lbl)),
-                            column(4, textInput("cond.false_lbl",
-                                                label = "Condition false",
+                            column(3, textInput("cond.false_lbl",
+                                                label = "cond.false",
                                                 value = default.labels$cond.false_lbl))),
-                          br(),
-                          
-                          fluidRow(
-                            column(3, textInput("hi_lbl", label = "hi (TP)", value = default.labels$hi_lbl)),
-                            column(3, textInput("mi_lbl", label = "mi (FN)", value = default.labels$mi_lbl)),
-                            column(3, textInput("fa_lbl", label = "fa (FP)", value = default.labels$fa_lbl)),
-                            column(3, textInput("cr_lbl", label = "cr (TN)", value = default.labels$cr_lbl))), 
-                          br(),
+                          # br(),
                           
                           fluidRow(
                             column(4, textInput("dec_lbl",
-                                                label = "Decision label",
+                                                label = "Decision",
                                                 value = default.labels$dec_lbl)),
-                            column(4, textInput("dec.pos_lbl",
-                                                label = "Decision positive",
+                            column(3, textInput("dec.pos_lbl",
+                                                label = "dec.pos",
                                                 value = default.labels$dec.pos_lbl)),
-                            column(4, textInput("dec.neg_lbl",
-                                                label = "Decision negative",
+                            column(3, textInput("dec.neg_lbl",
+                                                label = "dec.neg",
                                                 value = default.labels$dec.neg_lbl))),
-                          br(), 
+                          # br(),
                           
                           fluidRow(
                             column(4, textInput("acc_lbl",
-                                                label = "Accuracy label",
+                                                label = "Accuracy",
                                                 value = default.labels$acc_lbl)),
-                            column(4, textInput("dec.cor_lbl",
-                                                label = "Decision correct",
+                            column(3, textInput("dec.cor_lbl",
+                                                label = "dec.cor",
                                                 value = default.labels$dec.cor_lbl)),
-                            column(4, textInput("dec.err_lbl",
-                                                label = "Decision erroneous",
-                                                value = default.labels$dec.err_lbl))),
+                            column(3, textInput("dec.err_lbl",
+                                                label = "dec.err",
+                                                value = default.labels$dec.err_lbl))), 
+                          br(), 
+                          
+                          fluidRow(
+                            column(4, textInput("sdt_lbl", label = "Cases",value = default.labels$sdt_lbl)),
+                            column(3, textInput("hi_lbl", label = "hi (TP)", value = default.labels$hi_lbl)),
+                            column(3, textInput("fa_lbl", label = "fa (FP)", value = default.labels$fa_lbl))), 
+                          
+                          fluidRow(
+                            column(offset = 4,
+                                   3, textInput("mi_lbl", label = "mi (FN)", value = default.labels$mi_lbl)),
+                            column(3, textInput("cr_lbl", label = "cr (TN)", value = default.labels$cr_lbl))), 
+                          
                           br(), 
                           br(),
                           
                           fluidRow(
                             column(5,     
-                                   bsButton("resetcustomlabel", label = "Reset defaults",
+                                   bsButton("resetcustomlabel", label = "Reset default",
                                             icon = icon("refresh", lib = "glyphicon"),
                                             style = "default", type = "action")),
-                            column(3, offset = 2,     
+                            column(3, offset = 1,     
                                    bsButton("help_custom_labels", label = "Help",
                                             icon = icon("question-sign", lib = "glyphicon"),
                                             style = "default", type = "action")))
@@ -716,7 +721,7 @@ shinyUI(
                                    bsButton("resetcustomcolor", label = "Reset default",
                                             icon = icon("refresh", lib = "glyphicon"),
                                             style = "default", type = "action")),
-                            column(3, offset = 2,  
+                            column(3, offset = 1,  
                                    bsButton("help_custom_colors", label = "Help",
                                             icon = icon("question-sign", lib = "glyphicon"),
                                             style = "default", type = "action")))
