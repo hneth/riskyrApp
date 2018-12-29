@@ -1,5 +1,5 @@
 # ui.R
-# riskyrApp | R Shiny | spds, uni.kn | 2018 12 28
+# riskyrApp | R Shiny | spds, uni.kn | 2018 12 29
 
 ## Dependencies: ------
 
@@ -147,7 +147,7 @@ shinyUI(
                                                br(),
                                                
                                                fluidRow(
-                                                 column(8, offset = 0, plotOutput("prism", width = "600", height = "475"))),
+                                                 column(8, offset = 0, plotOutput("prism", width = "600", height = "450"))),
                                                br(),
                                                
                                                wellPanel(
@@ -264,7 +264,7 @@ shinyUI(
                                                br(),
                                                
                                                fluidRow(
-                                                 column(8, offset = 0, plotOutput("area", width = "600", height = "475"))),
+                                                 column(8, offset = 0, plotOutput("area", width = "600", height = "450"))),
                                                br(),
                                                
                                                wellPanel(
@@ -456,10 +456,10 @@ shinyUI(
                                                br(),
                                                
                                                fluidRow(
-                                                 column(6, plotOutput("represent1", width = "500", height = "350")),
-                                                 column(6, plotOutput("represent2", width = "500", height = "350")),
-                                                 column(6, plotOutput("represent3", width = "500", height = "350")),
-                                                 column(6, plotOutput("represent4", width = "500", height = "350"))),
+                                                 column(6, plotOutput("represent1", width = "515", height = "350")),
+                                                 column(6, plotOutput("represent2", width = "515", height = "350")),
+                                                 column(6, plotOutput("represent3", width = "515", height = "350")),
+                                                 column(6, plotOutput("represent4", width = "515", height = "350"))),
                                                br(),
                                                
                                                wellPanel(

@@ -1,5 +1,5 @@
 # server.R
-# riskyrApp | R Shiny | spds, uni.kn | 2018 12 28
+# riskyrApp | R Shiny | spds, uni.kn | 2018 12 29
 
 ## Clean up: ------
 
@@ -129,9 +129,11 @@ shinyServer(function(input, output, session){
     })
   
   
-  ## Create reactive riskyr.scenario object from inputs: ---- 
+  ## Create reactive riskyr.scenario object from inputs: ------ 
+  
   riskyr.scenario <- reactive({
-    riskyr(
+    riskyr(#
+      ## (a) Scenario text: 
       # Scenario: 
       scen_lbl = input$scen_lbl,
       scen_txt = input$scenario_txt,
@@ -159,13 +161,14 @@ shinyServer(function(input, output, session){
       mi_lbl = input$mi_lbl,
       fa_lbl = input$fa_lbl,
       cr_lbl = input$cr_lbl,
-      # Parameters: 
+      ## (b) Numeric parameters: 
       N = env$N,
       prev = env$prev,
       sens = env$sens,
       spec = env$spec
     )
   })
+  
   
   ## Integrate worked out examples: ------ 
   
@@ -183,7 +186,7 @@ shinyServer(function(input, output, session){
         # set text labels: 
         updateTextInput(session, "scen_lbl", value = datasets[input$dataselection, "scen_lbl"])
         updateTextInput(session, "popu_lbl", value = datasets[input$dataselection, "popu_lbl"])
-        # Note: "N_lbl" not set in data! 
+        # Note: "N_lbl" is not set in data! 
         updateTextInput(session, "cond_lbl", value = datasets[input$dataselection, "cond_lbl"])
         updateTextInput(session, "cond.true_lbl", value = datasets[input$dataselection, "cond.true_lbl"])
         updateTextInput(session, "cond.false_lbl", value = datasets[input$dataselection, "cond.false_lbl"])
@@ -191,7 +194,7 @@ shinyServer(function(input, output, session){
         updateTextInput(session, "dec.pos_lbl", value = datasets[input$dataselection, "dec.pos_lbl"])
         updateTextInput(session, "dec.neg_lbl", value = datasets[input$dataselection, "dec.neg_lbl"])
         # Note: Accuracy labels are not set in data!
-        # Note: "sdt_lbl" not set in data!
+        # Note: "sdt_lbl" is not set in data!
         updateTextInput(session, "hi_lbl", value = datasets[input$dataselection, "hi_lbl"])
         updateTextInput(session, "mi_lbl", value = datasets[input$dataselection, "mi_lbl"])
         updateTextInput(session, "fa_lbl", value = datasets[input$dataselection, "fa_lbl"])
@@ -209,7 +212,7 @@ shinyServer(function(input, output, session){
     plot(riskyr.scenario(), 
          type  = "prism",
          col_pal = riskyr.colors(),
-         # lbl_txt = riskyr.labels(),
+         # lbl_txt = riskyr.labels(),  # integral part of riskyr.scenario!
          by = input$prism.by,
          area = input$prism.area,
          f_lbl = input$prism.f_lbl,
@@ -223,7 +226,7 @@ shinyServer(function(input, output, session){
   output$prism.dl <- downloadHandler(
     filename = function() {paste0("riskyrApp_prism_", gsub(":", "-", Sys.time()), ".png")},
     content =  function(file){
-      png(file, width = 600, height = 475)
+      png(file, width = 600, height = 450)
       prism()
       dev.off()}
   )
@@ -272,7 +275,7 @@ shinyServer(function(input, output, session){
   output$area.dl <- downloadHandler(
     filename = function() {paste0("riskyrApp_area_", gsub(":", "-", Sys.time()), ".png")},
     content =  function(file){
-      png(file, width = 600, height = 475)
+      png(file, width = 600, height = 450)
       area()
       dev.off()}
   )
@@ -449,6 +452,15 @@ shinyServer(function(input, output, session){
   
   ## Customize text labels: ------ 
   
+  # riskyr.labels <- reactive({    # integral part of riskyr.scenario!
+  #   init_txt(#
+  #     scen_lbl = input$scen_lbl,      
+  #     popu_lbl = input$popu_lbl,
+  #     N_lbl = input$N_lbl
+  #     # etc.
+  #   )
+  # })
+  
   # Reset labels to default: 
   observeEvent(input$resetcustomlabel, {
     updateTextInput(session, "scen_lbl", value = default.labels$scen_lbl)
@@ -487,6 +499,7 @@ shinyServer(function(input, output, session){
          type = "prism",
          by = "cddc", 
          col_pal = riskyr.colors(),
+         # lbl_txt = riskyr.labels(),  # integral part of riskyr.scenario!
          f_lbl = "nam",
          p_lbl = NA,
          arr_c = 0,
