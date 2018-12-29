@@ -9,9 +9,9 @@ The application is written in [R Shiny](https://shiny.rstudio.com/) and allows u
 
 The main goal of both `riskyr` and `riskyrApp` is to communicate and explain common risk literacy measures in a transparent fashion by providing a set of powerful and interactive representations. 
 
-## Information
+## Installation and version information
 
-- The current release of `riskyr` is available from [CRAN](https://CRAN.R-project.org/) at  <https://CRAN.R-project.org/package=riskyr>: 
+- The current release of `riskyr` is available from [CRAN](https://CRAN.R-project.org/) at <https://CRAN.R-project.org/package=riskyr>: 
 
 ```{r}
 install.packages("riskyr")  # install riskyr from CRAN client
@@ -25,7 +25,9 @@ library("riskyr")           # load to use the package
 devtools::install_github("hneth/riskyr")
 ```
 
-- An interactive online version is available at [riskyr.org](http://riskyr.org).
+- An interactive online version is available at <http://riskyr.org>. 
+
+- The package documentation is available at <https://hneth.github.io/riskyr/>. 
 
 
 ## About
