@@ -10,8 +10,7 @@
 The `riskyrApp` is an interactive application that complements the R package `riskyr`. 
 The application is written in [R Shiny](https://shiny.rstudio.com/) and allows using `riskyr` without any need for coding.
 
-`riskyr` is an R package that is developed at the [University of Konstanz](https://www.uni-konstanz.de/en/) 
-and originated out of a series of lectures and workshops on risk literacy. 
+`riskyr` originated out of a series of lectures and workshops on risk literacy. 
 The current version (`riskyr` 0.2.0, as of Dec. 20, 2018) is still under development. 
 Its primary designers are 
 [Hansjörg Neth](https://www.spds.uni-konstanz.de/hans-neth), 
