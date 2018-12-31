@@ -1,5 +1,5 @@
 # ui.R
-# riskyrApp | R Shiny | spds, uni.kn | 2018 12 29
+# riskyrApp | R Shiny | spds, uni.kn | 2018 12 30
 
 ## Dependencies: ------
 
@@ -556,36 +556,36 @@ shinyUI(
                             column(4, textInput("cond_lbl",
                                                 label = "Condition",
                                                 value = default.labels$cond_lbl)),
-                            column(3, textInput("cond.true_lbl",
-                                                label = "cond.true",
-                                                value = default.labels$cond.true_lbl)),
-                            column(3, textInput("cond.false_lbl",
-                                                label = "cond.false",
-                                                value = default.labels$cond.false_lbl))),
+                            column(3, textInput("cond_true_lbl",
+                                                label = "cond_true",
+                                                value = default.labels$cond_true_lbl)),
+                            column(3, textInput("cond_false_lbl",
+                                                label = "cond_false",
+                                                value = default.labels$cond_false_lbl))),
                           # br(),
                           
                           fluidRow(
                             column(4, textInput("dec_lbl",
                                                 label = "Decision",
                                                 value = default.labels$dec_lbl)),
-                            column(3, textInput("dec.pos_lbl",
-                                                label = "dec.pos",
-                                                value = default.labels$dec.pos_lbl)),
-                            column(3, textInput("dec.neg_lbl",
-                                                label = "dec.neg",
-                                                value = default.labels$dec.neg_lbl))),
+                            column(3, textInput("dec_pos_lbl",
+                                                label = "dec_pos",
+                                                value = default.labels$dec_pos_lbl)),
+                            column(3, textInput("dec_neg_lbl",
+                                                label = "dec_neg",
+                                                value = default.labels$dec_neg_lbl))),
                           # br(),
                           
                           fluidRow(
                             column(4, textInput("acc_lbl",
                                                 label = "Accuracy",
                                                 value = default.labels$acc_lbl)),
-                            column(3, textInput("dec.cor_lbl",
-                                                label = "dec.cor",
-                                                value = default.labels$dec.cor_lbl)),
-                            column(3, textInput("dec.err_lbl",
-                                                label = "dec.err",
-                                                value = default.labels$dec.err_lbl))), 
+                            column(3, textInput("dec_cor_lbl",
+                                                label = "dec_cor",
+                                                value = default.labels$dec_cor_lbl)),
+                            column(3, textInput("dec_err_lbl",
+                                                label = "dec_err",
+                                                value = default.labels$dec_err_lbl))), 
                           br(), 
                           
                           fluidRow(
@@ -649,8 +649,8 @@ shinyUI(
                                                   value = default.colors["fa"], showColour = "background",
                                                   palette = "square", allowedCols = NULL)),
                             
-                            column(4, colourInput("color.pos", label = "dec.pos",
-                                                  value = default.colors["pos"], showColour = "background",
+                            column(4, colourInput("color.pos", label = "dec_pos",
+                                                  value = default.colors["dec_pos"], showColour = "background",
                                                   palette = "square", allowedCols = NULL))),
                           
                           fluidRow(
@@ -660,16 +660,16 @@ shinyUI(
                             column(4, colourInput("color.cr", label = "cr (TN)",
                                                   value = default.colors["cr"], showColour = "background",
                                                   palette = "square", allowedCols = NULL)),
-                            column(4, colourInput("color.neg", label = "dec.neg",
-                                                  value = default.colors["neg"], showColour = "background",
+                            column(4, colourInput("color.neg", label = "dec_neg",
+                                                  value = default.colors["dec_neg"], showColour = "background",
                                                   palette = "square", allowedCols = NULL))),
                           
                           fluidRow(
-                            column(4, colourInput("color.true", label = "cond.true",
-                                                  value = default.colors["true"], showColour = "background",
+                            column(4, colourInput("color.true", label = "cond_true",
+                                                  value = default.colors["cond_true"], showColour = "background",
                                                   palette = "square", allowedCols = NULL)),
-                            column(4, colourInput("color.false", label = "cond.false",
-                                                  value = default.colors["false"], showColour = "background",
+                            column(4, colourInput("color.false", label = "cond_false",
+                                                  value = default.colors["cond_false"], showColour = "background",
                                                   palette = "square", allowedCols = NULL)),
                             column(4, colourInput("color.N", label = "population",
                                                   value = default.colors["N"], showColour = "background",
@@ -677,11 +677,11 @@ shinyUI(
                           br(), br(),
                           
                           fluidRow(
-                            column(4, colourInput("color.cor", label = "dec.cor",
-                                                  value = default.colors["cor"], showColour = "background",
+                            column(4, colourInput("color.cor", label = "dec_cor",
+                                                  value = default.colors["dec_cor"], showColour = "background",
                                                   palette = "square", allowedCols = NULL)),
-                            column(4, colourInput("color.err", label = "dec.err",
-                                                  value = default.colors["err"], showColour = "background",
+                            column(4, colourInput("color.err", label = "dec_err",
+                                                  value = default.colors["dec_err"], showColour = "background",
                                                   palette = "square", allowedCols = NULL))),
                           br(), br(),
                           

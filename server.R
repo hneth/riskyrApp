@@ -1,5 +1,5 @@
 # server.R
-# riskyrApp | R Shiny | spds, uni.kn | 2018 12 29
+# riskyrApp | R Shiny | spds, uni.kn | 2018 12 30
 
 ## Clean up: ------
 
@@ -149,18 +149,18 @@ shinyServer(function(input, output, session){
       
       # Condition:
       cond_lbl = input$cond_lbl,
-      cond.true_lbl  = input$cond.true_lbl,
-      cond.false_lbl = input$cond.false_lbl,
+      cond_true_lbl  = input$cond_true_lbl,
+      cond_false_lbl = input$cond_false_lbl,
       
       # Decisions:
       dec_lbl = input$dec_lbl,
-      dec.pos_lbl = input$dec.pos_lbl,
-      dec.neg_lbl = input$dec.neg_lbl,
+      dec_pos_lbl = input$dec_pos_lbl,
+      dec_neg_lbl = input$dec_neg_lbl,
       
       # Accuracy:
       acc_lbl = input$acc_lbl,
-      dec.cor_lbl = input$dec.cor_lbl,
-      dec.err_lbl = input$dec.err_lbl,
+      dec_cor_lbl = input$dec_cor_lbl,
+      dec_err_lbl = input$dec_err_lbl,
       
       # SDT cases/categories:
       sdt_lbl = input$sdt_lbl,
@@ -197,11 +197,11 @@ shinyServer(function(input, output, session){
         updateTextInput(session, "popu_lbl", value = datasets[input$dataselection, "popu_lbl"])
         # Note: "N_lbl" is not set in data! 
         updateTextInput(session, "cond_lbl", value = datasets[input$dataselection, "cond_lbl"])
-        updateTextInput(session, "cond.true_lbl", value = datasets[input$dataselection, "cond.true_lbl"])
-        updateTextInput(session, "cond.false_lbl", value = datasets[input$dataselection, "cond.false_lbl"])
+        updateTextInput(session, "cond_true_lbl", value = datasets[input$dataselection, "cond_true_lbl"])
+        updateTextInput(session, "cond_false_lbl", value = datasets[input$dataselection, "cond_false_lbl"])
         updateTextInput(session, "dec_lbl", value = datasets[input$dataselection, "dec_lbl"])
-        updateTextInput(session, "dec.pos_lbl", value = datasets[input$dataselection, "dec.pos_lbl"])
-        updateTextInput(session, "dec.neg_lbl", value = datasets[input$dataselection, "dec.neg_lbl"])
+        updateTextInput(session, "dec_pos_lbl", value = datasets[input$dataselection, "dec_pos_lbl"])
+        updateTextInput(session, "dec_neg_lbl", value = datasets[input$dataselection, "dec_neg_lbl"])
         # Note: Accuracy labels are not set in data!
         # Note: "sdt_lbl" is not set in data!
         updateTextInput(session, "hi_lbl", value = datasets[input$dataselection, "hi_lbl"])
@@ -482,16 +482,16 @@ shinyServer(function(input, output, session){
     updateTextInput(session, "N_lbl",    value = default.labels$N_lbl)
     #
     updateTextInput(session, "cond_lbl", value = default.labels$cond_lbl)
-    updateTextInput(session, "cond.true_lbl",  value = default.labels$cond.true_lbl)
-    updateTextInput(session, "cond.false_lbl", value = default.labels$cond.false_lbl)
+    updateTextInput(session, "cond_true_lbl",  value = default.labels$cond_true_lbl)
+    updateTextInput(session, "cond_false_lbl", value = default.labels$cond_false_lbl)
     #
     updateTextInput(session, "dec_lbl",     value = default.labels$dec_lbl)
-    updateTextInput(session, "dec.pos_lbl", value = default.labels$dec.pos_lbl)
-    updateTextInput(session, "dec.neg_lbl", value = default.labels$dec.neg_lbl)
+    updateTextInput(session, "dec_pos_lbl", value = default.labels$dec_pos_lbl)
+    updateTextInput(session, "dec_neg_lbl", value = default.labels$dec_neg_lbl)
     #
     updateTextInput(session, "acc_lbl",     value = default.labels$acc_lbl)
-    updateTextInput(session, "dec.cor_lbl", value = default.labels$dec.cor_lbl)
-    updateTextInput(session, "dec.err_lbl", value = default.labels$dec.err_lbl)
+    updateTextInput(session, "dec_cor_lbl", value = default.labels$dec_cor_lbl)
+    updateTextInput(session, "dec_err_lbl", value = default.labels$dec_err_lbl)
     #
     updateTextInput(session, "sdt_lbl", value = default.labels$sdt_lbl)
     updateTextInput(session, "hi_lbl",  value = default.labels$hi_lbl)
@@ -532,12 +532,12 @@ shinyServer(function(input, output, session){
   riskyr.colors <- reactive({
     init_pal(
       N_col = input$color.N,
-      cond.true_col  = input$color.true,
-      cond.false_col = input$color.false,
-      dec.pos_col = input$color.pos,
-      dec.neg_col = input$color.neg,
-      dec.cor_col = input$color.cor,
-      dec.err_col = input$color.err,
+      cond_true_col  = input$color.true,
+      cond_false_col = input$color.false,
+      dec_pos_col = input$color.pos,
+      dec_neg_col = input$color.neg,
+      dec_cor_col = input$color.cor,
+      dec_err_col = input$color.err,
       hi_col = input$color.hi,
       mi_col = input$color.mi,
       fa_col = input$color.fa,
@@ -630,14 +630,14 @@ shinyServer(function(input, output, session){
     )
     updateColourInput(session, "color.N", value = as.character(new.colors["N"]))
     # condition:
-    updateColourInput(session, "color.true",  value = as.character(new.colors["true"]))
-    updateColourInput(session, "color.false", value = as.character(new.colors["false"]))
+    updateColourInput(session, "color.true",  value = as.character(new.colors["cond_true"]))
+    updateColourInput(session, "color.false", value = as.character(new.colors["cond_false"]))
     # decision: 
-    updateColourInput(session, "color.pos", value = as.character(new.colors["pos"]))
-    updateColourInput(session, "color.neg", value = as.character(new.colors["neg"]))
+    updateColourInput(session, "color.pos", value = as.character(new.colors["dec_pos"]))
+    updateColourInput(session, "color.neg", value = as.character(new.colors["dec_neg"]))
     # accuracy:
-    updateColourInput(session, "color.cor", value = as.character(new.colors["cor"]))
-    updateColourInput(session, "color.err", value = as.character(new.colors["err"]))
+    updateColourInput(session, "color.cor", value = as.character(new.colors["dec_cor"]))
+    updateColourInput(session, "color.err", value = as.character(new.colors["dec_err"]))
     # SDT:
     updateColourInput(session, "color.hi", value = as.character(new.colors["hi"]))
     updateColourInput(session, "color.mi", value = as.character(new.colors["mi"]))
