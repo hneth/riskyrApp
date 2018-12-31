@@ -17,7 +17,10 @@ library("riskyr")
 
 ## Import data (example scenarios): ------
 
-datasets <- read.csv2("./www/df_scenarios_riskyrApp_2018-12-14.csv", stringsAsFactors = FALSE)
+# datasets <- read.csv2("./www/df_scenarios_riskyrApp_2018-12-14.csv", stringsAsFactors = FALSE)
+# datasets <- read.csv2("./www/df_scenarios_riskyrApp_2018-12-30.csv", stringsAsFactors = FALSE)
+datasets <- read.csv2("./www/df_scenarios.csv", stringsAsFactors = FALSE)  # 2018 12 30
+
 
 # Default color palette and text labels: ------ 
 default.colors <- pal_mod  # init_pal() 
@@ -127,7 +130,7 @@ shinyUI(
                           selectInput("dataselection", label = "Load example:", 
                                       choices = setNames(as.list(1:nrow(datasets)), # create choices from datasets
                                                          datasets$scen_lbl), 
-                                      selected = 1),
+                                      selected = NA),
                           
                           bsButton("help_inputs", label = "Help",
                                    icon = icon("question-sign", lib = "glyphicon"),
