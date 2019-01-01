@@ -11,7 +11,7 @@ The `riskyrApp` is an interactive application that complements the R package `ri
 The application is written in [R Shiny](https://shiny.rstudio.com/) and allows using `riskyr` without any need for coding.
 
 `riskyr` originated out of a series of lectures and workshops on risk literacy. 
-The current version (`riskyr` 0.2.0, as of Dec. 20, 2018) is still under development. 
+The current version (0.2.0, as of Dec. 20, 2018) is still under development. 
 Its primary designers are 
 [Hansjörg Neth](https://www.spds.uni-konstanz.de/hans-neth), 
 [Felix Gaisbauer](https://www.spds.uni-konstanz.de/felix-gaisbauer), 
@@ -21,23 +21,26 @@ who are researchers at the department of
 [Social Psychology and Decision Sciences](https://www.spds.uni-konstanz.de) at the 
 [University of Konstanz](https://www.uni-konstanz.de/en/), Germany. 
 
-Versions currently available: 
-
-- Most recent release version: <https://CRAN.R-project.org/package=riskyr> 
-
-- Current development version: <https://github.com/hneth/riskyr/>
-
-- Interactive online version: <http://riskyr.org> 
-
-- Package documentation: <https://hneth.github.io/riskyr/> 
-
 The `riskyr` package is open source software written in [R](https://www.r-project.org/) and released under the 
 [GPL 2](https://tldrlegal.com/license/gnu-general-public-license-v2) | 
 [GPL 3](https://tldrlegal.com/license/gnu-general-public-license-v3-(gpl-3) licenses.
 
 
-### Contact
+### Resources
 
+The following resources and versions are currently available:
+
+Type: | Version: | URL: |        
+:---------------- |:-----------------------|:---------------------------|
+A. `riskyr` (R package): | [Release version](https://CRAN.R-project.org/package=riskyr): | <https://CRAN.R-project.org/package=riskyr> |
+                     | [Development version](https://github.com/hneth/riskyr):       | <https://github.com/hneth/riskyr> | 
+B. `riskyrApp` (R Shiny): | [Online version](http://riskyr.org): | <http://riskyr.org> | 
+               | [Development version](https://github.com/hneth/riskyrApp): | <https://github.com/hneth/riskyrApp> | 
+C. Online documentation: | [Release version](https://hneth.github.io/riskyr):  | <https://hneth.github.io/riskyr> | 
+                         | [Development version](https://hneth.github.io/riskyr/dev):  | <https://hneth.github.io/riskyr/dev> | 
+
+
+### Contact
 <!-- riskyr logo: -->  
 
 <a href = "https://github.com/hneth/riskyr">
@@ -46,9 +49,9 @@ The `riskyr` package is open source software written in [R](https://www.r-projec
 
 We appreciate your feedback, comments, or questions. 
 
-- Please report any issues at <https://github.com/hneth/riskyr/issues>.
+- Please report any `riskyr`-related issues at <https://github.com/hneth/riskyr/issues>. 
 
-- For general inquiries, please email us at <contact.riskyr@gmail.com>. 
+- Email us at <contact.riskyr@gmail.com> if you want to modify or share this software. 
 
 
 ### Reference

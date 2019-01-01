@@ -9,26 +9,24 @@ The application is written in [R Shiny](https://shiny.rstudio.com/) and allows u
 
 The main goal of both `riskyr` and `riskyrApp` is to communicate and explain common risk literacy measures in a transparent fashion by providing a set of powerful and interactive representations. 
 
-## Installation and version information
+## Installation
 
 - The current release of `riskyr` is available from [CRAN](https://CRAN.R-project.org/) at <https://CRAN.R-project.org/package=riskyr>: 
 
 ```{r}
 install.packages("riskyr")  # install riskyr from CRAN client
-library("riskyr")           # load to use the package
+library("riskyr")           # load the package
 ```
 
-- The most recent development version can be installed from its [GitHub](https://github.com) repository at <https://github.com/hneth/riskyr/>: 
+- The most recent development versions can be installed from their [GitHub](https://github.com) repositories at 
+    - R package code: <https://github.com/hneth/riskyr>
+    - R Shiny code:   <https://github.com/hneth/riskyrApp/>
 
 ```{r}
 # install.packages("devtools")
 devtools::install_github("hneth/riskyr")
+devtools::install_github("hneth/riskyrApp")
 ```
-
-- An interactive online version is available at <http://riskyr.org>. 
-
-- The package documentation is available at <https://hneth.github.io/riskyr/>. 
-
 
 ## About
 
@@ -50,13 +48,27 @@ who are researchers at the department of
 [University of Konstanz](https://www.uni-konstanz.de/en/), Germany. 
 
 
+### Resources
+
+The following resources and versions are currently available:
+
+Type: | Version: | URL: |        
+:-------------- |:-------------|:--------------------|
+A. `riskyr` (R package): | [Release version](https://CRAN.R-project.org/package=riskyr) | <https://CRAN.R-project.org/package=riskyr> |
+\                    | [Development version](https://github.com/hneth/riskyr)       | <https://github.com/hneth/riskyr> | 
+B. `riskyrApp` (R Shiny): | [Online version](http://riskyr.org) | <http://riskyr.org> | 
+\              | [Development version](https://github.com/hneth/riskyrApp) | <https://github.com/hneth/riskyrApp> | 
+C. Online documentation: | [Release version](https://hneth.github.io/riskyr)  | <https://hneth.github.io/riskyr> | 
+\                        | [Development version](https://hneth.github.io/riskyr/dev)  | <https://hneth.github.io/riskyr/dev> | 
+
+
 ### Contact
 
 We appreciate your feedback, comments, or questions. 
 
-- Please report any `riskyr`-related issues at <https://github.com/hneth/riskyr/issues>.
+- Please report any `riskyr`-related issues at <https://github.com/hneth/riskyr/issues>. 
 
-- For general inquiries, please email us at <contact.riskyr@gmail.com>. 
+- Email us at <contact.riskyr@gmail.com> if you want to modify or share this software. 
 
 <!-- riskyr logo: -->  
 <a href = "https://github.com/hneth/riskyr">
