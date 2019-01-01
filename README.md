@@ -52,14 +52,14 @@ who are researchers at the department of
 
 The following resources and versions are currently available:
 
-Type: | Version: | URL: |        
-:-------------- |:-------------|:--------------------|
+Type:                | Version:           | URL:                     |        
+:------------------- |:-------------------|:-------------------------|
 A. `riskyr` (R package): | [Release version](https://CRAN.R-project.org/package=riskyr) | <https://CRAN.R-project.org/package=riskyr> |
-                         | [Development version](https://github.com/hneth/riskyr)       | <https://github.com/hneth/riskyr> | 
-B. `riskyrApp` (R Shiny): | [Online version](http://riskyr.org) | <http://riskyr.org> | 
-                         | [Development version](https://github.com/hneth/riskyrApp) | <https://github.com/hneth/riskyrApp> | 
-C. Online documentation: | [Release version](https://hneth.github.io/riskyr)  | <https://hneth.github.io/riskyr> | 
-                         | [Development version](https://hneth.github.io/riskyr/dev)  | <https://hneth.github.io/riskyr/dev> | 
+\                    | [Development version](https://github.com/hneth/riskyr)           | <https://github.com/hneth/riskyr> | 
+B. `riskyrApp` (R Shiny code): | [Online version](http://riskyr.org)       | <http://riskyr.org> | 
+\              | [Development version](https://github.com/hneth/riskyrApp) | <https://github.com/hneth/riskyrApp> | 
+C. Online documentation: | [Release version](https://hneth.github.io/riskyr)         | <https://hneth.github.io/riskyr> | 
+\                        | [Development version](https://hneth.github.io/riskyr/dev) | <https://hneth.github.io/riskyr/dev> | 
 
 
 ### Contact
