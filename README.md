@@ -3,7 +3,7 @@
 <!-- riskyr logo: -->  
 
 <a href = "https://github.com/hneth/riskyr">
-<img src = "./www/riskyr_cube_s.png" alt = "riskyr logo" title = "riskyr" width = "160px" align = "right" style = "float:right; border:30; width:160px;"/>
+<img src = "./www/riskyr_cube_s.png" alt = "riskyr logo" title = "riskyr" width = "160px" align = "right" style = "float:right; border:40; width:160px;"/>
 </a>
 
 The `riskyrApp` is an interactive application that complements the R package `riskyr`. 
@@ -72,12 +72,6 @@ C. Online documentation: | [Release version](https://hneth.github.io/riskyr)    
 
 ### Contact
 
-<!-- uni.kn logo and link to SPDS: -->  
-
-<a href="https://www.spds.uni-konstanz.de/">
-<img src = "./www/uniKn_logo_s.png" alt = "spds.uni.kn" align = "right" width = "250" style = "width: 250px; float: right; border:30;"/>
-</a>
-
 We appreciate your feedback, comments, or questions. 
 
 - Please report any `riskyr`-related issues at <https://github.com/hneth/riskyr/issues>. 
@@ -86,6 +80,12 @@ We appreciate your feedback, comments, or questions.
 
 
 ### Reference
+
+<!-- riskyr logo: -->  
+
+<a href = "https://github.com/hneth/riskyr">
+<img src = "./www/riskyr_cube_s.png" alt = "riskyr logo" title = "riskyr" width = "160px" align = "right" style = "float:right; border:40; width:160px;"/>
+</a>
 
 To cite `riskyr` in derivations and publications use:
 
