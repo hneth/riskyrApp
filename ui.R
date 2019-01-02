@@ -22,7 +22,7 @@ library("riskyr")
 datasets <- read.csv2("./www/df_scenarios.csv", stringsAsFactors = FALSE)  # 2018 12 30
 
 # Default color palette and text labels: ------ 
-default.colors <- pal_mbw  # init_pal() 
+default.colors <- pal_mod  # init_pal() 
 default.labels <- txt_TF   # init_txt()
 
 ## logifySlider javascript function: ------ 

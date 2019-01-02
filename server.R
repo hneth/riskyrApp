@@ -26,11 +26,11 @@ datasets <- read.csv2("./www/df_scenarios.csv", stringsAsFactors = FALSE)  # 201
 
 
 # Default color palette and text labels: 
-default.colors <- pal_mbw  # init_pal() 
+default.colors <- pal_mod  # init_pal() 
 default.labels <- txt_TF   # init_txt()
 
 # Reactive color palette and text labels: 
-riskyr.colors <- reactive({ pal_mbw })  # reactive({ init_pal() })
+riskyr.colors <- reactive({ pal_mod })  # reactive({ init_pal() })
 riskyr.labels <- reactive({ txt_TF })   # reactive({ init_txt() })
 
 ## Define server logic: ------ 
@@ -623,7 +623,7 @@ shinyServer(function(input, output, session){
   # Integrated alternative palettes: 
   observeEvent(input$alt.palette,{
     new.colors <- switch(input$alt.palette,
-                         default = pal_mbw, # init_pal(),
+                         default = pal_mod, # init_pal(),
                          pal_mod = pal_mod,
                          pal_mbw = pal_mbw,
                          pal_org = pal_org,
