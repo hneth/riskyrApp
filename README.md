@@ -9,14 +9,12 @@
 The `riskyrApp` is an interactive application that complements the R package `riskyr`. 
 
 
-
 ## Goal
 
 `riskyrApp` is a teaching tool that showcases some functionality of the R package `riskyr`. 
 The application is written in [R Shiny](https://shiny.rstudio.com/) and allows using the `riskyr` toolbox without any need for coding.
 
 The main goal of both `riskyr` and `riskyrApp` is to communicate and explain common risk literacy measures in a transparent fashion by providing a set of powerful and interactive representations. 
-
 
 
 ## Installation
@@ -42,9 +40,8 @@ devtools::install_github("hneth/riskyrApp")
 ## About
 
 <!-- uni.kn logo and link to SPDS: -->  
-<!-- ![](./www/uniKn_logo.png) --> 
+
 <a href="https://www.spds.uni-konstanz.de/">
-<!--<img src = "./www/uniKn_logo.png" alt = "spds.uni.kn" style = "width: 300px; float: right; border:20;"/> --> 
 <img src = "./www/uniKn_logo_s.png" alt = "spds.uni.kn" align = "right" style = "float: right; border:40;"/>
 </a>
 
