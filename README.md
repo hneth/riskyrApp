@@ -9,12 +9,14 @@
 The `riskyrApp` is an interactive application that complements the R package `riskyr`. 
 
 
+
 ## Goal
 
 `riskyrApp` is a teaching tool that showcases some functionality of the R package `riskyr`. 
 The application is written in [R Shiny](https://shiny.rstudio.com/) and allows using the `riskyr` toolbox without any need for coding.
 
 The main goal of both `riskyr` and `riskyrApp` is to communicate and explain common risk literacy measures in a transparent fashion by providing a set of powerful and interactive representations. 
+
 
 
 ## Installation
@@ -35,6 +37,7 @@ library("riskyr")           # load the package
 devtools::install_github("hneth/riskyr")
 devtools::install_github("hneth/riskyrApp")
 ```
+
 
 ## About
 
