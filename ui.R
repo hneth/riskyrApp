@@ -197,7 +197,7 @@ shinyUI(
                                                                                      "main names + values"  = "mix", 
                                                                                      "none" = "no"
                                                                       ), 
-                                                                      selected = "no"))),
+                                                                      selected = "num"))),
                                                  
                                                  fluidRow(
                                                    column(4, checkboxInput("prism.show_foot", label = "Show margin notes", value = FALSE)),
@@ -372,7 +372,7 @@ shinyUI(
                                                
                                                wellPanel(
                                                  fluidRow(
-                                                   column(4, offset = 0,
+                                                   column(3, offset = 0,
                                                           selectInput("bar.by", label = "Perspective by", 
                                                                       choices = list("condition" = "cd",
                                                                                      "decision"  = "dc",
@@ -384,7 +384,7 @@ shinyUI(
                                                                       choices = list("uni-directional" = 1, 
                                                                                      "bi-directional"  = 2), 
                                                                       selected = 1)),
-                                                   column(4, 
+                                                   column(3, 
                                                           selectInput("bar.f_lbl", label = "Labels", 
                                                                       choices = list("default" = "def", 
                                                                                      "abbr. names" = "abbr",
