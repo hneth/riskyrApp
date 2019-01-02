@@ -42,7 +42,7 @@ Buildpack version for Heroku-16 Stack and R 3.4.3 as of 2018-01-08. <https://git
 <!-- riskyr logo: -->  
 
 <a href = "https://github.com/hneth/riskyr">
-<img src = "../www/riskyr_cube_s.png" alt = "riskyr logo" title = "riskyr" width = "180px" align = "right" style = "float:right; border:20; width:180px;"/>
+<img src = "../www/riskyr_cube_s.png" alt = "riskyr logo" title = "riskyr" width = "160px" align = "right" style = "float:right; border:20; width:160px;"/>
 </a>
 
 <!-- eof. --> 
