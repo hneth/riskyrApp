@@ -324,6 +324,7 @@ shinyServer(function(input, output, session){
          by = input$bar.by,
          dir = input$bar.dir,
          f_lbl = input$bar.f_lbl, 
+         scale = (if (input$bar.scale_f) "f" else "p"), 
          mar_notes = input$bar.show_foot
     )
   }

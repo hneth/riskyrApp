@@ -372,7 +372,7 @@ shinyUI(
                                                
                                                wellPanel(
                                                  fluidRow(
-                                                   column(3, offset = 0,
+                                                   column(4, offset = 0,
                                                           selectInput("bar.by", label = "Perspective by", 
                                                                       choices = list("condition" = "cd",
                                                                                      "decision"  = "dc",
@@ -387,16 +387,20 @@ shinyUI(
                                                    column(3, 
                                                           selectInput("bar.f_lbl", label = "Labels", 
                                                                       choices = list("default" = "def", 
-                                                                                     "abbr. names" = "abbr",
+                                                                                     "abbr. names" = "abb",
                                                                                      "names only" = "nam",
-                                                                                     "values only" = "num",
-                                                                                     "names and values" = "namnum",
+                                                                                     "values only" = "num", 
+                                                                                     "names + values" = "namnum", 
                                                                                      "no labels" = "no"), 
                                                                       selected = "num"))),
                                                  
                                                  fluidRow(
-                                                   column(4, checkboxInput("bar.show_foot", label = "Show margin notes", value = FALSE)),
-                                                   column(2, offset = 5, downloadButton("bar.dl", label = "Save bars")))
+                                                   column(4, offset = 0, 
+                                                          checkboxInput("bar.scale_f", label = "Scale by frequencies", value = TRUE)),
+                                                   column(4, offset = 0, 
+                                                          checkboxInput("bar.show_foot", label = "Show margin notes", value = FALSE)),
+                                                   column(2, offset = 1, 
+                                                          downloadButton("bar.dl", label = "Save bars")))
                                                ) # wellPanel. 
                                       ), # tabPanel.
                                       
