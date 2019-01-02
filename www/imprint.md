@@ -54,7 +54,7 @@ We appreciate your feedback, comments, or questions.
 <!-- riskyr logo: -->  
 
 <a href = "https://github.com/hneth/riskyr">
-<img src = "../www/riskyr_cube_s.png" alt = "riskyr logo" title = "riskyr" width = "160px" align = "right" style = "float:right; border:20; width:160px;"/>
+<img src = "../www/riskyr_cube_s.png" alt = "riskyr logo" title = "riskyr" width = "160px" align = "right" style = "float:right; border:30; width:160px;"/>
 </a>
 
 To cite `riskyr` in derivations and publications please use:
