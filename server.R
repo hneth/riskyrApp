@@ -1,5 +1,5 @@
 # server.R
-# riskyrApp | R Shiny | spds, uni.kn | 2018 12 30
+# riskyrApp | R Shiny | spds, uni.kn | 2019 01 02
 
 ## Clean up: ------
 
@@ -26,11 +26,11 @@ datasets <- read.csv2("./www/df_scenarios.csv", stringsAsFactors = FALSE)  # 201
 
 
 # Default color palette and text labels: 
-default.colors <- pal_mod  # init_pal() 
+default.colors <- pal_mbw  # init_pal() 
 default.labels <- txt_TF   # init_txt()
 
 # Reactive color palette and text labels: 
-riskyr.colors <- reactive({ pal_mod })  # reactive({ init_pal() })
+riskyr.colors <- reactive({ pal_mbw })  # reactive({ init_pal() })
 riskyr.labels <- reactive({ txt_TF })   # reactive({ init_txt() })
 
 ## Define server logic: ------ 
@@ -617,14 +617,15 @@ shinyServer(function(input, output, session){
   
   # Reset colors to default: 
   observeEvent(input$resetcustomcolor, {
-    updateSelectInput(session, "alt.palette", selected = "pal_mod") # "default")
+    updateSelectInput(session, "alt.palette", selected = "default")
   })
   
   # Integrated alternative palettes: 
   observeEvent(input$alt.palette,{
     new.colors <- switch(input$alt.palette,
-                         default = pal_mod, # init_pal(),
+                         default = pal_mbw, # init_pal(),
                          pal_mod = pal_mod,
+                         pal_mbw = pal_mbw,
                          pal_org = pal_org,
                          pal_rgb = pal_rgb,
                          pal_kn  = pal_kn,

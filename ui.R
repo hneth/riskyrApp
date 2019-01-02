@@ -1,5 +1,5 @@
 # ui.R
-# riskyrApp | R Shiny | spds, uni.kn | 2018 12 30
+# riskyrApp | R Shiny | spds, uni.kn | 2019 01 02
 
 ## Dependencies: ------
 
@@ -21,9 +21,8 @@ library("riskyr")
 # datasets <- read.csv2("./www/df_scenarios_riskyrApp_2018-12-30.csv", stringsAsFactors = FALSE)
 datasets <- read.csv2("./www/df_scenarios.csv", stringsAsFactors = FALSE)  # 2018 12 30
 
-
 # Default color palette and text labels: ------ 
-default.colors <- pal_mod  # init_pal() 
+default.colors <- pal_mbw  # init_pal() 
 default.labels <- txt_TF   # init_txt()
 
 ## logifySlider javascript function: ------ 
@@ -710,11 +709,12 @@ shinyUI(
                                    selectInput("alt.palette", label = "Color palette",
                                                choices = list("---" = "default",
                                                               "modern colors"   = "pal_mod",
+                                                              "mod/bw colors"   = "pal_mbw",
                                                               "original colors" = "pal_org",
                                                               "RGB colors"      = "pal_rgb",
                                                               "uni.kn colors"   = "pal_kn",
                                                               "viridis colors"  = "pal_vir",
-                                                              "black and white" = "pal_bw"), 
+                                                              "black + white"   = "pal_bw"), 
                                                selected = 1))),
                           
                           br(), br(), br(),
