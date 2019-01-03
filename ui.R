@@ -17,8 +17,6 @@ library("riskyr")
 
 ## Import data (example scenarios): ------
 
-# datasets <- read.csv2("./www/df_scenarios_riskyrApp_2018-12-14.csv", stringsAsFactors = FALSE)
-# datasets <- read.csv2("./www/df_scenarios_riskyrApp_2018-12-30.csv", stringsAsFactors = FALSE)
 datasets <- read.csv2("./www/df_scenarios.csv", stringsAsFactors = FALSE)  # 2018 12 30
 
 # Default color palette and text labels: ------ 
