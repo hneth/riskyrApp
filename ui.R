@@ -50,8 +50,6 @@ $(document).ready(function() {
 setTimeout(function() {
 // include call for each slider
 logifySlider('N', sci = false)
-logifySlider('N2', sci = false)
-
 }, 5)})
 "
 
