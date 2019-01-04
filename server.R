@@ -1,5 +1,5 @@
 # server.R
-# riskyrApp | R Shiny | spds, uni.kn | 2019 01 02
+# riskyrApp | R Shiny | spds, uni.kn | 2019 01 04
 
 ## Clean up: ------
 
@@ -631,7 +631,8 @@ shinyServer(function(input, output, session){
                          pal_rgb = pal_rgb,
                          pal_kn  = pal_kn,
                          pal_vir = pal_vir,
-                         pal_bw  = pal_bw
+                         pal_bw  = pal_bw # ,
+                         # pal_bwp = pal_bwp  # [new in v0.2.0.9002] 
     )
     updateColourInput(session, "color.N", value = as.character(new.colors["N"]))
     # condition:
