@@ -6,6 +6,7 @@
 <img src = "./www/riskyr_cube_s.png" alt = "riskyr logo" title = "riskyr" width = "160px" align = "right" style = "float:right; border:40; width:160px;"/>
 </a>
 
+
 The `riskyrApp` is an interactive application that complements the R package `riskyr`. 
 
 
@@ -42,7 +43,7 @@ devtools::install_github("hneth/riskyrApp")
 <!-- uni.kn logo and link to SPDS: -->  
 
 <a href="https://www.spds.uni-konstanz.de/">
-<img src = "./www/uniKn_logo_s.png" alt = "spds.uni.kn" align = "right" style = "float: right; border:40;"/>
+<img src = "./www/uniKn_logo_s.png" alt = "spds.uni.kn" align = "right" style = "float: right; border:30;"/>
 </a>
 
 `riskyr` originated out of a series of lectures and workshops on risk literacy. 
@@ -60,14 +61,14 @@ who are researchers at the department of
 
 The following resources and versions are currently available:
 
-Type:                | Version:           | URL:                     |        
-:------------------- |:-------------------|:-------------------------|
+Type:                    | Version:           | URL:                           |        
+:------------------------|:-------------------|:-------------------------------|
 A. `riskyr` (R package): | [Release version](https://CRAN.R-project.org/package=riskyr) | <https://CRAN.R-project.org/package=riskyr> |
-\                    | [Development version](https://github.com/hneth/riskyr)           | <https://github.com/hneth/riskyr> | 
-B. `riskyrApp` (R Shiny code): | [Online version](http://riskyr.org)       | <http://riskyr.org> | 
-\              | [Development version](https://github.com/hneth/riskyrApp) | <https://github.com/hneth/riskyrApp> | 
-C. Online documentation: | [Release version](https://hneth.github.io/riskyr)         | <https://hneth.github.io/riskyr> | 
-\                        | [Development version](https://hneth.github.io/riskyr/dev) | <https://hneth.github.io/riskyr/dev> | 
+    &nbsp;               | [Development version](https://github.com/hneth/riskyr)       | <https://github.com/hneth/riskyr> | 
+B. `riskyrApp` (R Shiny code): | [Online version](http://riskyr.org)                    | <http://riskyr.org> | 
+    &nbsp;               | [Development version](https://github.com/hneth/riskyrApp)    | <https://github.com/hneth/riskyrApp> | 
+C. Online documentation: | [Release version](https://hneth.github.io/riskyr)            | <https://hneth.github.io/riskyr> | 
+    &nbsp;               | [Development version](https://hneth.github.io/riskyr/dev)    | <https://hneth.github.io/riskyr/dev> | 
 
 
 ### Contact
