@@ -298,6 +298,7 @@ shinyServer(function(input, output, session){
     plot(riskyr.scenario(), 
          type  = "icons",
          col_pal = riskyr.colors(),
+         # by = input$icons.by,
          arr_type = input$icons.arr_type,
          icon_types = c(as.integer(input$symbol.hi), as.integer(input$symbol.mi), 
                         as.integer(input$symbol.fa), as.integer(input$symbol.cr)),

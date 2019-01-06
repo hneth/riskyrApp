@@ -326,6 +326,13 @@ shinyUI(
                                                
                                                wellPanel(
                                                  fluidRow(
+                                                   # column(4, offset = 0,
+                                                   #        selectInput("icons.by", label = "Perspective by", 
+                                                   #                    choices = list("condition x decision" = "cddc",
+                                                   #                                   "condition only" = "cd",
+                                                   #                                   "decision only"  = "dc",
+                                                   #                                   "accuracy only"  = "ac"),
+                                                   #                    selected = "cddc")), 
                                                    column(3, offset = 0,
                                                           selectInput("icons.arr_type", "Array type",
                                                                       choices = list("array" = "array", 
