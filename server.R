@@ -1,5 +1,5 @@
 # server.R
-# riskyrApp | R Shiny | spds, uni.kn | 2019 01 04
+# riskyrApp | R Shiny | spds, uni.kn | 2019 01 06
 
 ## Clean up: ------
 
@@ -621,7 +621,7 @@ shinyServer(function(input, output, session){
     updateSelectInput(session, "alt.palette", selected = "default")
   })
   
-  # Integrated alternative palettes: 
+  # Alternative color palettes included: 
   observeEvent(input$alt.palette,{
     new.colors <- switch(input$alt.palette,
                          default = pal_mod, # init_pal(),
@@ -631,8 +631,8 @@ shinyServer(function(input, output, session){
                          pal_rgb = pal_rgb,
                          pal_kn  = pal_kn,
                          pal_vir = pal_vir,
-                         pal_bw  = pal_bw # ,
-                         # pal_bwp = pal_bwp  # [new in v0.2.0.9002] 
+                         pal_bw  = pal_bw#,
+                         #pal_bwp = pal_bwp  # [new in v0.2.0.9002] 
     )
     updateColourInput(session, "color.N", value = as.character(new.colors["N"]))
     # condition:

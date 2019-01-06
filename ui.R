@@ -1,5 +1,5 @@
 # ui.R
-# riskyrApp | R Shiny | spds, uni.kn | 2019 01 04
+# riskyrApp | R Shiny | spds, uni.kn | 2019 01 06
 
 ## Dependencies: ------
 
@@ -718,9 +718,9 @@ shinyUI(
                                                               "RGB colors"      = "pal_rgb",
                                                               "uni.kn colors"   = "pal_kn",
                                                               "viridis colors"  = "pal_vir",
-                                                              "black + white"   = "pal_bw"# ,
-                                                              # "bw printing"     = "pal_bwp"  # [new in v0.2.0.9002] 
-                                                              ), 
+                                                              "black + white"   = "pal_bw"#,
+                                                              #"b + w printing"  = "pal_bwp"  # [new in v0.2.0.9002] 
+                                               ),
                                                selected = 1))),
                           
                           br(), br(), br(),
