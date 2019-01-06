@@ -59,16 +59,69 @@ who are researchers at the department of
 
 ### Resources
 
+<!--
+
 The following resources and versions are currently available:
 
 Type:                    | Version:           | URL:                           |        
 :------------------------|:-------------------|:-------------------------------|
 A. `riskyr` (R package): | [Release version](https://CRAN.R-project.org/package=riskyr) | <https://CRAN.R-project.org/package=riskyr> |
-    \hspace{1mm}         | [Development version](https://github.com/hneth/riskyr)       | <https://github.com/hneth/riskyr> | 
+    &nbsp;               | [Development version](https://github.com/hneth/riskyr)       | <https://github.com/hneth/riskyr> | 
 B. `riskyrApp` (R Shiny code): | [Online version](http://riskyr.org)                    | <http://riskyr.org> | 
-    \hspace{1mm}         | [Development version](https://github.com/hneth/riskyrApp)    | <https://github.com/hneth/riskyrApp> | 
+    &nbsp;               | [Development version](https://github.com/hneth/riskyrApp)    | <https://github.com/hneth/riskyrApp> | 
 C. Online documentation: | [Release version](https://hneth.github.io/riskyr)            | <https://hneth.github.io/riskyr> | 
-    \hspace{1mm}         | [Development version](https://hneth.github.io/riskyr/dev)    | <https://hneth.github.io/riskyr/dev> | 
+    &nbsp;               | [Development version](https://hneth.github.io/riskyr/dev)    | <https://hneth.github.io/riskyr/dev> | 
+
+-->
+
+The following resources and versions are currently available:
+
+<table style="width:100%;">
+<colgroup>
+<col width="33%" />
+<col width="27%" />
+<col width="40%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Type:</th>
+<th align="left">Version:</th>
+<th align="left">URL:</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">A. <code>riskyr</code> (R package):</td>
+<td align="left"><a href="https://CRAN.R-project.org/package=riskyr">Release version</a></td>
+<td align="left"><a href="https://CRAN.R-project.org/package=riskyr" class="uri">https://CRAN.R-project.org/package=riskyr</a></td>
+</tr>
+<tr class="even">
+<td align="left"> </td>
+<td align="left"><a href="https://github.com/hneth/riskyr">Development version</a></td>
+<td align="left"><a href="https://github.com/hneth/riskyr" class="uri">https://github.com/hneth/riskyr</a></td>
+</tr>
+<tr class="odd">
+<td align="left">B. <code>riskyrApp</code> (R Shiny code):</td>
+<td align="left"><a href="http://riskyr.org">Online version</a></td>
+<td align="left"><a href="http://riskyr.org" class="uri">http://riskyr.org</a></td>
+</tr>
+<tr class="even">
+<td align="left"> </td>
+<td align="left"><a href="https://github.com/hneth/riskyrApp">Development version</a></td>
+<td align="left"><a href="https://github.com/hneth/riskyrApp" class="uri">https://github.com/hneth/riskyrApp</a></td>
+</tr>
+<tr class="odd">
+<td align="left">C. Online documentation:</td>
+<td align="left"><a href="https://hneth.github.io/riskyr">Release version</a></td>
+<td align="left"><a href="https://hneth.github.io/riskyr" class="uri">https://hneth.github.io/riskyr</a></td>
+</tr>
+<tr class="even">
+<td align="left"> </td>
+<td align="left"><a href="https://hneth.github.io/riskyr/dev">Development version</a></td>
+<td align="left"><a href="https://hneth.github.io/riskyr/dev" class="uri">https://hneth.github.io/riskyr/dev</a></td>
+</tr>
+</tbody>
+</table>
 
 
 ### Contact
