@@ -187,11 +187,11 @@ shinyServer(function(input, output, session){
       if (input$dataselection != 1) { # if 1st option is not ("---")
         # update all sliders: 
         updateSliderInput(session, "N", value = round(log10(datasets[input$dataselection, "N" ]), 0))
-        updateSliderInput(session, "prev", value = datasets[input$dataselection, "prev"])
+        # updateSliderInput(session, "prev", value = datasets[input$dataselection, "prev"])
         updateNumericInput(session, "numprev", value = datasets[input$dataselection, "prev"])
-        updateSliderInput(session, "sens", value = datasets[input$dataselection, "sens" ])
+        # updateSliderInput(session, "sens", value = datasets[input$dataselection, "sens" ])
         updateNumericInput(session, "numsens", value = datasets[input$dataselection, "sens"])
-        updateSliderInput(session, "spec", value = datasets[input$dataselection, "spec" ])
+        # updateSliderInput(session, "spec", value = datasets[input$dataselection, "spec" ])
         updateNumericInput(session, "numspec", value = datasets[input$dataselection, "spec" ])
         # set text labels: 
         updateTextInput(session, "scen_lbl", value = datasets[input$dataselection, "scen_lbl"])
@@ -210,6 +210,11 @@ shinyServer(function(input, output, session){
         updateTextInput(session, "fa_lbl", value = datasets[input$dataselection, "fa_lbl"])
         updateTextInput(session, "cr_lbl", value = datasets[input$dataselection, "cr_lbl"])
         updateTextInput(session, "scenario_txt", value = datasets[input$dataselection, "scenario_txt"])
+        # update inputs (switch to numeric)
+        updateRadioButtons(session, "checkprev", selected = 1)
+        updateRadioButtons(session, "checksens", selected = 1)
+        updateRadioButtons(session, "checkspec", selected = 1)
+        
       }
     }, ignoreInit = TRUE)
   
