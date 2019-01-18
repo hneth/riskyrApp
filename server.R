@@ -77,8 +77,14 @@ shinyServer(function(input, output, session){
   observeEvent({
     input$N
   }, {
-    env$N <- 10**input$N
-    env$recalc.N <- input$N
+    env$N <- input$N
+    updateNumericInput(session, "numN", value = env$N)
+  })
+  
+  observeEvent({
+    input$numN }, {
+    env$N <- input$numN
+    updateSliderInput(session, "N", value = env$N)
   })
   
   # - prevalence: ---- 
@@ -186,7 +192,7 @@ shinyServer(function(input, output, session){
     input$dataselection, {
       if (input$dataselection != 1) { # if 1st option is not ("---")
         # update all sliders: 
-        updateSliderInput(session, "N", value = round(log10(datasets[input$dataselection, "N" ]), 0))
+        updateSliderInput(session, "N", value = datasets[input$dataselection, "N" ])
         # updateSliderInput(session, "prev", value = datasets[input$dataselection, "prev"])
         updateNumericInput(session, "numprev", value = datasets[input$dataselection, "prev"] * 100)
         # updateSliderInput(session, "sens", value = datasets[input$dataselection, "sens" ])

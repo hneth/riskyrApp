@@ -71,12 +71,27 @@ shinyUI(
                         
                         # A. Sidebar panel for inputs: ---- 
                         sidebarPanel(
-                          tags$head(tags$script(HTML(JS.logify))),
-                          tags$head(tags$script(HTML(JS.onload))),
+                          # tags$head(tags$script(HTML(JS.logify))),
+                          # tags$head(tags$script(HTML(JS.onload))),
                           
-                          sliderInput("N", label = "Population (logarithmic scale)",
-                                      min = 1, max = 5,
-                                      value = 3, round = FALSE),
+                          # sliderInput("N", label = "Population (logarithmic scale)",
+                          #             min = 1, max = 5,
+                          #             value = 3, round = FALSE),
+                          # radioButtons("N", label = "Population",
+                          #              choiceNames = list("10", "100", "1.000", "10.000", "100.000", "1.000.000"),
+                          #              choiceValues = c(10**(1:6)),
+                          #              selected = 1000,
+                          #              inline = TRUE),
+                          radioButtons("checkN", label = "Population", 
+                                       choiceNames = list("Slider", "Field"),
+                                       choiceValues = c(0, 1), inline = TRUE),
+                          conditionalPanel(condition = "input.checkN == 0",
+                                           sliderInput("N",  label = NULL, sep = "",
+                                                       value = 1000, min = 10, max = 100000, 
+                                                       step = 1, ticks = TRUE)),
+                          conditionalPanel(condition = "input.checkN == 1", 
+                                           numericInput("numN", label = NULL, value = 1000,
+                                                        min = 10, max = 1000000, step = 1)),
                           br(),
                           
                           radioButtons("checkprev", label = "Prevalence (in percent)", 
