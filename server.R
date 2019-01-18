@@ -188,11 +188,11 @@ shinyServer(function(input, output, session){
         # update all sliders: 
         updateSliderInput(session, "N", value = round(log10(datasets[input$dataselection, "N" ]), 0))
         # updateSliderInput(session, "prev", value = datasets[input$dataselection, "prev"])
-        updateNumericInput(session, "numprev", value = datasets[input$dataselection, "prev"])
+        updateNumericInput(session, "numprev", value = datasets[input$dataselection, "prev"] * 100)
         # updateSliderInput(session, "sens", value = datasets[input$dataselection, "sens" ])
-        updateNumericInput(session, "numsens", value = datasets[input$dataselection, "sens"])
+        updateNumericInput(session, "numsens", value = datasets[input$dataselection, "sens"] * 100)
         # updateSliderInput(session, "spec", value = datasets[input$dataselection, "spec" ])
-        updateNumericInput(session, "numspec", value = datasets[input$dataselection, "spec" ])
+        updateNumericInput(session, "numspec", value = datasets[input$dataselection, "spec" ] * 100)
         # set text labels: 
         updateTextInput(session, "scen_lbl", value = datasets[input$dataselection, "scen_lbl"])
         updateTextInput(session, "popu_lbl", value = datasets[input$dataselection, "popu_lbl"])
