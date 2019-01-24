@@ -1,5 +1,5 @@
 # server.R
-# riskyrApp | R Shiny | spds, uni.kn | 2019 01 06
+# riskyrApp | R Shiny | spds, uni.kn | 2019 01 18
 
 ## Clean up: ------
 
@@ -11,6 +11,7 @@ library("shiny")
 library("shinyBS")
 library("markdown")
 library("colourpicker")
+library("shinyWidgets")
 
 ## Install/load current version of riskyr: ------
 # detach("package:riskyr", unload = TRUE)
@@ -72,20 +73,35 @@ shinyServer(function(input, output, session){
   
   ## Couple numeric and slider inputs: ------ 
   
-  # - population (logified version): ---- 
+  # - population:  ---- 
   
-  observeEvent({
-    input$N
-  }, {
+  observeEvent({ input$N }, {
     env$N <- input$N
-    updateNumericInput(session, "numN", value = env$N)
+  })
+  
+  observeEvent({ input$numN }, {
+      env$N <- input$numN
   })
   
   observeEvent({
-    input$numN }, {
-    env$N <- input$numN
-    updateSliderInput(session, "N", value = env$N)
+      input$checkN 
+      input$dataselection
+      }, {
+      # if slider is selected
+      if(input$checkN == "0") {
+          env$N <- 10**round(log10(input$numN))
+          updateSliderTextInput(session, "N", selected = env$N)
+      } else if (input$checkN == "1") { # if numeric field is selected
+          
+          if (input$dataselection == 1){
+              env$N <- input$N
+          } else if (input$dataselection != 1) # if an example is selected
+              env$N <- datasets[input$dataselection, "N" ]
+          updateNumericInput(session, "numN", value = env$N)
+      }
+          
   })
+  
   
   # - prevalence: ---- 
   
@@ -191,8 +207,7 @@ shinyServer(function(input, output, session){
   observeEvent(
     input$dataselection, {
       if (input$dataselection != 1) { # if 1st option is not ("---")
-        # update all sliders: 
-        updateSliderInput(session, "N", value = datasets[input$dataselection, "N" ])
+        # update all sliders:
         # updateSliderInput(session, "prev", value = datasets[input$dataselection, "prev"])
         updateNumericInput(session, "numprev", value = datasets[input$dataselection, "prev"] * 100)
         # updateSliderInput(session, "sens", value = datasets[input$dataselection, "sens" ])
@@ -217,10 +232,10 @@ shinyServer(function(input, output, session){
         updateTextInput(session, "cr_lbl", value = datasets[input$dataselection, "cr_lbl"])
         updateTextInput(session, "scenario_txt", value = datasets[input$dataselection, "scenario_txt"])
         # update inputs (switch to numeric)
+        updateRadioButtons(session, "checkN", selected = 1)
         updateRadioButtons(session, "checkprev", selected = 1)
         updateRadioButtons(session, "checksens", selected = 1)
         updateRadioButtons(session, "checkspec", selected = 1)
-        
       }
     }, ignoreInit = TRUE)
   

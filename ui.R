@@ -7,6 +7,7 @@ library("shiny")
 library("shinyBS")
 library("markdown")
 library("colourpicker")
+library("shinyWidgets")
 
 ## Install/load current version of riskyr: ------
 # detach("package:riskyr", unload = TRUE)
@@ -23,35 +24,6 @@ datasets <- read.csv2("./www/df_scenarios.csv", stringsAsFactors = FALSE)  # 201
 default.colors <- pal_mod  # init_pal() 
 default.labels <- txt_TF   # init_txt()
 
-## logifySlider javascript function: ------ 
-JS.logify <-
-  "
-// function to logify a sliderInput
-function logifySlider (sliderId, sci = false) {
-if (sci) {
-// scientific style
-$('#'+sliderId).data('ionRangeSlider').update({
-'prettify': function (num) { return ('10<sup>'+num+'</sup>'); }
-})
-} else {
-// regular number style
-$('#'+sliderId).data('ionRangeSlider').update({
-'prettify': function (num) { return (Math.pow(10, num)); }
-})
-}
-}"
-
-## Call logifySlider for each relevant sliderInput: ------ 
-JS.onload <-
-  "
-// execute upon document loading
-$(document).ready(function() {
-// wait a few ms to allow other scripts to execute
-setTimeout(function() {
-// include call for each slider
-logifySlider('N', sci = false)
-}, 5)})
-"
 
 ## Define user interface logic: ------
 
@@ -71,27 +43,21 @@ shinyUI(
                         
                         # A. Sidebar panel for inputs: ---- 
                         sidebarPanel(
-                          # tags$head(tags$script(HTML(JS.logify))),
-                          # tags$head(tags$script(HTML(JS.onload))),
-                          
-                          # sliderInput("N", label = "Population (logarithmic scale)",
-                          #             min = 1, max = 5,
-                          #             value = 3, round = FALSE),
-                          # radioButtons("N", label = "Population",
-                          #              choiceNames = list("10", "100", "1.000", "10.000", "100.000", "1.000.000"),
-                          #              choiceValues = c(10**(1:6)),
-                          #              selected = 1000,
-                          #              inline = TRUE),
                           radioButtons("checkN", label = "Population", 
                                        choiceNames = list("Slider", "Field"),
                                        choiceValues = c(0, 1), inline = TRUE),
                           conditionalPanel(condition = "input.checkN == 0",
-                                           sliderInput("N",  label = NULL, sep = "",
-                                                       value = 1000, min = 10, max = 100000, 
-                                                       step = 1, ticks = TRUE)),
+                                         sliderTextInput(inputId = "N", label = NULL,
+                                                        choices = c(10, 100, 1000, 10000, 100000),
+                                                        grid = TRUE, selected = 1000,
+                                                        animate = FALSE)),
+                                                        # animate = animationOptions(interval = 1500,
+                                                                                   # loop = TRUE))),
+                          
+                          
                           conditionalPanel(condition = "input.checkN == 1", 
                                            numericInput("numN", label = NULL, value = 1000,
-                                                        min = 10, max = 1000000, step = 1)),
+                                                        min = 10, max = 100000, step = 1)),
                           br(),
                           
                           radioButtons("checkprev", label = "Prevalence (in percent)", 
