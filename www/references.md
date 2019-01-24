@@ -23,7 +23,9 @@ Online version: <http://riskyr.org>;
 online documentation: <https://hneth.github.io/riskyr>.
 
 - Park, Thomas (2018). *Sandstone theme.* 
-Bootswatch version 3.3.7. <https://bootswatch.com/sandstone/>
+Bootswatch version 3.3.7. <https://bootswatch.com/sandstone>
+
+- Perrier, V., Meyer, F., & Granjon, D. (2018). *shinyWidgets: Custom Inputs Widgets for Shiny.* R package version 0.4.4. <https://CRAN.R-project.org/package=shinyWidgets>
 
 - R Core Team (2018). *R: A language and environment for statistical computing.* 
 R Foundation for Statistical Computing, Vienna, Austria. <https://www.R-project.org/>
