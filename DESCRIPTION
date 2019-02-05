@@ -1,11 +1,13 @@
 Title: riskyrApp
-Version: 0.2.0
 Type: Shiny
+Version: 0.2.0.9008
+Date: 2018-02-05
 DisplayMode: Normal
-Author: SPDS uni.kn
-AuthorUrl: http://spds.uni-konstanz.de
 Maintainer: Hansjoerg Neth <h.neth@uni.kn>
 Description: An interactive R Shiny application complementing the R package riskyr: 
    Rendering risk literacy more transparent. 
-Tags: risk, risk literacy, prevalence, sensitivity, specificity, false alarms, predictive value, PPV, NPV, SDT 
+Author: SPDS uni.kn
+AuthorUrl: http://spds.uni-konstanz.de
+URL: http://riskyr.org, https://github.com/hneth/riskyrApp
+Tags: risk, risk literacy, riskyr, prevalence, sensitivity, specificity, false alarms, PPV, NPV 
 License: No license yet.
