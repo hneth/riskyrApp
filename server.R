@@ -1,5 +1,5 @@
 # server.R
-# riskyrApp | R Shiny | spds, uni.kn | 2019 01 18
+# riskyrApp | R Shiny | spds, uni.kn | 2019 02 05
 
 ## Clean up: ------
 
@@ -574,7 +574,8 @@ shinyServer(function(input, output, session){
       PPV_col = input$color.ppv,
       NPV_col = input$color.npv,
       txt_col = input$color.txt,
-      brd_col = input$color.brd
+      brd_col = input$color.brd, 
+      bg_col = input$color.bg
     )
   })
   
@@ -679,6 +680,7 @@ shinyServer(function(input, output, session){
     updateColourInput(session, "color.npv", value = as.character(new.colors["npv"]))
     updateColourInput(session, "color.txt", value = as.character(new.colors["txt"]))
     updateColourInput(session, "color.brd", value = as.character(new.colors["brd"]))
+    updateColourInput(session, "color.bg", value = as.character(new.colors["bg"]))
   })
   
 }

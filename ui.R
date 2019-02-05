@@ -1,5 +1,5 @@
 # ui.R
-# riskyrApp | R Shiny | spds, uni.kn | 2019 01 06
+# riskyrApp | R Shiny | spds, uni.kn | 2019 02 05
 
 ## Dependencies: ------
 
@@ -23,7 +23,6 @@ datasets <- read.csv2("./www/df_scenarios.csv", stringsAsFactors = FALSE)  # 201
 # Default color palette and text labels: ------ 
 default.colors <- pal_mod  # init_pal() 
 default.labels <- txt_TF   # init_txt()
-
 
 ## Define user interface logic: ------
 
@@ -690,7 +689,13 @@ shinyUI(
                             column(6, colourInput("color.brd", label = "Lines",
                                                   value = default.colors["brd"], showColour = "background",
                                                   palette = "square", allowedCols = NULL))),
-                          br(), br(), br(), 
+                          
+                          fluidRow(
+                            column(6, colourInput("color.bg", label = "Background",
+                                                  value = default.colors["bg"], showColour = "background",
+                                                  palette = "square", allowedCols = NULL))),
+                    
+                          br(), br(), 
                           
                           fluidRow(
                             column(7,
@@ -707,7 +712,7 @@ shinyUI(
                                                ),
                                                selected = 1))),
                           
-                          br(), br(), br(),
+                          br(), br(), 
                           
                           fluidRow(
                             column(5,                          
