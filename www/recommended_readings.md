@@ -40,7 +40,8 @@ _Cognition_, _84_, 343–352.
 
 - Hoffrage, U., Krauss, S., Martignon, L., & Gigerenzer, G. (2015). 
 Natural frequencies improve Bayesian reasoning in simple and complex inference tasks. 
-_Frontiers in Psychology_, _6_, 1473.
+_Frontiers in Psychology_, _6_, 1473. 
+[[Available online](https://doi.org/10.3389/fpsyg.2015.01473)] 
 
 - Hoffrage, U., Lindsey, S., Hertwig, R., & Gigerenzer, G. (2000). 
 Communicating statistical information. 
@@ -71,6 +72,11 @@ New York, NY: Wiley Online Library.
 - Sedlmeier, P., & Gigerenzer, G. (2001). 
 Teaching Bayesian reasoning in less than two hours. 
 _Journal of Experimental Psychology: General_, _130_, 380–400.
+
+- Trevethan, R. (2017). 
+Sensitivity, specificity, and predictive values: Foundations, pliabilities, and pitfalls in research and practice. 
+_Frontiers in Public Health_, _5_, 307. 
+[[Available online](https://doi.org/10.3389/fpubh.2017.00307)] 
 
 - Wassner, C., Martignon, L., & Biehler, R. (2004). 
 Bayesianisches Denken in der Schule. 
