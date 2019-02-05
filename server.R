@@ -1,5 +1,5 @@
 # server.R
-# riskyrApp | R Shiny | spds, uni.kn | 2019 01 06
+# riskyrApp | R Shiny | spds, uni.kn | 2019 01 18
 
 ## Clean up: ------
 
@@ -11,6 +11,7 @@ library("shiny")
 library("shinyBS")
 library("markdown")
 library("colourpicker")
+library("shinyWidgets")
 
 ## Install/load current version of riskyr: ------
 # detach("package:riskyr", unload = TRUE)
@@ -20,8 +21,6 @@ library("riskyr")
 
 ## Import data (example scenarios) and default colors and labels: ------
 
-# datasets <- read.csv2("./www/df_scenarios_riskyrApp_2018-12-14.csv", stringsAsFactors = FALSE)
-# datasets <- read.csv2("./www/df_scenarios_riskyrApp_2018-12-30.csv", stringsAsFactors = FALSE)
 datasets <- read.csv2("./www/df_scenarios.csv", stringsAsFactors = FALSE)  # 2018 12 30
 
 
@@ -74,14 +73,35 @@ shinyServer(function(input, output, session){
   
   ## Couple numeric and slider inputs: ------ 
   
-  # - population (logified version): ---- 
+  # - population:  ---- 
+  
+  observeEvent({ input$N }, {
+    env$N <- input$N
+  })
+  
+  observeEvent({ input$numN }, {
+      env$N <- input$numN
+  })
   
   observeEvent({
-    input$N
-  }, {
-    env$N <- 10**input$N
-    env$recalc.N <- input$N
+      input$checkN 
+      input$dataselection
+      }, {
+      # if slider is selected
+      if(input$checkN == "0") {
+          env$N <- 10**round(log10(input$numN))
+          updateSliderTextInput(session, "N", selected = env$N)
+      } else if (input$checkN == "1") { # if numeric field is selected
+          
+          if (input$dataselection == 1){
+              env$N <- input$N
+          } else if (input$dataselection != 1) # if an example is selected
+              env$N <- datasets[input$dataselection, "N" ]
+          updateNumericInput(session, "numN", value = env$N)
+      }
+          
   })
+  
   
   # - prevalence: ---- 
   
@@ -187,14 +207,13 @@ shinyServer(function(input, output, session){
   observeEvent(
     input$dataselection, {
       if (input$dataselection != 1) { # if 1st option is not ("---")
-        # update all sliders: 
-        updateSliderInput(session, "N", value = round(log10(datasets[input$dataselection, "N" ]), 0))
-        updateSliderInput(session, "prev", value = datasets[input$dataselection, "prev"])
-        updateNumericInput(session, "numprev", value = datasets[input$dataselection, "prev"])
-        updateSliderInput(session, "sens", value = datasets[input$dataselection, "sens" ])
-        updateNumericInput(session, "numsens", value = datasets[input$dataselection, "sens"])
-        updateSliderInput(session, "spec", value = datasets[input$dataselection, "spec" ])
-        updateNumericInput(session, "numspec", value = datasets[input$dataselection, "spec" ])
+        # update all sliders:
+        # updateSliderInput(session, "prev", value = datasets[input$dataselection, "prev"])
+        updateNumericInput(session, "numprev", value = datasets[input$dataselection, "prev"] * 100)
+        # updateSliderInput(session, "sens", value = datasets[input$dataselection, "sens" ])
+        updateNumericInput(session, "numsens", value = datasets[input$dataselection, "sens"] * 100)
+        # updateSliderInput(session, "spec", value = datasets[input$dataselection, "spec" ])
+        updateNumericInput(session, "numspec", value = datasets[input$dataselection, "spec" ] * 100)
         # set text labels: 
         updateTextInput(session, "scen_lbl", value = datasets[input$dataselection, "scen_lbl"])
         updateTextInput(session, "popu_lbl", value = datasets[input$dataselection, "popu_lbl"])
@@ -212,6 +231,11 @@ shinyServer(function(input, output, session){
         updateTextInput(session, "fa_lbl", value = datasets[input$dataselection, "fa_lbl"])
         updateTextInput(session, "cr_lbl", value = datasets[input$dataselection, "cr_lbl"])
         updateTextInput(session, "scenario_txt", value = datasets[input$dataselection, "scenario_txt"])
+        # update inputs (switch to numeric)
+        updateRadioButtons(session, "checkN", selected = 1)
+        updateRadioButtons(session, "checkprev", selected = 1)
+        updateRadioButtons(session, "checksens", selected = 1)
+        updateRadioButtons(session, "checkspec", selected = 1)
       }
     }, ignoreInit = TRUE)
   
