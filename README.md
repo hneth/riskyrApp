@@ -7,20 +7,20 @@
 </a>
 
 
-The `riskyrApp` is an interactive application that complements the R package `riskyr`. 
+The **riskyrApp** is an interactive application that complements the R package **riskyr**. 
 
 
 ## Goal
 
-`riskyrApp` is a teaching tool that showcases some functionality of the R package `riskyr`. 
-The application is written in [R Shiny](https://shiny.rstudio.com/) and allows using the `riskyr` toolbox without any need for coding.
+**riskyrApp** is a teaching tool that showcases some functionality of the R package **riskyr**. 
+The application is written in [R Shiny](https://shiny.rstudio.com/) and allows using the **riskyr** toolbox without any need for coding.
 
-The main goal of both `riskyr` and `riskyrApp` is to communicate and explain common risk literacy measures in a transparent fashion by providing a set of powerful and interactive representations. 
+The main goal of both **riskyr** and **riskyrApp** is to communicate and explain common risk literacy measures in a transparent fashion by providing a set of powerful and interactive representations. 
 
 
 ## Installation
 
-- The current release of `riskyr` is available from [CRAN](https://CRAN.R-project.org/) at <https://CRAN.R-project.org/package=riskyr>: 
+- The current release of **riskyr** is available from [CRAN](https://CRAN.R-project.org/) at <https://CRAN.R-project.org/package=riskyr>: 
 
 ```{r}
 install.packages("riskyr")  # install riskyr from CRAN client
@@ -46,7 +46,7 @@ devtools::install_github("hneth/riskyrApp")
 <img src = "./www/uniKn_logo_s.png" alt = "spds.uni.kn" align = "right" style = "float: right; border:30;"/>
 </a>
 
-`riskyr` originated out of a series of lectures and workshops on risk literacy. 
+**riskyr** originated out of a series of lectures and workshops on risk literacy. 
 Its primary designers are 
 [Hansjörg Neth](https://www.spds.uni-konstanz.de/hans-neth), 
 [Felix Gaisbauer](https://www.spds.uni-konstanz.de/felix-gaisbauer), 
@@ -65,9 +65,9 @@ The following resources and versions are currently available:
 
 Type:                    | Version:           | URL:                           |        
 :------------------------|:-------------------|:-------------------------------|
-A. `riskyr` (R package): | [Release version](https://CRAN.R-project.org/package=riskyr) | <https://CRAN.R-project.org/package=riskyr> |
+A. **riskyr** (R package): | [Release version](https://CRAN.R-project.org/package=riskyr) | <https://CRAN.R-project.org/package=riskyr> |
     &nbsp;               | [Development version](https://github.com/hneth/riskyr)       | <https://github.com/hneth/riskyr> | 
-B. `riskyrApp` (R Shiny code): | [Online version](http://riskyr.org)                    | <http://riskyr.org> | 
+B. **riskyrApp** (R Shiny code): | [Online version](http://riskyr.org)                    | <http://riskyr.org> | 
     &nbsp;               | [Development version](https://github.com/hneth/riskyrApp)    | <https://github.com/hneth/riskyrApp> | 
 C. Online documentation: | [Release version](https://hneth.github.io/riskyr)            | <https://hneth.github.io/riskyr> | 
     &nbsp;               | [Development version](https://hneth.github.io/riskyr/dev)    | <https://hneth.github.io/riskyr/dev> | 
@@ -91,7 +91,7 @@ The following resources and versions are currently available:
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">A. <code>riskyr</code> (R package):</td>
+<td align="left">A. <strong>riskyr</strong> (R package):</td>
 <td align="left"><a href="https://CRAN.R-project.org/package=riskyr">Release version</a></td>
 <td align="left"><a href="https://CRAN.R-project.org/package=riskyr" class="uri">https://CRAN.R-project.org/package=riskyr</a></td>
 </tr>
@@ -101,9 +101,9 @@ The following resources and versions are currently available:
 <td align="left"><a href="https://github.com/hneth/riskyr" class="uri">https://github.com/hneth/riskyr</a></td>
 </tr>
 <tr class="odd">
-<td align="left">B. <code>riskyrApp</code> (R Shiny code):</td>
-<td align="left"><a href="http://riskyr.org">Online version</a></td>
-<td align="left"><a href="http://riskyr.org" class="uri">http://riskyr.org</a></td>
+<td align="left">B. <strong>riskyrApp</strong> (R Shiny code):</td>
+<td align="left"><a href="https://riskyr.org/">Online version</a></td>
+<td align="left"><a href="https://riskyr.org/" class="uri">https://riskyr.org</a></td>
 </tr>
 <tr class="even">
 <td align="left"> </td>
@@ -128,7 +128,7 @@ The following resources and versions are currently available:
 
 We appreciate your feedback, comments, or questions. 
 
-- Please report any `riskyr`-related issues at <https://github.com/hneth/riskyr/issues>. 
+- Please report any **riskyr**-related issues at <https://github.com/hneth/riskyr/issues>. 
 
 - Email us at <contact.riskyr@gmail.com> if you want to modify or share this software. 
 
@@ -141,12 +141,12 @@ We appreciate your feedback, comments, or questions.
 <img src = "./www/riskyr_cube_s.png" alt = "riskyr logo" title = "riskyr" width = "160px" align = "right" style = "float:right; border:40; width:160px;"/>
 </a>
 
-To cite `riskyr` in derivations and publications use:
+To cite **riskyr** in derivations and publications use:
 
--  Neth, H., Gaisbauer, F., Gradwohl, N., & Gaissmaier, W. (2018).    
+-  Neth, H., Gaisbauer, F., Gradwohl, N., & Gaissmaier, W. (2021).    
     riskyr: A toolbox for rendering risk literacy more transparent.    
     Social Psychology and Decision Sciences, University of Konstanz, Germany.    
-    Computer software (R package version 0.2.0, Dec. 20, 2018).    
+    Computer software (R package version 0.3.0, Mar. 23, 2021).    
     Retrieved from <https://CRAN.R-project.org/package=riskyr>.   
 
 A BibTeX entry for LaTeX users is: 
@@ -154,10 +154,10 @@ A BibTeX entry for LaTeX users is:
     @Manual{riskyr,
       title = {riskyr: A toolbox for rendering risk literacy more transparent},
       author = {Hansjörg Neth and Felix Gaisbauer and Nico Gradwohl and Wolfgang Gaissmaier},
-      year = {2018},
+      year = {2021},
       organization = {Social Psychology and Decision Sciences, University of Konstanz},
       address = {Konstanz, Germany},
-      note = {R package (version 0.2.0, Dec. 20, 2018)},
+      note = {R package (version 0.3.0, Mar. 23, 2021)},
       url = {https://CRAN.R-project.org/package=riskyr},
       }    
     
