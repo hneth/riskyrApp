@@ -6,3 +6,6 @@ riskyrApp.Rproj
 .DS_Store
 _archive
 _stuff
+*.html
+
+<!-- eof. -->
